@@ -10,6 +10,7 @@ import Category from "./Category";
 import LawList from "./components/lawlist";
 import LawDetail from "./components/LawDetail";
 import Bookmarks from "./Bookmarks";
+import Footer from "./components/footer";
 
 
 
@@ -48,6 +49,7 @@ export default function App() {
             }
           />
         </Routes>
+        <Footer />
       </Router>
 
       {/* Custom cursor always visible */}

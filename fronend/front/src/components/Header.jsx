@@ -4,16 +4,14 @@ import { TbBrandGoogleHome } from "react-icons/tb";
 import { AiOutlineFileSearch } from "react-icons/ai";
 import { TfiLayoutAccordionList } from "react-icons/tfi";
 import { FaBookBookmark } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
+import { useState } from "react";
 
 export default function Header() {
-  const toggleMobleMenu = () => {
-    const mobileMenu = document.getElementById("mobileMenu");
+  const [isOpen, setIsOpen] = useState(false);
 
-    if (mobileMenu.classList.contains("hidden")) {
-      mobileMenu.classList.remove("hidden");
-    } else {
-      mobileMenu.classList.add("hidden");
-    }
+  const toggleMobileMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -26,32 +24,20 @@ export default function Header() {
 
       {/* Desktop Nav */}
       <nav className="hidden md:flex items-center gap-12">
-        <Link
-          className="flex items-center gap-2 text-base tracking-wider transition-colors hover:text-gray-300"
-          to="/"
-        >
-          <TbBrandGoogleHome />
+        <Link className="flex items-center gap-2 hover:text-gray-300" to="/">
+          <TbBrandGoogleHome className="text-lg" />
           Home
         </Link>
-        <Link
-          className="flex items-center gap-2 text-base tracking-wider transition-colors hover:text-gray-300"
-          to="/search"
-        >
-          <AiOutlineFileSearch />
+        <Link className="flex items-center gap-2 hover:text-gray-300" to="/search">
+          <AiOutlineFileSearch className="text-lg" />
           Search
         </Link>
-        <Link
-          className="flex items-center gap-2 text-base tracking-wider transition-colors hover:text-gray-300"
-          to="/category"
-        >
-          <TfiLayoutAccordionList />
+        <Link className="flex items-center gap-2 hover:text-gray-300" to="/category">
+          <TfiLayoutAccordionList className="text-lg" />
           Category
         </Link>
-        <Link
-          className="flex items-center gap-2 text-base tracking-wider transition-colors hover:text-gray-300"
-          to="/bookmarks"
-        >
-          <FaBookBookmark />
+        <Link className="flex items-center gap-2 hover:text-gray-300" to="/bookmarks">
+          <FaBookBookmark className="text-lg" />
           Bookmarks
         </Link>
       </nav>
@@ -67,7 +53,7 @@ export default function Header() {
       {/* Mobile Menu Button */}
       <button
         type="button"
-        onClick={toggleMobleMenu}
+        onClick={toggleMobileMenu}
         className="md:hidden text-3xl p-2 text-white hover:text-gray-300"
       >
         <CgMenuGridR />
@@ -75,41 +61,52 @@ export default function Header() {
 
       {/* Mobile Menu */}
       <div
-        id="mobileMenu"
-        className="bg-black bg-opacity-70 z-40 fixed top-20 left-0 right-0 bottom-0 backdrop-blur-md hidden"
+        className={`fixed top-0 right-0 bottom-0 h-full w-full bg-black backdrop-blur-md z-40 transform transition-transform duration-500 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
-        <nav className="flex flex-col gap-6 items-center mt-10">
+        {/* Close Button */}
+        <button
+          className="absolute top-5 right-5 text-3xl text-white hover:text-gray-300"
+          onClick={toggleMobileMenu}
+        >
+          <IoClose />
+        </button>
+
+        <nav className="flex flex-col gap-6 bg-black/50 py-20 items-start mt-20 px-8">
           <Link
-            className="flex items-center gap-2 text-base tracking-wider hover:text-gray-300"
+            onClick={toggleMobileMenu}
+            className="flex items-center gap-3 text-lg hover:text-gray-300"
             to="/"
           >
-            <TbBrandGoogleHome />
-            Home
+            <TbBrandGoogleHome /> Home
           </Link>
           <Link
-            className="flex items-center gap-2 text-base tracking-wider hover:text-gray-300"
+            onClick={toggleMobileMenu}
+            className="flex items-center gap-3 text-lg hover:text-gray-300"
             to="/search"
           >
-            <AiOutlineFileSearch />
-            Search
+            <AiOutlineFileSearch /> Search
           </Link>
           <Link
-            className="flex items-center gap-2 text-base tracking-wider hover:text-gray-300"
+            onClick={toggleMobileMenu}
+            className="flex items-center gap-3 text-lg hover:text-gray-300"
             to="/category"
           >
-            <TfiLayoutAccordionList />
-            Category
+            <TfiLayoutAccordionList /> Category
           </Link>
           <Link
-            className="flex items-center gap-2 text-base tracking-wider hover:text-gray-300"
-            to="#"
+            onClick={toggleMobileMenu}
+            className="flex items-center gap-3 text-lg hover:text-gray-300"
+            to="/bookmarks"
           >
-            <FaBookBookmark />
-            Bookmarks
+            <FaBookBookmark /> Bookmarks
           </Link>
+
           <Link
+            onClick={toggleMobileMenu}
             to="/signin"
-            className="mt-6 bg-[#a7a7a7] text-black py-2 px-6 rounded-full font-medium hover:bg-white"
+            className="mt-8 bg-[#a7a7a7] text-black py-2 px-6 rounded-full font-medium hover:bg-white self-center"
           >
             SIGN IN
           </Link>
