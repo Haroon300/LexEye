@@ -1,6 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { addBookmark, removeBookmark, isBookmarked } from "../utils/bookmarkUtils";
+import { IoBookmarkSharp } from "react-icons/io5";
+import { TiArrowBack } from "react-icons/ti";
+
 
 const dummyLawDetails = {
   1: {
@@ -60,9 +63,10 @@ const LawDetail = () => {
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
-        className="mb-6 px-4 py-2 bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-full transition-all"
+        className="flex items-center mb-6 px-4 py-2 bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-full transition-all"
       >
-        ← Back
+        <TiArrowBack className="text-2xl mr-2" />
+         Back
       </button>
 
       {/* Law Title */}
@@ -74,12 +78,13 @@ const LawDetail = () => {
       {/* Bookmark Button */}
       <button
         onClick={handleBookmark}
-        className={`mb-8 px-4 py-2 rounded-full font-semibold transition-all ${
+        className={`flex items-center mb-8 px-4 py-2 rounded-full font-semibold transition-all ${
           bookmarked
             ? "bg-red-500 hover:bg-red-600 text-white"
             : "bg-[#e99b63] hover:bg-[#ffb27d] text-black"
         }`}
-      >
+      > 
+        <IoBookmarkSharp className="mr-2 text-2xl" />
         {bookmarked ? "Remove Bookmark" : "Add to Bookmark"}
       </button>
 

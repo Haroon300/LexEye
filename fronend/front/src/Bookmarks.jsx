@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getBookmarks, removeBookmark } from "./utils/bookmarkUtils";
 import { Link } from "react-router-dom";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { GrView } from "react-icons/gr";
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);
@@ -31,14 +33,16 @@ const Bookmarks = () => {
               <div className="flex justify-between">
                 <Link
                   to={`/law/${law.id}`}
-                  className="px-3 py-1 bg-[#e99b63] hover:bg-[#ffb27d] text-black rounded-full"
+                  className="flex items-center px-3 py-1 bg-[#e99b63] hover:bg-[#ffb27d] text-black rounded-full"
                 >
+                  <GrView className="text-xl mr-2"/>
                   View
                 </Link>
                 <button
                   onClick={() => handleRemove(law.id)}
-                  className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-full"
+                  className="px-3 flex items-center py-1 bg-red-500 hover:bg-red-600 text-white rounded-full"
                 >
+                  <RiDeleteBin5Fill className="text-xl mr-2"/>
                   Remove
                 </button>
               </div>

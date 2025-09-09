@@ -1,4 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { TiArrowBack } from "react-icons/ti";
 
 const dummyLaws = {
   "criminal-law": [
@@ -25,9 +26,10 @@ const LawList = () => {
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
-        className="mb-6 px-4 py-2 bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-full transition-all"
+        className="flex items-center mb-6 px-4 py-2 bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-full transition-all"
       >
-        ← Back
+        <TiArrowBack className="text-2xl mr-2" />
+         Back
       </button>
 
       {/* Title */}
