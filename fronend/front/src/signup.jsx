@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const SignUp = () => {
   return (
-    <main className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 overflow-hidden">
+    <main className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 overflow-hidden mb-[5%]">
       {/* Background Glow */}
       <div className="h-0 w-[40rem] absolute top-[50%] right-[25%] shadow-[0_0_900px_40px_#e99b63] rotate-[150deg] -z-10"></div>
 
