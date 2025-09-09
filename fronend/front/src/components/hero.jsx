@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <main className="relative flex flex-col-reverse lg:flex-row items-center justify-between min-h-[calc(90vh-6rem)] px-6 lg:px-20">
+    <main className="relative flex flex-col-reverse lg:flex-row items-center justify-between min-h-[calc(90vh-6rem)] px-6 lg:px-20 mb-10">
       {/* Left Content (Text Section) */}
       <div className="max-w-xl z-10 mt-10 sm:mt-16 lg:mt-40 text-center lg:text-left">
         {/* Badge */}
