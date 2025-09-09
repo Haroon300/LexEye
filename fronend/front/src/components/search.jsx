@@ -3,17 +3,6 @@ import icon from "/icon.PNG";
 import { AiOutlineSearch } from "react-icons/ai";
 
 const Search = () => {
-  const keywords = [
-    "Criminal Law",
-    "Property Law",
-    "Human Rights",
-    "Contract Law",
-    "Cybercrime",
-    "Family Law",
-    "Taxation",
-    "Narcotics",
-  ];
-
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 overflow-hidden">
       {/* Glow Effect */}
@@ -33,12 +22,11 @@ const Search = () => {
           Search Laws of Pakistan
         </h1>
         <p className="text-gray-300 text-base sm:text-lg mb-10">
-          Quickly find laws, categories, and resources that matter to you.
-          <br />
+          Quickly find laws, categories, and resources that matter to you.<br />
           <span className="text-gray-400 flex items-center justify-center">
             Powered by{" "}
-            <span className="text-[#e99b63] font-medium flex items-center ml-1">
-              <img src={icon} className="w-10 h-10 inline-block mr-1" />
+            <span className="text-[#e99b63] font-medium flex items-center">
+              <img src={icon} className="w-10 h-10 inline-block" />
               LexEye
             </span>
             .
@@ -58,16 +46,26 @@ const Search = () => {
           </button>
         </div>
 
-        {/* Keywords */}
-        <div className="flex flex-wrap justify-center gap-3 mt-6">
-          {keywords.map((word, i) => (
-            <span
-              key={i}
-              className="px-4 py-2 text-sm sm:text-base bg-black/50 border border-gray-700 rounded-full text-gray-300 hover:border-[#e99b63] hover:text-[#e99b63] transition-all "
-            >
-              {word}
-            </span>
-          ))}
+        {/* Keywords Section */}
+        <div className="flex flex-wrap justify-center gap-3 mt-8">
+          {[    
+            "Criminal Law",
+            "Property Law",
+            "Human Rights",
+            "Contract Law",
+            "Cybercrime",
+            "Family Law",
+            "Taxation",
+            "Narcotics"].map(
+            (keyword) => (
+              <span
+                key={keyword}
+                className="px-4 py-2 bg-black/60 text-gray-300 text-sm rounded-full border border-gray-700 cursor-pointer transform transition-transform duration-300 hover:scale-110 hover:bg-[#e99b63] hover:text-black"
+              >
+                {keyword}
+              </span>
+            )
+          )}
         </div>
       </div>
     </main>

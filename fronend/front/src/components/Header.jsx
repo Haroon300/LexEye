@@ -42,14 +42,14 @@ export default function Header() {
         </Link>
         <Link
           className="flex items-center gap-2 text-base tracking-wider transition-colors hover:text-gray-300"
-          to="#"
+          to="/category"
         >
           <TfiLayoutAccordionList />
           Category
         </Link>
         <Link
           className="flex items-center gap-2 text-base tracking-wider transition-colors hover:text-gray-300"
-          to="#"
+          to="/bookmarks"
         >
           <FaBookBookmark />
           Bookmarks
@@ -95,7 +95,7 @@ export default function Header() {
           </Link>
           <Link
             className="flex items-center gap-2 text-base tracking-wider hover:text-gray-300"
-            to="#"
+            to="/category"
           >
             <TfiLayoutAccordionList />
             Category
