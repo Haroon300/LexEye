@@ -11,10 +11,26 @@ import LawList from "./components/lawlist";
 import LawDetail from "./components/LawDetail";
 import Bookmarks from "./Bookmarks";
 import Footer from "./components/footer";
-
-
+import NotFound from "./components/NotFound";
+import NoInternet from "./components/NoInternet";
+import { useEffect, useState } from "react";
 
 export default function App() {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const goOnline = () => setIsOnline(true);
+    const goOffline = () => setIsOnline(false);
+
+    window.addEventListener("online", goOnline);
+    window.addEventListener("offline", goOffline);
+
+    return () => {
+      window.removeEventListener("online", goOnline);
+      window.removeEventListener("offline", goOffline);
+    };
+  }, []);
+
   return (
     <main className="relative">
       {/* Background effects */}
@@ -26,33 +42,33 @@ export default function App() {
       <div className="h-0 w-[40rem] absolute top-[20%] right-[-5%] shadow-[0_0_900px_20px_#e99b63] rotate-[150deg] -z-10"></div>
 
       <Router>
-        {/* Header is outside so it shows on all pages */}
         <Header />
 
         <Routes>
-          <Route path="/" element={<Hero />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/category" element={<Category />} />
-          <Route path="/category/:categoryId" element={<LawList />} />
-          <Route path="/law/:lawId" element={<LawDetail />} />
+          {/* Always accessible */}
           <Route path="/bookmarks" element={<Bookmarks />} />
+          <Route path="/law/:lawId" element={<LawDetail />} />
 
-          {/* 404 Page */}
-          <Route
-            path="*"
-            element={
-              <h1 className="text-center mt-20 text-3xl text-gray-300">
-                404 - Page Not Found
-              </h1>
-            }
-          />
+          {isOnline ? (
+            <>
+              <Route path="/" element={<Hero />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/category" element={<Category />} />
+              <Route path="/category/:categoryId" element={<LawList />} />
+              <Route path="*" element={<NotFound />} />
+            </>
+          ) : (
+            <>
+              <Route path="*" element={<NoInternet />} />
+            </>
+          )}
         </Routes>
+
         <Footer />
       </Router>
 
-      {/* Custom cursor always visible */}
       <CustomCursor />
     </main>
   );
