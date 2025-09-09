@@ -59,7 +59,7 @@ const LawDetail = () => {
   }
 
   return (
-    <main className="min-h-screen mt-[5%] px-6 sm:px-12 py-16 text-white">
+    <main className="min-h-screen mt-[10%] px-6 sm:px-12 py-16 text-white">
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
