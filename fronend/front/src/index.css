@@ -8,17 +8,18 @@
   }
 }
 
-/* body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: black;
-  color: white;
-  position: relative;
-  height: 100vh;
-  overflow: hidden;
-} */
+/* Hide the native cursor on devices with a fine pointer (desktop/mouse) */
+@media (pointer: fine) {
+  html, body, a, button, input, textarea {
+    cursor: none !important;
+  }
+}
+
+/* On touch devices, keep normal cursor behavior */
+@media (pointer: coarse) {
+  html, body {
+    cursor: auto !important;
+  }
+}
+
 

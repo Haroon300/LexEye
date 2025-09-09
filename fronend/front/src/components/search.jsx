@@ -1,0 +1,77 @@
+import img from "/gradient.png";
+import icon from "/icon.PNG";
+import { AiOutlineSearch } from "react-icons/ai";
+
+const Search = () => {
+  const keywords = [
+    "Criminal Law",
+    "Property Law",
+    "Human Rights",
+    "Contract Law",
+    "Cybercrime",
+    "Family Law",
+    "Taxation",
+    "Narcotics",
+  ];
+
+  return (
+    <main className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 overflow-hidden">
+      {/* Glow Effect */}
+      <div className="h-0 w-[40rem] absolute top-[50%] right-[25%] shadow-[0_0_900px_40px_#e99b63] rotate-[150deg] -z-10"></div>
+
+      {/* Background Gradient Image */}
+      <img
+        src={img}
+        className="absolute top-0 right-0 w-full h-full object-cover opacity-40 -z-20"
+        alt="background"
+      />
+
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-2xl text-center">
+        {/* Title */}
+        <h1 className="text-3xl sm:text-5xl font-bold tracking-wide text-white mb-6">
+          Search Laws of Pakistan
+        </h1>
+        <p className="text-gray-300 text-base sm:text-lg mb-10">
+          Quickly find laws, categories, and resources that matter to you.
+          <br />
+          <span className="text-gray-400 flex items-center justify-center">
+            Powered by{" "}
+            <span className="text-[#e99b63] font-medium flex items-center ml-1">
+              <img src={icon} className="w-10 h-10 inline-block mr-1" />
+              LexEye
+            </span>
+            .
+          </span>
+        </p>
+
+        {/* Search Box */}
+        <div className="flex items-center bg-black/60 border border-gray-700 rounded-full px-4 py-3 sm:py-4 focus-within:border-[#e99b63] transition-all">
+          <AiOutlineSearch className="text-gray-400 text-xl sm:text-2xl" />
+          <input
+            type="text"
+            placeholder="Search laws, categories, or keywords..."
+            className="w-full bg-transparent outline-none text-gray-200 placeholder-gray-500 px-3 text-sm sm:text-base"
+          />
+          <button className="ml-3 bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-full px-5 py-2 text-sm sm:text-base transition-all">
+            Search
+          </button>
+        </div>
+
+        {/* Keywords */}
+        <div className="flex flex-wrap justify-center gap-3 mt-6">
+          {keywords.map((word, i) => (
+            <span
+              key={i}
+              className="px-4 py-2 text-sm sm:text-base bg-black/50 border border-gray-700 rounded-full text-gray-300 hover:border-[#e99b63] hover:text-[#e99b63] transition-all "
+            >
+              {word}
+            </span>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default Search;
