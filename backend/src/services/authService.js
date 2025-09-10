@@ -1,8 +1,10 @@
 import {generateOtp} from "../utils/generateOtp.js";
 import {sendEmail} from "../utils/sendEmail.js";
 import jwt from "jsonwebtoken";
+import User from "../models/authModel.js";
+import bcrypt from "bcryptjs";
 
-export const userRegister = async (data) => {
+export const registerUser = async (data) => {
   const {name, email, password} = data;
 
   const existingUser = await User.findOne({email});

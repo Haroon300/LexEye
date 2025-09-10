@@ -3,10 +3,7 @@ import * as AuthService from "../services/authService.js";
 import {asyncWrapper} from "../utils/asyncWrapper.js";
 import { loginSchema } from "../validations/authValidation.js";
 import { signinUser, verifyUserOtp } from "../services/authService.js";
-import { resendUserOtp } from "../services/authService.js";
-import {
-  updatePassword,
-} from "../services/authService.js";
+import { resendUserOtp, updatePassword } from "../services/authService.js";
 
 
 export const registerUser = asyncWrapper(async (req, res) => {
