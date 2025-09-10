@@ -10,4 +10,7 @@ const authSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.model("User", authSchema);
+// ✅ Check if model already exists before creating
+const User = mongoose.models.User || mongoose.model("User", authSchema);
+
+export default User;
