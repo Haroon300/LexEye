@@ -2,7 +2,7 @@ import { asyncWrapper } from "../utils/asyncWrapper.js";
 import User from "../models/authModel.js";
 
 export const getProfile = asyncWrapper( async (req, res) => {
-  return res.json(req.user); // req.user is added by `protect` middleware
+  return res.json(req.user); 
 });
 
 
@@ -17,7 +17,7 @@ export const updateProfile = async (req, res) => {
     user.name = req.body.name || user.name;
 
     if (req.file && req.file.path) {
-      user.profileImage = req.file.path; // ✅ Cloudinary se URL aata hai
+      user.profileImage = req.file.path; 
     }
 
     await user.save();
