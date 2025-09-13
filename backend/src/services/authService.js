@@ -40,9 +40,11 @@ export const signinUser = async ({ email, password }) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return { success: false, message: "Invalid credentials" };
 
+  let name = user.name;
+
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-  return { success: true, message: "User logged in successfully", token };
+  return { success: true, message: "User logged in successfully", token ,name };
 };
 
 // VERIFY OTP
