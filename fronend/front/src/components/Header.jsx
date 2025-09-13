@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { CgMenuGridR } from "react-icons/cg";
 import { TbBrandGoogleHome } from "react-icons/tb";
 import { AiOutlineFileSearch } from "react-icons/ai";
@@ -12,6 +12,7 @@ export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [userName, setUserName] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("User");
@@ -28,6 +29,13 @@ export default function Header() {
 
   const toggleMobileMenu = () => setIsOpen(!isOpen);
 
+  const navLinks = [
+    { to: "/", label: "Home", icon: <TbBrandGoogleHome /> },
+    { to: "/search", label: "Search", icon: <AiOutlineFileSearch /> },
+    { to: "/category", label: "Category", icon: <TfiLayoutAccordionList /> },
+    { to: "/bookmarks", label: "Bookmarks", icon: <FaBookBookmark /> },
+  ];
+
   return (
     <header className="fixed top-0 left-0 w-full flex justify-between items-center py-4 px-6 lg:px-20 bg-black/70 backdrop-blur-md shadow-md z-50">
       {/* Logo */}
@@ -40,15 +48,12 @@ export default function Header() {
 
       {/* Desktop Nav */}
       <nav className="hidden md:flex items-center gap-10 text-white">
-        {[
-          { to: "/", label: "Home", icon: <TbBrandGoogleHome /> },
-          { to: "/search", label: "Search", icon: <AiOutlineFileSearch /> },
-          { to: "/category", label: "Category", icon: <TfiLayoutAccordionList /> },
-          { to: "/bookmarks", label: "Bookmarks", icon: <FaBookBookmark /> },
-        ].map(({ to, label, icon }) => (
+        {navLinks.map(({ to, label, icon }) => (
           <Link
             key={label}
-            className="flex items-center gap-2 hover:text-[#e99b63] transition relative group"
+            className={`flex items-center gap-2 transition relative group ${
+              location.pathname === to ? "text-[#e99b63]" : "hover:text-[#e99b63]"
+            }`}
             to={to}
           >
             {icon}
@@ -58,9 +63,9 @@ export default function Header() {
         ))}
       </nav>
 
-      {/* User Avatar / Signin Button */}
+      {/* User Avatar / Signin */}
       {userName ? (
-        <div className="relative">
+        <div className="relative hidden md:block">
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="rounded-full bg-gradient-to-r from-[#e99b63] to-[#c9743d] h-11 w-11 flex items-center justify-center text-white text-lg font-bold shadow-md hover:scale-105 transition"
@@ -68,9 +73,8 @@ export default function Header() {
             {userName.charAt(0).toUpperCase()}
           </button>
 
-          {/* Dropdown */}
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-3 w-36 bg-white rounded-xl shadow-xl overflow-hidden animate-fadeIn">
+            <div className="absolute right-0 mt-3 w-40 bg-white rounded-xl shadow-xl overflow-hidden animate-fadeIn">
               <div className="px-4 py-2 text-gray-700 text-sm border-b">
                 Signed in as <br />
                 <span className="font-semibold">{userName}</span>
@@ -102,54 +106,85 @@ export default function Header() {
         <CgMenuGridR />
       </button>
 
-      {/* Mobile Menu */}
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
+          onClick={toggleMobileMenu}
+        />
+      )}
+
+      {/* Mobile Nav */}
       <div
-        className={`fixed top-0 right-0 bottom-0 h-full w-4/5 sm:w-2/5 bg-black/95 backdrop-blur-lg z-40 transform transition-transform duration-500 ${
+        className={`fixed top-0 right-0 bottom-0 h-full w-4/5 sm:w-2/5 bg-[#111] z-50 transform transition-transform duration-500 ease-in-out shadow-xl ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Close Button */}
         <button
-          className="absolute top-5 right-5 text-3xl text-white hover:text-[#e99b63]"
+          className="absolute top-5 right-5 text-3xl text-gray-400 hover:text-[#e99b63] transition"
           onClick={toggleMobileMenu}
         >
           <IoClose />
         </button>
 
-        <nav className="flex flex-col gap-8 mt-20 px-8 text-white text-lg">
-          {[
-            { to: "/", label: "Home", icon: <TbBrandGoogleHome /> },
-            { to: "/search", label: "Search", icon: <AiOutlineFileSearch /> },
-            { to: "/category", label: "Category", icon: <TfiLayoutAccordionList /> },
-            { to: "/bookmarks", label: "Bookmarks", icon: <FaBookBookmark /> },
-          ].map(({ to, label, icon }) => (
+        {/* Logo */}
+        <div className="flex items-center gap-3 px-8 mt-8">
+          <img src="/icon.PNG" className="w-10 h-10 rounded-lg shadow" alt="LexEye Logo" />
+          <h1 className="text-2xl font-semibold text-white">
+            Lex<span className="text-[#e99b63]">Eye</span>
+          </h1>
+        </div>
+        
+        
+
+        {/* Nav Links */}
+        <nav className="flex flex-col gap-4 mt-12 px-8 text-lg font-medium bg-[#111]/70">
+          {navLinks.map(({ to, label, icon }, idx) => (
             <Link
               key={label}
-              onClick={toggleMobileMenu}
-              className="flex items-center gap-3 hover:text-[#e99b63] transition"
               to={to}
+              onClick={toggleMobileMenu}
+              className={`flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-300 ${
+                location.pathname === to
+                  ? "bg-[#222] text-[#e99b63]"
+                  : "text-gray-300 hover:bg-[#222] hover:text-[#e99b63]"
+              }`}
+              style={{ animationDelay: `${idx * 100}ms` }}
             >
-              {icon} {label}
+              <span className="text-xl">{icon}</span>
+              {label}
             </Link>
           ))}
+        </nav>
 
+        {/* Divider */}
+        <div className="my-6 mx-8 border-t border-gray-700" />
+
+        {/* User Section */}
+        <div className="px-8 bg-[#111] pb-6">
           {userName ? (
-            <button
-              onClick={handleLogout}
-              className="mt-8 bg-red-600 text-white py-2 px-6 rounded-full font-medium hover:bg-red-700 transition self-start"
-            >
-              Logout
-            </button>
+            <>
+              <div className="text-gray-400 text-sm mb-3">
+                Signed in as <span className="font-semibold text-white">{userName}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="w-full bg-red-600 text-white py-2 rounded-lg font-medium hover:bg-red-700 transition"
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <Link
               onClick={toggleMobileMenu}
               to="/signin"
-              className="mt-8 bg-gradient-to-r from-[#e99b63] to-[#c9743d] text-black py-2 px-6 rounded-full font-medium hover:scale-105 hover:shadow-md transition self-start"
+              className="block w-full bg-gradient-to-r from-[#e99b63] to-[#c9743d] text-black text-center py-2 rounded-lg font-medium hover:scale-105 hover:shadow-md transition"
             >
               SIGN IN
             </Link>
           )}
-        </nav>
+        </div>
       </div>
     </header>
   );
