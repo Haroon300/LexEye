@@ -14,12 +14,13 @@ const SignIn = () => {
 
 
     // Assuming your backend returns a token and user info
-    const { token, user } = response.data;
+    const { token, name } = response.data;
 
     // Store token (e.g., in localStorage)
     localStorage.setItem("token", token);
+    localStorage.setItem("User",name)
 
-    console.log("Signed in successfully:", user);
+    console.log("Signed in successfully:", name);
     
 
     // Navigate to dashboard or homepage
