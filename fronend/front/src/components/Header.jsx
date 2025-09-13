@@ -1,14 +1,32 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CgMenuGridR } from "react-icons/cg";
 import { TbBrandGoogleHome } from "react-icons/tb";
 import { AiOutlineFileSearch } from "react-icons/ai";
 import { TfiLayoutAccordionList } from "react-icons/tfi";
 import { FaBookBookmark } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userName, setUserName] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("User"); // 👈 assume you store username on login
+    if (storedUser) {
+      setUserName(storedUser);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    setUserName(null);
+    setIsDropdownOpen(false);
+    navigate("/signin");
+  };
 
   const toggleMobileMenu = () => {
     setIsOpen(!isOpen);
@@ -42,13 +60,36 @@ export default function Header() {
         </Link>
       </nav>
 
-      {/* Signin Button */}
-      <Link
-        to="/signin"
-        className="hidden md:block bg-[#a7a7a7] text-black py-3 px-8 rounded-full font-medium transition-all duration-500 hover:bg-white"
-      >
-        SIGN IN
-      </Link>
+      {/* User Avatar / Signin Button */}
+      {userName ? (
+        <div className="relative">
+          <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="rounded-full bg-[#e99b63] h-10 w-10 flex items-center justify-center text-white text-lg font-semibold"
+          >
+            {userName.charAt(0).toUpperCase()}
+          </button>
+
+          {/* Dropdown */}
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-md overflow-hidden z-50">
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <Link
+          to="/signin"
+          className="hidden md:block bg-[#a7a7a7] text-black py-3 px-8 rounded-full font-medium transition-all duration-500 hover:bg-white"
+        >
+          SIGN IN
+        </Link>
+      )}
 
       {/* Mobile Menu Button */}
       <button
@@ -103,13 +144,22 @@ export default function Header() {
             <FaBookBookmark /> Bookmarks
           </Link>
 
-          <Link
-            onClick={toggleMobileMenu}
-            to="/signin"
-            className="mt-8 bg-[#a7a7a7] text-black py-2 px-6 rounded-full font-medium hover:bg-white self-center"
-          >
-            SIGN IN
-          </Link>
+          {userName ? (
+            <button
+              onClick={handleLogout}
+              className="mt-8 bg-red-500 text-white py-2 px-6 rounded-full font-medium hover:bg-red-600 self-center"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              onClick={toggleMobileMenu}
+              to="/signin"
+              className="mt-8 bg-[#a7a7a7] text-black py-2 px-6 rounded-full font-medium hover:bg-white self-center"
+            >
+              SIGN IN
+            </Link>
+          )}
         </nav>
       </div>
     </header>

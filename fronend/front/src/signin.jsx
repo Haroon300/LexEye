@@ -21,11 +21,9 @@ const SignIn = () => {
     localStorage.setItem("User",name)
 
     console.log("Signed in successfully:", name);
-    
-
-    // Navigate to dashboard or homepage
-    // window.location.href = "/";
-     // or use navigate("/") if using useNavigate hook
+    alert(name + " Thank you for signing in! You can now access all features.");
+    // Navigate to homepage
+    window.location.href = "/";
 
   } catch (error) {
     if (error.response) {
