@@ -23,7 +23,7 @@ const SignIn = () => {
     localStorage.setItem("User",User);
 
     console.log("Signed in successfully:", User);
-    alert(name + " Thank you for signing in! You can now access all features.");
+    alert(User + " Thank you for signing in! You can now access all features.");
     // Navigate to homepage
     window.location.href = "/";
 

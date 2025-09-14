@@ -1,7 +1,45 @@
 import img from "/gradient.png";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+import Loader from "./components/Loader";
 
 const SignUp = () => {
+  const [data, setdata] = useState({name:"",email:"",password:""});
+    const [loader, setloader] = useState(false);
+  
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    setloader(true);
+    try {
+      const response = await axios.post("https://lex-eye-back.vercel.app/api/auth/signup", data);
+      setloader(false);
+  
+      // Assuming your backend returns a token and user info
+      const { token, User } = response.data;
+  
+      // Store token (e.g., in localStorage)
+      localStorage.setItem("token", token);
+      localStorage.setItem("User",User);
+  
+      console.log("SignUp successfully:", User);
+      alert(User + " Thank you for ");
+      // Navigate to homepage
+      window.location.href = "/signin";
+  
+    } catch (error) {
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        console.error("Server Error:", error.response.data.message || error.response.data);
+      } else if (error.request) {
+        // Request was made but no response received
+        console.error("Network Error:", error.message);
+      } else {
+        // Something else happened
+        console.error("Error:", error.message);
+      }
+    }
+  };
   return (
     <main className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 overflow-hidden mb-[5%]">
       {/* Background Glow */}
@@ -28,6 +66,7 @@ const SignUp = () => {
               type="text"
               placeholder="Enter your name"
               className="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
+              onChange={(e)=>setdata({...data,name:e.target.value})}
             />
           </div>
 
@@ -38,6 +77,7 @@ const SignUp = () => {
               type="email"
               placeholder="Enter your email"
               className="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
+              onChange={(e)=>setdata({...data,email:e.target.value})}
             />
           </div>
 
@@ -48,6 +88,7 @@ const SignUp = () => {
               type="password"
               placeholder="Create a password"
               className="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
+              onChange={(e)=>setdata({...data,password:e.target.value})}
             />
           </div>
 
@@ -60,6 +101,12 @@ const SignUp = () => {
               type="password"
               placeholder="Re-enter password"
               className="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
+              onBlur={(e) => {
+                if (e.target.value !== data.password) {
+                  alert("Passwords do not match!");
+                  e.target.value = "";
+                }
+              }}
             />
           </div>
 
@@ -67,6 +114,7 @@ const SignUp = () => {
           <button
             type="submit"
             className="w-full bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-lg py-3 transition-all"
+            onClick={handleSubmit}
           >
             Sign Up
           </button>
