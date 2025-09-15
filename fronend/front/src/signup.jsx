@@ -12,7 +12,7 @@ const SignUp = () => {
     e.preventDefault();
     setloader(true);
     try {
-      const response = await axios.post("https://lex-eye-back.vercel.app/api/auth/signup", data);
+      const response = await axios.post("https://lex-eye-backend.vercel.app/api/auth/signup", data);
       setloader(false);
   
       // Assuming your backend returns a token and user info
