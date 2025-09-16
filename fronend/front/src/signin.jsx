@@ -45,9 +45,7 @@ const SignIn = () => {
     <>
       {
       loader ? (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
           <Loader />
-        </div>
       ) : (
         <main className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 overflow-hidden">
           {/* Background Glow */}
