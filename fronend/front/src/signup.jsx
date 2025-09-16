@@ -16,16 +16,14 @@ const SignUp = () => {
       setloader(false);
   
       // Assuming your backend returns a token and user info
-      const { token, User } = response.data;
+
   
       // Store token (e.g., in localStorage)
-      localStorage.setItem("token", token);
-      localStorage.setItem("User",User);
   
       console.log("SignUp successfully:", User);
       alert(User + " Thank you for ");
       // Navigate to homepage
-      window.location.href = "/signin";
+      navigate("/signin");
   
     } catch (error) {
       if (error.response) {
