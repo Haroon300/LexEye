@@ -16,7 +16,7 @@ const Search = () => {
       return;
     }
     setError("");
-    navigate(`https://lexeye.vercel.app/search/${encodeURIComponent(queryToSearch)}`); // ✅ go to SearchResult page
+    navigate(`/${encodeURIComponent(queryToSearch)}`); // ✅ go to SearchResult page
   };
 
   return (
