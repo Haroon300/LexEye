@@ -16,7 +16,7 @@ const Search = () => {
       return;
     }
     setError("");
-    navigate(`/${encodeURIComponent(queryToSearch)}`); // ✅ go to SearchResult page
+    navigate(`search/${encodeURIComponent(queryToSearch)}`); // ✅ go to SearchResult page
   };
 
   return (
