@@ -12,6 +12,7 @@ import LawDetail from "./components/LawDetail";
 import Bookmarks from "./Bookmarks";
 import Footer from "./components/footer";
 import NotFound from "./components/NotFound";
+import SearchResult from "./components/SearchResult";
 import NoInternet from "./components/NoInternet";
 import { useEffect, useState } from "react";
 
@@ -53,10 +54,12 @@ export default function App() {
             <>
               <Route path="/" element={<Hero />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/search/:query" element={<SearchResult />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/category" element={<Category />} />
               <Route path="/category/:categoryId" element={<LawList />} />
+              <Route path="law/:lawId" element={<LawDetail />} />
               <Route path="*" element={<NotFound />} />
             </>
           ) : (

@@ -3,46 +3,38 @@ import { useState, useEffect } from "react";
 import { addBookmark, removeBookmark, isBookmarked } from "../utils/bookmarkUtils";
 import { IoBookmarkSharp } from "react-icons/io5";
 import { TiArrowBack } from "react-icons/ti";
-
-
-const dummyLawDetails = {
-  1: {
-    id: 1,
-    title: "Criminal Procedure Code 1898",
-    description: "The Criminal Procedure Code 1898 is the main procedural law for handling criminal cases in Pakistan.",
-    sections: ["Arrest Procedures", "Bail", "Trials", "Appeals"],
-  },
-  2: {
-    id: 2,
-    title: "Pakistan Penal Code",
-    description: "The PPC defines crimes, penalties, and punishments across Pakistan.",
-    sections: ["Offenses against body", "Offenses against property", "State offenses"],
-  },
-  3: {
-    id: 3,
-    title: "Transfer of Property Act",
-    description: "Regulates the transfer of property in Pakistan, including sale, mortgage, and lease.",
-    sections: ["Sales", "Mortgages", "Leases", "Gifts"],
-  },
-};
+import axios from "axios";
 
 const LawDetail = () => {
   const { lawId } = useParams();
   const navigate = useNavigate();
 
-  const law = dummyLawDetails[lawId];
+  const [law, setLaw] = useState(null);
   const [bookmarked, setBookmarked] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
+  // ✅ Fetch law by ID using axios
   useEffect(() => {
-    if (law) {
-      setBookmarked(isBookmarked(law.id));
-    }
-  }, [law]);
+    const fetchLaw = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:5000/api/laws/${lawId}`);
+        setLaw(data);
+        setBookmarked(isBookmarked(data._id));
+      } catch (err) {
+        setError("Failed to fetch law details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLaw();
+  }, [lawId]);
 
+  // ✅ Handle bookmarks
   const handleBookmark = () => {
     if (!law) return;
     if (bookmarked) {
-      removeBookmark(law.id);
+      removeBookmark(law._id);
       setBookmarked(false);
     } else {
       addBookmark(law);
@@ -50,32 +42,54 @@ const LawDetail = () => {
     }
   };
 
-  if (!law) {
+  if (loading) {
     return (
       <main className="min-h-screen flex items-center justify-center text-gray-400">
-        <p>Law details not found.</p>
+        <p>Loading law details...</p>
+      </main>
+    );
+  }
+
+  if (error || !law) {
+    return (
+      <main className="min-h-screen flex items-center justify-center text-red-400">
+        <p>{error || "Law details not found."}</p>
       </main>
     );
   }
 
   return (
     <main className="min-h-screen mt-[10%] px-6 sm:px-12 py-16 text-white">
-      {/* Back Button */}
+      {/* 🔙 Back Button */}
       <button
         onClick={() => navigate(-1)}
         className="flex items-center mb-6 px-4 py-2 bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-full transition-all"
       >
         <TiArrowBack className="text-2xl mr-2" />
-         Back
+        Back
       </button>
 
-      {/* Law Title */}
-      <h1 className="text-3xl sm:text-5xl font-bold mb-6">{law.title}</h1>
+      {/* 📖 Law Title */}
+      <h1 className="text-3xl sm:text-5xl font-bold mb-6 text-[#e99b63]">
+        {law.section} — {law.legalConcept}
+      </h1>
 
-      {/* Description */}
-      <p className="text-lg text-gray-300 mb-8">{law.description}</p>
+      {/* 📝 Description */}
+      <p className="text-lg text-gray-300 mb-6">{law.description}</p>
 
-      {/* Bookmark Button */}
+      {/* ⚖️ Legal Consequence */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-semibold mb-2">Legal Consequence</h2>
+        <p className="text-gray-300">{law.legalConsequence}</p>
+      </div>
+
+      {/* ✅ Prevention / Solutions */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-semibold mb-2">Prevention / Solutions</h2>
+        <p className="text-gray-300">{law.preventionSolutions}</p>
+      </div>
+
+      {/* 🔖 Bookmark Button */}
       <button
         onClick={handleBookmark}
         className={`flex items-center mb-8 px-4 py-2 rounded-full font-semibold transition-all ${
@@ -83,18 +97,10 @@ const LawDetail = () => {
             ? "bg-red-500 hover:bg-red-600 text-white"
             : "bg-[#e99b63] hover:bg-[#ffb27d] text-black"
         }`}
-      > 
+      >
         <IoBookmarkSharp className="mr-2 text-2xl" />
         {bookmarked ? "Remove Bookmark" : "Add to Bookmark"}
       </button>
-
-      {/* Sections */}
-      <h2 className="text-2xl font-semibold mb-4">Key Sections</h2>
-      <ul className="list-disc list-inside space-y-2 text-gray-300">
-        {law.sections.map((sec, idx) => (
-          <li key={idx}>{sec}</li>
-        ))}
-      </ul>
     </main>
   );
 };

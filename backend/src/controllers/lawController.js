@@ -1,5 +1,5 @@
 import Law from "../models/lawModel.js";
-import {asyncWrapper} from "../utils/asyncWrapper.js";
+import { asyncWrapper } from "../utils/asyncWrapper.js";
 
 // ✅ Create
 export const createLaw = asyncWrapper(async (req, res) => {
@@ -16,8 +16,11 @@ export const getAllLaws = asyncWrapper(async (req, res) => {
   const filter = keyword
     ? {
         $or: [
-          { title: { $regex: keyword, $options: "i" } },
+          { section: { $regex: keyword, $options: "i" } },
+          { legalConcept: { $regex: keyword, $options: "i" } },
           { description: { $regex: keyword, $options: "i" } },
+          { legalConsequence: { $regex: keyword, $options: "i" } },
+          { preventionSolutions: { $regex: keyword, $options: "i" } },
         ],
       }
     : {};
@@ -64,21 +67,45 @@ export const getCategoriesWithCounts = asyncWrapper(async (req, res) => {
   res.json(categories);
 });
 
-// 🔎 Search by keyword
+// 🔎 Search by keyword (full-text + regex fallback)
 export const searchLaws = asyncWrapper(async (req, res) => {
-  const { keyword } = req.query;
-  if (!keyword) {
+  const { query } = req.body;
+  if (!query) {
     return res.status(400).json({ error: "Keyword is required" });
   }
 
-  const laws = await Law.find({
-    $or: [
-      { title: { $regex: keyword, $options: "i" } },
-      { description: { $regex: keyword, $options: "i" } },
-    ],
-  });
+  try {
+    // First try full-text search (requires text index)
+    let results = await Law.find(
+      { $text: { $search: query } },
+      { score: { $meta: "textScore" } }
+    ).sort({ score: { $meta: "textScore" } });
 
-  res.json(laws);
+    // If no results, fallback to regex search
+    if (!results.length) {
+      results = await Law.find({
+        $or: [
+          { section: { $regex: query, $options: "i" } },
+          { legalConcept: { $regex: query, $options: "i" } },
+          { description: { $regex: query, $options: "i" } },
+          { legalConsequence: { $regex: query, $options: "i" } },
+          { preventionSolutions: { $regex: query, $options: "i" } },
+        ],
+      });
+    }
+
+    return res.json({
+      success: true,
+      count: results.length,
+      results,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error during search",
+      error: err.message,
+    });
+  }
 });
 
 // 📂 Get laws by category
