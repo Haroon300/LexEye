@@ -18,7 +18,7 @@ const LawDetail = () => {
   useEffect(() => {
     const fetchLaw = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/laws/${lawId}`);
+        const { data } = await axios.get(`https://lexeye.vercel.app//api/laws/${lawId}`);
         setLaw(data);
         setBookmarked(isBookmarked(data._id));
       } catch (err) {
