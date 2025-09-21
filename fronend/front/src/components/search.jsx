@@ -32,7 +32,7 @@ const Search = () => {
 
     try {
       // ✅ axios POST request
-      const res = await axios.post("https://lexeye.vercel.app/api/laws/search", {
+      const res = await axios.post("https://lex-eye-backend.vercel.app/api/laws/search", {
         query: queryToSearch,
       });
 

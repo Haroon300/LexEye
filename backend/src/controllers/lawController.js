@@ -1,5 +1,7 @@
 import Law from "../models/lawModel.js";
 import { asyncWrapper } from "../utils/asyncWrapper.js";
+import Fuse from "fuse.js";
+
 
 // ✅ Create
 export const createLaw = asyncWrapper(async (req, res) => {
@@ -75,28 +77,54 @@ export const searchLaws = asyncWrapper(async (req, res) => {
   }
 
   try {
-    // --- Try full-text search first ---
-    let results = await Law.find(
-      { $text: { $search: query } },
-      { score: { $meta: "textScore" } }
-    ).sort({ score: { $meta: "textScore" } });
+    // --- First try Atlas Search ---
+    let results = await Law.aggregate([
+      {
+        $search: {
+          index: "default", // Atlas Search index name
+          text: {
+            query: query,
+            path: [
+              "section",
+              "legalConcept",
+              "description",
+              "legalConsequence",
+              "preventionSolutions",
+            ],
+            fuzzy: {
+              maxEdits: 2,     // typo tolerance
+              prefixLength: 2, // require first 2 chars
+            },
+          },
+        },
+      },
+      {
+        $addFields: { score: { $meta: "searchScore" } },
+      },
+      { $sort: { score: -1 } },
+      { $limit: 20 },
+    ]);
 
-    // --- If no results, fallback to word-based regex search ---
+    // --- Fallback to Fuse.js if Atlas found nothing ---
     if (!results.length) {
-      const tokens = query.split(/\s+/).filter(Boolean); // split into words
+      const allLaws = await Law.find();
 
-      // Build AND conditions → must match all tokens
-      const regexConditions = tokens.map((word) => ({
-        $or: [
-          { section: { $regex: word, $options: "i" } },
-          { legalConcept: { $regex: word, $options: "i" } },
-          { description: { $regex: word, $options: "i" } },
-          { legalConsequence: { $regex: word, $options: "i" } },
-          { preventionSolutions: { $regex: word, $options: "i" } },
+      const fuse = new Fuse(allLaws, {
+        keys: [
+          "section",
+          "legalConcept",
+          "description",
+          "legalConsequence",
+          "preventionSolutions",
         ],
-      }));
+        threshold: 0.4, // lower = stricter, higher = fuzzier
+        includeScore: true, // get scores for sorting
+      });
 
-      results = await Law.find({ $and: regexConditions });
+      results = fuse.search(query)
+        .sort((a, b) => a.score - b.score) // lower score = better match
+        .slice(0, 20) // limit to 20 results
+        .map((r) => ({ ...r.item, score: 1 - r.score })); // normalize score
     }
 
     return res.json({
@@ -112,6 +140,7 @@ export const searchLaws = asyncWrapper(async (req, res) => {
     });
   }
 });
+
 
 
 // 📂 Get laws by category

@@ -15,7 +15,7 @@ const SearchResult = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const res = await axios.post("https://lexeye.vercel.app/api/laws/search", {
+        const res = await axios.post("https://lex-eye-backend.vercel.app/api/laws/search", {
           query,
         });
         setState({ results: res.data.results || [], loading: false, error: "" });
