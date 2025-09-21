@@ -55,7 +55,7 @@ const SearchResult = () => {
 
       {/* Results List */}
       <ul className="grid md:grid-cols-2 gap-6">
-        {state.results.map((item) => (
+        {state.results._doc.map((item) => (
           <li
             key={item._id}
             className="p-6 bg-black/60 border border-gray-700 rounded-xl hover:border-[#e99b63] transition group shadow-md"
