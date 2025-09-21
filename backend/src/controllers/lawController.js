@@ -75,23 +75,28 @@ export const searchLaws = asyncWrapper(async (req, res) => {
   }
 
   try {
-    // First try full-text search (requires text index)
+    // --- Try full-text search first ---
     let results = await Law.find(
       { $text: { $search: query } },
       { score: { $meta: "textScore" } }
     ).sort({ score: { $meta: "textScore" } });
 
-    // If no results, fallback to regex search
+    // --- If no results, fallback to word-based regex search ---
     if (!results.length) {
-      results = await Law.find({
+      const tokens = query.split(/\s+/).filter(Boolean); // split into words
+
+      // Build AND conditions → must match all tokens
+      const regexConditions = tokens.map((word) => ({
         $or: [
-          { section: { $regex: query, $options: "i" } },
-          { legalConcept: { $regex: query, $options: "i" } },
-          { description: { $regex: query, $options: "i" } },
-          { legalConsequence: { $regex: query, $options: "i" } },
-          { preventionSolutions: { $regex: query, $options: "i" } },
+          { section: { $regex: word, $options: "i" } },
+          { legalConcept: { $regex: word, $options: "i" } },
+          { description: { $regex: word, $options: "i" } },
+          { legalConsequence: { $regex: word, $options: "i" } },
+          { preventionSolutions: { $regex: word, $options: "i" } },
         ],
-      });
+      }));
+
+      results = await Law.find({ $and: regexConditions });
     }
 
     return res.json({
@@ -107,6 +112,7 @@ export const searchLaws = asyncWrapper(async (req, res) => {
     });
   }
 });
+
 
 // 📂 Get laws by category
 export const getLawsByCategory = asyncWrapper(async (req, res) => {

@@ -1,26 +1,64 @@
 import { useState } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import axios from "axios"; // ✅ import axios
 import img from "/gradient.png";
 import icon from "/icon.PNG";
+import Loader from "./Loader";
+import { AiOutlineSearch } from "react-icons/ai";
 
 const Search = () => {
-  const [query, setQuery] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [state, setState] = useState({
+    query: "",
+    results: [],
+    loading: false,
+    error: "",
+  });
 
-  const handleSearch = (customQuery) => {
-    const queryToSearch = customQuery || query;
+  // Handle Search
+  const handleSearch = async (customQuery) => {
+    const queryToSearch = customQuery || state.query;
+
     if (!queryToSearch.trim()) {
-      setError("Please enter a search term");
+      setState((prev) => ({ ...prev, error: "Please enter a search term" }));
       return;
     }
-    setError("");
-    navigate(`search/${encodeURIComponent(queryToSearch)}`); // ✅ go to SearchResult page
+
+    setState((prev) => ({
+      ...prev,
+      query: queryToSearch,
+      loading: true,
+      error: "",
+      results: [],
+    }));
+
+    try {
+      // ✅ axios POST request
+      const res = await axios.post("https://lexeye.vercel.app/api/laws/search", {
+        query: queryToSearch,
+      });
+
+      setState((prev) => ({
+        ...prev,
+        results: res.data.results || [],
+        loading: false,
+      }));
+    } catch (err) {
+      setState((prev) => ({
+        ...prev,
+        error: err.response?.data?.error || err.message,
+        loading: false,
+      }));
+    }
   };
 
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 overflow-hidden">
+      {/* Loader Overlay */}
+      {state.loading && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <Loader />
+        </div>
+      )}
+
       {/* Glow Effect */}
       <div className="h-0 w-[40rem] absolute top-[50%] right-[25%] shadow-[0_0_900px_40px_#e99b63] rotate-[150deg] -z-10"></div>
 
@@ -33,6 +71,7 @@ const Search = () => {
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-2xl text-center">
+        {/* Title */}
         <h1 className="text-3xl sm:text-5xl font-bold tracking-wide text-white mb-6">
           Search Laws of Pakistan
         </h1>
@@ -54,8 +93,10 @@ const Search = () => {
           <input
             type="text"
             placeholder="Search laws, categories, or keywords..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            value={state.query}
+            onChange={(e) =>
+              setState((prev) => ({ ...prev, query: e.target.value }))
+            }
             className="w-full bg-transparent outline-none text-gray-200 placeholder-gray-500 px-3 text-sm sm:text-base"
           />
           <button
@@ -67,7 +108,21 @@ const Search = () => {
         </div>
 
         {/* Show Error */}
-        {error && <p className="text-red-400 mt-4">{error}</p>}
+        {state.error && <p className="text-red-400 mt-4">{state.error}</p>}
+
+        {/* Show Results */}
+        {state.results.length > 0 && !state.loading && (
+          <div className="mt-8 text-left bg-black/50 p-4 rounded-lg border border-gray-700">
+            <h2 className="text-lg font-semibold text-white mb-4">Results:</h2>
+            <ul className="space-y-2">
+              {state.results.map((item, idx) => (
+                <li key={idx} className="text-gray-300">
+                  {item.title || item.name || "Unnamed Law"}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Keywords Section */}
         <div className="flex flex-wrap justify-center gap-3 mt-8">
@@ -83,8 +138,8 @@ const Search = () => {
           ].map((keyword) => (
             <span
               key={keyword}
-              onClick={() => handleSearch(keyword)}
-              className="px-4 py-2 bg-black/60 text-gray-300 text-sm rounded-full border border-gray-700 transform transition-transform duration-300 hover:scale-110 hover:bg-[#e99b63] hover:text-black"
+              onClick={() => handleSearch(keyword)} // ✅ still works with axios
+              className="px-4 py-2 bg-black/60 text-gray-300 text-sm rounded-full border border-gray-700 cursor-pointer transform transition-transform duration-300 hover:scale-110 hover:bg-[#e99b63] hover:text-black"
             >
               {keyword}
             </span>
