@@ -82,25 +82,32 @@ export const searchLaws = asyncWrapper(async (req, res) => {
   }
 
   try {
+    // --- Break sentence into words ---
+    const words = query.split(" ").filter((w) => w.length > 2);
+
     // --- Atlas Search ---
     let results = await Law.aggregate([
       {
         $search: {
           index: "default",
-          text: {
-            query: query,
-            path: [
-              "section",
-              "legalConcept",
-              "description",
-              "legalConsequence",
-              "preventionSolutions",
-              "category",
-            ],
-            fuzzy: {
-              maxEdits: 2,
-              prefixLength: 2,
-            },
+          compound: {
+            should: words.map((word) => ({
+              text: {
+                query: word,
+                path: [
+                  "section",
+                  "legalConcept",
+                  "description",
+                  "legalConsequence",
+                  "preventionSolutions",
+                  "category",
+                ],
+                fuzzy: {
+                  maxEdits: 2,
+                  prefixLength: 1,
+                },
+              },
+            })),
           },
         },
       },
@@ -113,19 +120,14 @@ export const searchLaws = asyncWrapper(async (req, res) => {
 
     // --- Fallback Fuse.js ---
     if (!results.length) {
-      const allLaws = await Law.find().lean(); // 🔥
+      const allLaws = await Law.find().lean();
       const fuse = new Fuse(allLaws, {
-        keys: [
-          "section",
-          "legalConcept",
-          "description",
-          "legalConsequence",
-          "preventionSolutions",
-          "category",
-        ],
-        threshold: 0.4,
+        keys: ["section","legalConcept","description","legalConsequence","preventionSolutions","category"],
+        threshold: 0.5,   // higher = more flexible
+        distance: 200,    // allow matches across long sentences
         includeScore: true,
       });
+
 
       results = fuse.search(query)
         .sort((a, b) => a.score - b.score)
@@ -146,6 +148,7 @@ export const searchLaws = asyncWrapper(async (req, res) => {
     });
   }
 });
+
 
 
 
