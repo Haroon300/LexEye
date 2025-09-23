@@ -25,7 +25,7 @@ router.get("/categories/counts", getCategoriesWithCounts);
 router.post("/search", searchLaws);
 
 // Get laws by category
-router.get("/categories/:category", getLawsByCategory);
+router.post("/categories/:category", getLawsByCategory);
 
 // Single law by ID
 router.get("/:id", getLawById);

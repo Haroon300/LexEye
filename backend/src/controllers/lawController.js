@@ -95,6 +95,7 @@ export const searchLaws = asyncWrapper(async (req, res) => {
               "description",
               "legalConsequence",
               "preventionSolutions",
+              "category",
             ],
             fuzzy: {
               maxEdits: 2,
@@ -120,6 +121,7 @@ export const searchLaws = asyncWrapper(async (req, res) => {
           "description",
           "legalConsequence",
           "preventionSolutions",
+          "category",
         ],
         threshold: 0.4,
         includeScore: true,

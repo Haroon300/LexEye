@@ -1,27 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
-
-const categories = [
-  "Criminal Law",
-  "Property Law",
-  "Human Rights",
-  "Contract Law",
-  "Narcotics",
-  "Family Law",
-  "Labor Law",
-  "Cyber Crime",
-  "Tax Law",
-  "Environmental Law",
-  "Intellectual Property",
-  "Consumer Protection",
-];
+import axios from "axios";
 
 const Category = () => {
+  const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/laws/categories"
+        );
+        // API returns { _id: "Human Rights", count: 22 }
+        setCategories(res.data);
+      } catch (err) {
+        setError("Failed to load categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const filteredCategories = categories.filter((cat) =>
-    cat.toLowerCase().includes(search.toLowerCase())
+    cat._id.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -46,18 +54,23 @@ const Category = () => {
         />
       </div>
 
+      {/* Loading / Error */}
+      {loading && <p className="text-gray-400">Loading categories...</p>}
+      {error && <p className="text-red-400">{error}</p>}
+
       {/* Categories Grid */}
       <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-5 w-full max-w-5xl">
         {filteredCategories.map((cat) => (
           <Link
-            key={cat}
-            to={`/category/${cat.toLowerCase().replace(/\s+/g, "-")}`}
+            key={cat._id}
+            to={`/category/${cat._id.toLowerCase().replace(/\s+/g, "-")}`}
             className="px-4 sm:px-6 py-3 sm:py-4 bg-black/60 text-gray-300 text-center rounded-xl border border-gray-700 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:bg-[#e99b63] hover:text-black shadow-md text-sm sm:text-base md:text-lg"
           >
-            {cat}
+            {cat._id} <span className="text-sm text-gray-400">({cat.count})</span>
           </Link>
         ))}
-        {filteredCategories.length === 0 && (
+
+        {filteredCategories.length === 0 && !loading && (
           <p className="col-span-full text-gray-400 text-center text-sm sm:text-base">
             No categories found.
           </p>
