@@ -10,39 +10,9 @@ export const createLaw = asyncWrapper(async (req, res) => {
   res.status(201).json(law);
 });
 
-// ✅ Read All (with optional pagination & search)
-export const getAllLaws = asyncWrapper(async (req, res) => {
-  const { page = 1, pageSize = 10, keyword } = req.query;
-  const skip = (page - 1) * pageSize;
 
-  const filter = keyword
-    ? {
-        $or: [
-          { section: { $regex: keyword, $options: "i" } },
-          { legalConcept: { $regex: keyword, $options: "i" } },
-          { description: { $regex: keyword, $options: "i" } },
-          { legalConsequence: { $regex: keyword, $options: "i" } },
-          { preventionSolutions: { $regex: keyword, $options: "i" } },
-        ],
-      }
-    : {};
 
-  const laws = await Law.find(filter)
-    .skip(skip)
-    .limit(Number(pageSize))
-    .sort({ createdAt: -1 });
 
-  const count = await Law.countDocuments(filter);
-
-  res.json({ laws, count });
-});
-
-// ✅ Read Single
-export const getLawById = asyncWrapper(async (req, res) => {
-  const law = await Law.findById(req.params.id).populate("relatedLaws");
-  if (!law) return res.status(404).json({ error: "Law not found" });
-  res.json(law);
-});
 
 // ✅ Update
 export const updateLaw = asyncWrapper(async (req, res) => {
@@ -69,7 +39,42 @@ export const getCategoriesWithCounts = asyncWrapper(async (req, res) => {
   res.json(categories);
 });
 
-// 🔎 Search by keyword (full-text + regex fallback)
+// ✅ Read All
+export const getAllLaws = asyncWrapper(async (req, res) => {
+  const { page = 1, pageSize = 10, keyword } = req.query;
+  const skip = (page - 1) * pageSize;
+
+  const filter = keyword
+    ? {
+        $or: [
+          { section: { $regex: keyword, $options: "i" } },
+          { legalConcept: { $regex: keyword, $options: "i" } },
+          { description: { $regex: keyword, $options: "i" } },
+          { legalConsequence: { $regex: keyword, $options: "i" } },
+          { preventionSolutions: { $regex: keyword, $options: "i" } },
+        ],
+      }
+    : {};
+
+  const laws = await Law.find(filter)
+    .skip(skip)
+    .limit(Number(pageSize))
+    .sort({ createdAt: -1 })
+    .lean(); // 🔥 plain objects
+
+  const count = await Law.countDocuments(filter);
+
+  res.json({ laws, count });
+});
+
+// ✅ Read Single
+export const getLawById = asyncWrapper(async (req, res) => {
+  const law = await Law.findById(req.params.id).populate("relatedLaws").lean(); // 🔥
+  if (!law) return res.status(404).json({ error: "Law not found" });
+  res.json(law);
+});
+
+// ✅ Search
 export const searchLaws = asyncWrapper(async (req, res) => {
   const { query } = req.body;
   if (!query) {
@@ -77,11 +82,11 @@ export const searchLaws = asyncWrapper(async (req, res) => {
   }
 
   try {
-    // --- First try Atlas Search ---
+    // --- Atlas Search ---
     let results = await Law.aggregate([
       {
         $search: {
-          index: "default", // Atlas Search index name
+          index: "default",
           text: {
             query: query,
             path: [
@@ -92,8 +97,8 @@ export const searchLaws = asyncWrapper(async (req, res) => {
               "preventionSolutions",
             ],
             fuzzy: {
-              maxEdits: 2,     // typo tolerance
-              prefixLength: 2, // require first 2 chars
+              maxEdits: 2,
+              prefixLength: 2,
             },
           },
         },
@@ -105,10 +110,9 @@ export const searchLaws = asyncWrapper(async (req, res) => {
       { $limit: 20 },
     ]);
 
-    // --- Fallback to Fuse.js if Atlas found nothing ---
+    // --- Fallback Fuse.js ---
     if (!results.length) {
-      const allLaws = await Law.find();
-
+      const allLaws = await Law.find().lean(); // 🔥
       const fuse = new Fuse(allLaws, {
         keys: [
           "section",
@@ -117,14 +121,14 @@ export const searchLaws = asyncWrapper(async (req, res) => {
           "legalConsequence",
           "preventionSolutions",
         ],
-        threshold: 0.4, // lower = stricter, higher = fuzzier
-        includeScore: true, // get scores for sorting
+        threshold: 0.4,
+        includeScore: true,
       });
 
       results = fuse.search(query)
-        .sort((a, b) => a.score - b.score) // lower score = better match
-        .slice(0, 20) // limit to 20 results
-        .map((r) => ({ ...r.item, score: 1 - r.score })); // normalize score
+        .sort((a, b) => a.score - b.score)
+        .slice(0, 20)
+        .map((r) => ({ ...r.item, score: 1 - r.score }));
     }
 
     return res.json({
