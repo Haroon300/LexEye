@@ -59,7 +59,7 @@ const SignIn = () => {
           />
 
           {/* Card */}
-          <div className="relative z-10 w-full max-w-md bg-black/70 backdrop-blur-lg rounded-2xl p-8 shadow-lg border border-gray-800">
+          <div className="relative z-10 w-full max-w-md bg-[#092226]/40 backdrop-blur-lg rounded-2xl p-8 shadow-lg border border-gray-800">
             <h2 className="text-3xl font-bold text-white text-center mb-6">
               Sign In
             </h2>
@@ -74,7 +74,7 @@ const SignIn = () => {
                   placeholder="Enter your email"
                   value={data.email}
                   onChange={(e) => setdata({ ...data, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
+                  className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[#092226]"
                 />
               </div>
 
@@ -87,14 +87,14 @@ const SignIn = () => {
                   placeholder="Enter your password"
                   value={data.password}
                   onChange={(e) => setdata({ ...data, password: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
+                  className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[#092226]"
                 />
               </div>
 
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-lg py-3 transition-all"
+                className="w-full bg-[#092226]/40 hover:bg-[black]/40 hover:text-white text-black font-semibold rounded-lg py-3 transition-all"
               >
                 Sign In
               </button>
@@ -103,7 +103,7 @@ const SignIn = () => {
             {/* Extra Links */}
             <p className="text-gray-400 text-sm text-center mt-6">
               Don’t have an account?{" "}
-              <Link to="/signup" className="text-[#e99b63] hover:underline">
+              <Link to="/signup" className="text-[black] hover:underline">
                 Sign Up
               </Link>
             </p>

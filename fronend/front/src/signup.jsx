@@ -55,7 +55,7 @@ const SignUp = () => {
             />
 
             {/* Card */}
-          <div className="relative mt-[10%] z-10 w-full max-w-md bg-black/70 backdrop-blur-lg rounded-2xl p-8 shadow-lg border border-gray-800">
+          <div className="relative mt-[10%] z-10 w-full max-w-md bg-[#092226]/40 backdrop-blur-lg rounded-2xl p-8 shadow-lg border border-gray-800">
             <h2 className="text-3xl font-bold text-white text-center mb-6">
                 Create Account
             </h2>
@@ -67,7 +67,7 @@ const SignUp = () => {
                   <input
                     type="text"
                     placeholder="Enter your name"
-                    className="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
+                    className="w-full px-4 py-3 rounded-lg bg-[#092226]/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
                     onChange={(e)=>setdata({...data,name:e.target.value})}
                   />
                 </div>
@@ -78,7 +78,7 @@ const SignUp = () => {
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
+                    className="w-full px-4 py-3 rounded-lg bg-[#092226]/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
                     onChange={(e)=>setdata({...data,email:e.target.value})}
                   />
                 </div>
@@ -89,7 +89,7 @@ const SignUp = () => {
                   <input
                     type="password"
                     placeholder="Create a password"
-                    className="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
+                    className="w-full px-4 py-3 rounded-lg bg-[#092226]/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
                     onChange={(e)=>setdata({...data,password:e.target.value})}
                   />
                 </div>
@@ -102,7 +102,7 @@ const SignUp = () => {
                   <input
                     type="password"
                     placeholder="Re-enter password"
-                    className="w-full px-4 py-3 rounded-lg bg-black/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
+                    className="w-full px-4 py-3 rounded-lg bg-[#092226]/50 border border-gray-700 text-white focus:outline-none focus:border-[#e99b63]"
                     onBlur={(e) => {
                       if (e.target.value !== data.password) {
                         alert("Passwords do not match!");
@@ -115,7 +115,7 @@ const SignUp = () => {
                 {/* Submit */}
                 <button
                   type="submit"
-                  className="w-full bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-lg py-3 transition-all"
+                  className="w-full bg-[#092226]/40 hover:bg-[black]/40 hover:text-white text-black font-semibold rounded-lg py-3 transition-all"
                   onClick={handleSubmit}
                 >
                   Sign Up
@@ -125,7 +125,7 @@ const SignUp = () => {
               {/* Extra Links */}
               <p className="text-gray-400 text-sm text-center mt-6">
                 Already have an account?{" "}
-                <Link to="/signin" className="text-[#e99b63] hover:underline">
+                <Link to="/signin" className="text-[black]  hover:underline">
                   Sign In
                 </Link>
               </p>

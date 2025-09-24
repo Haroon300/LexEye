@@ -1,4 +1,4 @@
-import icon from '/icon.PNG';
+import icon from '/logo.png';
 const Loader = () => {
   return (
     <div className="flex items-center justify-center min-h-[60vh]">

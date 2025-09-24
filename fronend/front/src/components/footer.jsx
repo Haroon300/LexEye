@@ -3,12 +3,12 @@ import { FaFacebook, FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-black/70 backdrop-blur-md border-t border-gray-800 text-gray-400 py-10 px-6 lg:px-20">
+    <footer className="bg-#092226/70 backdrop-blur-md border-t border-gray-800 text-gray-400 py-10 px-6 lg:px-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Logo + About */}
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <img src="/icon.PNG" alt="LexEye Logo" className="w-12 h-12" />
+            <img src="/logo.png" alt="LexEye Logo" className="w-15 h-12" />
             <h2 className="text-2xl font-light text-white">LexEye</h2>
           </div>
           <p className="text-sm leading-relaxed">
