@@ -42,7 +42,7 @@ export default function Header() {
       <div className="flex items-center gap-3">
         <img src="/logo.png" className="w-12 h-8 rounded-lg border-none" alt="LexEYE"  />
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-wide text-white">
-          Lex<span className="text-[#e99b63]">Eye</span>
+          Lex<span className="text-[#89a2a6]">Eye</span>
         </h1>
       </div>
 
@@ -52,13 +52,13 @@ export default function Header() {
           <Link
             key={label}
             className={`flex items-center gap-2 transition relative group ${
-              location.pathname === to ? "text-[#e99b63]" : "hover:text-[#e99b63]"
+              location.pathname === to ? "text-[#89a2a6]" : "hover:text-[#89a2a6]"
             }`}
             to={to}
           >
             {icon}
             {label}
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#e99b63] transition-all duration-300 group-hover:w-full"></span>
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#89a2a6] transition-all duration-300 group-hover:w-full"></span>
           </Link>
         ))}
       </nav>
@@ -68,20 +68,20 @@ export default function Header() {
         <div className="relative hidden md:block">
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="rounded-full bg-gradient-to-r from-[#e99b63] to-[#c9743d] h-11 w-11 flex items-center justify-center text-white text-lg font-bold shadow-md hover:scale-105 transition"
+            className="rounded-full bg-gradient-to-r from-[#89a2a6] to-[#89a2a6] h-11 w-11 flex items-center justify-center text-white text-lg font-bold shadow-md hover:scale-105 transition"
           >
             {userName.charAt(0).toUpperCase()}
           </button>
 
           {isDropdownOpen && (
             <div className="absolute right-0 mt-3 w-40 bg-white rounded-xl shadow-xl overflow-hidden animate-fadeIn">
-              <div className="px-4 py-2 text-gray-700 text-sm border-b">
+              <div className="px-4 py-2 text-[#08292e] text-sm border-b">
                 Signed in as <br />
                 <span className="font-semibold">{userName}</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition"
+                className="w-full text-left px-4 py-2 text-sm text-[#89a2a6] hover:bg-[#08292e] transition"
               >
                 Logout
               </button>
@@ -91,7 +91,7 @@ export default function Header() {
       ) : (
         <Link
           to="/signin"
-          className="hidden md:block bg-gradient-to-r from-[#e99b63] to-[#c9743d] text-black py-2.5 px-7 rounded-full font-medium transition-all hover:shadow-lg hover:scale-105"
+          className="hidden md:block bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black py-2.5 px-7 rounded-full font-medium transition-all hover:shadow-lg hover:scale-105"
         >
           SIGN IN
         </Link>
@@ -122,7 +122,7 @@ export default function Header() {
       >
         {/* Close Button */}
         <button
-          className="absolute top-5 right-5 text-3xl text-gray-400 hover:text-[#e99b63] transition"
+          className="absolute top-5 right-5 text-3xl text-gray-400 hover:text-[#89a2a6] transition"
           onClick={toggleMobileMenu}
         >
           <IoClose />
@@ -132,7 +132,7 @@ export default function Header() {
         <div className="flex items-center gap-3 px-8 mt-8">
           <img src="/icon.PNG" className="w-10 h-10 rounded-lg shadow" alt="LexEye Logo" />
           <h1 className="text-2xl font-semibold text-white">
-            Lex<span className="text-[#e99b63]">Eye</span>
+            Lex<span className="text-[#89a2a6]">Eye</span>
           </h1>
         </div>
         
@@ -147,8 +147,8 @@ export default function Header() {
               onClick={toggleMobileMenu}
               className={`flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-300 ${
                 location.pathname === to
-                  ? "bg-[#222] text-[#e99b63]"
-                  : "text-gray-300 hover:bg-[#222] hover:text-[#e99b63]"
+                  ? "bg-[#222] text-[#89a2a6]"
+                  : "text-gray-300 hover:bg-[#222] hover:text-[#89a2a6]"
               }`}
               style={{ animationDelay: `${idx * 100}ms` }}
             >

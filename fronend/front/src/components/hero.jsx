@@ -10,17 +10,17 @@ const Hero = () => {
       {/* Left Content (Text Section) */}
       <div className="max-w-xl z-10 mt-10 sm:mt-16 lg:mt-40 text-center lg:text-left">
         {/* Badge */}
-        <div className="relative mx-auto lg:mx-0 w-[95%] sm:w-48 h-10 bg-gradient-to-r from-[#656565] to-[#e99b63] rounded-full">
-          <div className="absolute inset-[3px] bg-black rounded-full flex items-center justify-center gap-1">
+        <div className="relative mx-auto lg:mx-0 w-[95%] sm:w-48 h-10 bg-gradient-to-r from-[#89a2a6] to-[#becac8] rounded-full">
+          <div className="absolute inset-[3px] bg-[#08292e] rounded-full flex items-center justify-center gap-1">
             <IoDiamondSharp />
-            <span className="text-sm sm:text-base text-gray-400 font-light tracking-wider">
+            <span className="text-sm sm:text-base text-[#becac8] font-light tracking-wider">
               We give Clarity
             </span>
           </div>
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-wider my-8">
+        <h1 className=" text-[#becac8] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-wider my-8">
           Law at Your Fingertips
         </h1>
 
@@ -35,14 +35,14 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row gap-4 mt-12 justify-center lg:justify-start">
           <Link
             to="/category"
-            className="flex items-center gap-2 border border-[#2a2a2a] py-2 sm:py-3 px-4 sm:px-5 rounded-full sm:text-lg text-sm font-semibold tracking-wider transition-all duration-300 hover:bg-[#1a1a1a]"
+            className="flex items-center gap-2 border border-[#becac8] py-2 sm:py-3 px-4 sm:px-5 rounded-full sm:text-lg text-sm font-semibold tracking-wider transition-all duration-300 hover:bg-[#becac8] hover:text-[#08292e]"
           >
             <RiExternalLinkFill />
             Category
           </Link>
           <Link
             to="/search"
-            className="flex items-center gap-2 border border-[#2a2a2a] py-2 sm:py-3 px-8 sm:px-10 rounded-full sm:text-lg text-sm font-semibold tracking-wider transition-all duration-300 hover:bg-[#1a1a1a] bg-gray-300 text-black hover:text-white"
+            className="flex items-center gap-2 border  py-2 sm:py-3 px-8 sm:px-10 rounded-full sm:text-lg text-sm font-semibold tracking-wider transition-all duration-300 hover:bg-[#08292e] bg-[#becac8] text-[#08292e] hover:text-[#becac8]"
           >
             <SiChainlink />
             GET STARTED

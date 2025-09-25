@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import img from "/gradient.png";
-import icon from "/icon.PNG";
+import icon from "/logo.png";
 import { AiOutlineSearch } from "react-icons/ai";
 
 const Search = () => {
@@ -33,29 +33,29 @@ const Search = () => {
         <p className="text-gray-300 text-base sm:text-lg mb-8 leading-relaxed">
           Quickly find laws, categories, and resources that matter to you.
           <br />
-          <span className="text-gray-400 flex items-center justify-center mt-2">
+          <span className="text-[#89a2a6] flex items-center justify-center mt-2">
             Powered by{" "}
-            <span className="ml-2 text-[#e99b63] font-semibold flex items-center gap-2">
-              <img src={icon} className="w-8 h-8 inline-block" />
+            <span className="ml-2 text-[#becac8] font-semibold flex items-center gap-2">
+              <img src={icon} className="w-8 h-6 inline-block" />
               LexEye
             </span>
           </span>
         </p>
 
         {/* Search Bar */}
-        <div className="flex items-center bg-black/70 border border-gray-700 rounded-full px-4 py-3 focus-within:border-[#e99b63] transition-all shadow-lg">
-          <AiOutlineSearch className="text-gray-400 text-xl sm:text-2xl" />
+        <div className="flex items-center bg-[#89a2a6]/70 border border-[#89a2a6] rounded-full px-4 py-3 focus-within:border-[#89a2a6] transition-all shadow-lg">
+          <AiOutlineSearch className="text-[#08292e] text-xl sm:text-2xl" />
           <input
             type="text"
             placeholder="Search laws, categories, or keywords..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full bg-transparent outline-none text-gray-200 placeholder-gray-500 px-3 text-sm sm:text-base"
+            className="w-full bg-transparent outline-none text-gray-200 placeholder-[#08292e] px-3 text-sm sm:text-base"
           />
           <button
             onClick={() => handleSearch()}
-            className="ml-3 bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-full px-5 py-2 text-sm sm:text-base transition-all disabled:opacity-60"
+            className="ml-3 bg-[#08292e] hover:bg-gray-900 text-[#89a2a6] font-semibold rounded-full px-5 py-2 text-sm sm:text-base transition-all disabled:opacity-60"
           >
             Search
           </button>
@@ -76,7 +76,7 @@ const Search = () => {
             <span
               key={keyword}
               onClick={() => handleSearch(keyword)}
-              className="px-5 py-2 bg-black/70 text-gray-300 text-sm rounded-full border border-gray-700 transition hover:scale-110 hover:bg-[#e99b63] hover:text-black"
+              className="px-5 py-2 bg-[#89a2a6]/70 text-[#08292e] text-sm rounded-full border border-[#89a2a6] transition hover:scale-110 hover:bg-[#08292e] hover:text-[#89a2a6]"
             >
               {keyword}
             </span>
