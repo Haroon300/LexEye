@@ -92,7 +92,7 @@ const LawList = () => {
               {state.results.map((law) => (
                 <li
                   key={law._id}
-                  className="p-5 bg-[#89a2a6]/70 rounded-2xl border border-gray-700 hover:border-[#08292e] hover:shadow-lg hover:shadow-[#e99b63]/20 transition"
+                  className="p-5 bg-[#89a2a6]/70 rounded-2xl border border-gray-700 hover:border-[#08292e] hover:shadow-lg hover:shadow-[#becac8]/20 transition"
                 >
                   <Link to={`/law/${law._id}`}>
                     <h2 className="text-lg font-semibold text-[#08292e] hover:text-white transition">
