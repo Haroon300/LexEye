@@ -43,14 +43,14 @@ const Category = () => {
       </h1>
 
       {/* Search Input */}
-      <div className="flex items-center w-full max-w-md sm:max-w-lg bg-black/60 border border-gray-700 rounded-full px-3 sm:px-4 py-2 sm:py-3 focus-within:border-[#e99b63] transition-all mb-8 sm:mb-10">
-        <AiOutlineSearch className="text-gray-400 text-lg sm:text-xl md:text-2xl" />
+      <div className="flex items-center w-full max-w-md sm:max-w-lg bg-[#89a2a6]/60 border border-[#08292e] rounded-full px-3 sm:px-4 py-2 sm:py-3 focus-within:border-[#08292e] transition-all mb-8 sm:mb-10">
+        <AiOutlineSearch className="text-[#08292e] text-lg sm:text-xl md:text-2xl" />
         <input
           type="text"
           placeholder="Search categories..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-transparent outline-none text-gray-200 placeholder-gray-500 px-2 sm:px-3 text-sm sm:text-base md:text-lg"
+          className="w-full bg-transparent outline-none text-[#08292e] placeholder-[#08292e] px-2 sm:px-3 text-sm sm:text-base md:text-lg"
         />
       </div>
 
