@@ -33,7 +33,7 @@ const Bookmarks = () => {
               <div className="flex justify-between">
                 <Link
                   to={`/law/${law.id}`}
-                  className="flex items-center px-3 py-1 bg-[#e99b63] hover:bg-[#ffb27d] text-black rounded-full"
+                  className="flex items-center px-3 py-1 transition-all duration-300 hover:bg-[#08292e] bg-[#becac8] text-[#08292e] hover:text-[#becac8] text-black rounded-full"
                 >
                   <GrView className="text-xl mr-2"/>
                   View
