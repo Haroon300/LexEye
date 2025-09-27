@@ -40,7 +40,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 w-full flex justify-between items-center py-4 px-6 lg:px-20 bg-#092226/40  backdrop-blur-md shadow-md z-50 border-none">
       {/* Logo */}
       <div className="flex items-center gap-3">
-        <img src="/logo.png" className="w-12 h-8 rounded-lg border-none" alt="LexEYE"  />
+        <img src="/logo-2.png" className="w-11 h-11 rounded-lg border-none" alt="LexEYE"  />
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-wide text-white">
           Lex<span className="text-[#89a2a6]">Eye</span>
         </h1>

@@ -35,7 +35,7 @@ const Category = () => {
   return (
     <main className="relative mt-[20%] sm:mt-[10%] min-h-screen flex flex-col items-center px-4 sm:px-8 md:px-12 py-12">
       {/* Glow Effect */}
-      <div className="h-0 w-[20rem] sm:w-[30rem] md:w-[40rem] absolute top-[35%] sm:top-[40%] left-[10%] sm:left-[20%] shadow-[0_0_600px_30px_#e99b63] sm:shadow-[0_0_900px_40px_#e99b63] rotate-[150deg] -z-10"></div>
+      <div className="h-0 w-[20rem] sm:w-[30rem] md:w-[40rem] absolute top-[35%] sm:top-[40%] left-[10%] sm:left-[20%] shadow-[0_0_600px_30px_#000000] sm:shadow-[0_0_900px_40px_#000000] rotate-[150deg] -z-10"></div>
 
       {/* Title */}
       <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-wide text-white mb-6 sm:mb-10 text-center">

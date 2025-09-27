@@ -64,7 +64,7 @@ const LawDetail = () => {
   return (
     <main className="relative min-h-screen mt-[6%] px-6 sm:px-12 py-16 text-white">
       {/* Glow Effect */}
-      <div className="h-0 w-[40rem] absolute top-[35%] left-[25%] shadow-[0_0_900px_50px_#e99b63] rotate-[120deg] -z-10"></div>
+      <div className="h-0 w-[40rem] absolute top-[35%] left-[25%] shadow-[0_0_900px_50px_#2f3046] rotate-[120deg] -z-10"></div>
 
       {/* Back Button */}
       <button

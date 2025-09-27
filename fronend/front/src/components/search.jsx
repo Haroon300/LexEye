@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import img from "/gradient.png";
-import icon from "/logo.png";
+import icon from "/logo-2.png";
 import { AiOutlineSearch } from "react-icons/ai";
 
 const Search = () => {
@@ -17,7 +17,7 @@ const Search = () => {
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 overflow-hidden">
       {/* Glow Effect */}
-      <div className="h-0 w-[40rem] absolute top-[50%] right-[25%] shadow-[0_0_900px_40px_#e99b63] rotate-[150deg] -z-10"></div>
+      <div className="h-0 w-[40rem] absolute top-[50%] right-[25%] shadow-[0_0_900px_40px_#000000] rotate-[150deg] -z-10"></div>
 
       {/* Background */}
       <img
@@ -36,7 +36,7 @@ const Search = () => {
           <span className="text-[#89a2a6] flex items-center justify-center mt-2">
             Powered by{" "}
             <span className="ml-2 text-[#becac8] font-semibold flex items-center gap-2">
-              <img src={icon} className="w-8 h-6 inline-block" />
+              <img src={icon} className="w-8 h-8 inline-block" />
               LexEye
             </span>
           </span>
