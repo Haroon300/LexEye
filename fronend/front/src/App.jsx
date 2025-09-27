@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./index.css";
+
+// Components
 import Header from "./components/Header";
 import Hero from "./components/hero";
 import Search from "./components/search";
@@ -13,6 +15,8 @@ import Bookmarks from "./Bookmarks";
 import Footer from "./components/footer";
 import NotFound from "./components/NotFound";
 import NoInternet from "./components/NoInternet";
+import Comment from "./components/Comment";
+
 import { useEffect, useState } from "react";
 
 export default function App() {
@@ -51,14 +55,22 @@ export default function App() {
 
           {isOnline ? (
             <>
+              {/* Landing Page */}
               <Route path="/" element={<Hero />} />
+
+              {/* Core Pages */}
               <Route path="/search" element={<Search />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/category" element={<Category />} />
               <Route path="/category/:categoryId" element={<LawList />} />
               <Route path="/laws" element={<LawList />} />
-              <Route path="law/:lawId" element={<LawDetail />} />
+              <Route path="/law/:lawId" element={<LawDetail />} />
+
+              {/* Extra Pages */}
+              <Route path="/comment" element={<Comment />} />
+
+              {/* Fallback */}
               <Route path="*" element={<NotFound />} />
             </>
           ) : (

@@ -37,55 +37,20 @@ const Footer = () => {
           </Link>
         </div>
 
-        {/* Comment Form */}
-        <div>
+        {/* Call to Action */}
+        <div className="flex flex-col items-start md:items-center">
           <h3 className="text-lg font-semibold text-white mb-4">
-            Leave a Comment!
+            Leave Some Comments!
           </h3>
-          <form
-            action="https://formsubmit.co/staff.alabrar.faseeh@gmail.com"
-            method="POST"
-            className="flex flex-col gap-4"
+          <Link
+            to="/comment"
+            className="flex items-center justify-center gap-2 border py-2 sm:py-3 px-8 sm:px-10 rounded-full sm:text-lg text-sm font-semibold tracking-wider transition-all duration-300 hover:bg-[#08292e] bg-[#becac8] text-[#08292e] hover:text-[#becac8] w-full md:w-auto"
           >
-            <input
-              type="text"
-              name="name"
-              placeholder="Your Name"
-              className="p-3 rounded-lg text-black"
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Your Email"
-              className="p-3 rounded-lg text-black"
-              required
-            />
-            <textarea
-              name="message"
-              placeholder="Write your comment here..."
-              required
-              className="p-3 rounded-lg text-black"
-              rows="4"
-            ></textarea>
-
-            {/* Hidden fields */}
-            <input
-              type="hidden"
-              name="_next"
-              value="https://lexeye.vercel.app/"
-            />
-            <input type="hidden" name="_captcha" value="false" />
-
-            <button
-              type="submit"
-              className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
-            >
-              Send
-            </button>
-          </form>
+            Leave it Here!
+          </Link>
         </div>
       </div>
+
       {/* Bottom Bar */}
       <div className="mt-10 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
         © {new Date().getFullYear()} LexEye. All rights reserved.
