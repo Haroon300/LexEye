@@ -89,9 +89,9 @@ export default function CustomCursor() {
         className={[
           "pointer-events-none fixed left-0 top-0 z-[100] hidden md:block",
           "size-10 -translate-x-1/2 -translate-y-1/2 rounded-full",
-          "border border-[#e99b63]/70 shadow-[0_0_40px_4px_rgba(233,155,99,0.25)]",
+          "border border-[#becac8]/70 shadow-[0_0_40px_4px_rgba(233,155,99,0.25)]",
           "backdrop-blur-[2px] transition-all duration-150",
-          hovering ? "scale-125 border-[#e99b63]" : "scale-100",
+          hovering ? "scale-125 border-[#becac8]" : "scale-100",
           pressed ? "scale-90 opacity-80" : "opacity-100",
         ].join(" ")}
         style={{ transform: "translate(-100px,-100px)" }}

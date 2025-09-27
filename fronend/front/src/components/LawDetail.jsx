@@ -47,7 +47,7 @@ const LawDetail = () => {
 
   if (loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-black text-gray-400">
+      <main className="min-h-screen flex items-center justify-center bg-[#08292e] text-[#89a2a6]">
         <Loader />
       </main>
     );
@@ -55,7 +55,7 @@ const LawDetail = () => {
 
   if (error || !law) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-black text-red-400">
+      <main className="min-h-screen flex items-center justify-center bg-[#08292e] text-[#89a2a6]">
         <p>{error || "Law details not found."}</p>
       </main>
     );
@@ -69,31 +69,31 @@ const LawDetail = () => {
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center mb-10 px-5 py-2 bg-[#e99b63] hover:bg-[#ffb27d] text-black font-semibold rounded-full transition-all shadow-md"
+        className="flex items-center mb-10 px-5 py-2 hover:text-[#89a2a6] text-white font-semibold"
       >
         <TiArrowBack className="text-2xl mr-2" />
         Back
       </button>
 
       {/* Law Title */}
-      <h1 className="text-3xl sm:text-5xl font-bold mb-8 text-[#e99b63] tracking-wide">
+      <h1 className="text-3xl sm:text-5xl font-bold mb-8 text-[#89a2a6] tracking-wide">
         {law.section} — {law.legalConcept}
       </h1>
 
       {/* Description */}
-      <div className="p-6 mb-8 bg-black/70 rounded-2xl border border-gray-700 shadow-lg">
+      <div className="p-6 mb-8 bg-[#89a2a6]/40 rounded-2xl border border-gray-700 shadow-lg">
         <h2 className="text-2xl font-semibold mb-3">📖 Description</h2>
         <p className="text-gray-300 leading-relaxed">{law.description}</p>
       </div>
 
       {/* Legal Consequence */}
-      <div className="p-6 mb-8 bg-black/70 rounded-2xl border border-gray-700 shadow-lg">
+      <div className="p-6 mb-8 bg-[#89a2a6]/40 rounded-2xl border border-gray-700 shadow-lg">
         <h2 className="text-2xl font-semibold mb-3">⚖️ Legal Consequence</h2>
         <p className="text-gray-300 leading-relaxed">{law.legalConsequence}</p>
       </div>
 
       {/* Prevention / Solutions */}
-      <div className="p-6 mb-10 bg-black/70 rounded-2xl border border-gray-700 shadow-lg">
+      <div className="p-6 mb-10 bg-[#89a2a6]/40 rounded-2xl border border-gray-700 shadow-lg">
         <h2 className="text-2xl font-semibold mb-3">✅ Prevention / Solutions</h2>
         <p className="text-gray-300 leading-relaxed">{law.preventionSolutions}</p>
       </div>
@@ -101,10 +101,10 @@ const LawDetail = () => {
       {/* Bookmark Button */}
       <button
         onClick={handleBookmark}
-        className={`flex items-center px-6 py-3 rounded-full font-semibold shadow-md transition-all ${
+        className={`flex items-center px-6 py-3 rounded-full font-semibold ${
           bookmarked
-            ? "bg-red-500 hover:bg-red-600 text-white"
-            : "bg-[#e99b63] hover:bg-[#ffb27d] text-black"
+            ? "bg-[#08292e] text-[#89a2a6] "
+            : "bg-[#89a2a6] text-[#08292e]"
         }`}
       >
         <IoBookmarkSharp className="mr-2 text-2xl" />
