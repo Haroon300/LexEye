@@ -49,7 +49,7 @@ const SignIn = () => {
       ) : (
         <main className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 overflow-hidden">
           {/* Background Glow */}
-          <div className="h-0 w-[40rem] absolute top-[50%] left-[25%] shadow-[0_0_900px_40px_#e99b63] rotate-[150deg] -z-10"></div>
+          <div className="h-0 w-[40rem] absolute top-[50%] left-[25%] shadow-[0_0_900px_40px_#53674d] rotate-[150deg] -z-10"></div>
 
           {/* Background Gradient Image */}
           <img
@@ -94,16 +94,16 @@ const SignIn = () => {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full bg-[#092226]/40 hover:bg-[black]/40 hover:text-white text-black font-semibold rounded-lg py-3 transition-all"
+                className="w-full hover:bg-[#08292e] bg-[#becac8] text-[#08292e] hover:text-[#becac8] hover:scale-105 font-semibold rounded-lg py-3 transition-all"
               >
                 Sign In
               </button>
             </form>
 
             {/* Extra Links */}
-            <p className="text-gray-400 text-sm text-center mt-6">
+            <p className="text-gray-400 text-sm font-medium text-center mt-6">
               Don’t have an account?{" "}
-              <Link to="/signup" className="text-[black] hover:underline">
+              <Link to="/signup" className="text-[#becac8]/70 hover:underline">
                 Sign Up
               </Link>
             </p>

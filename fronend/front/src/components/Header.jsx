@@ -179,7 +179,7 @@ export default function Header() {
             <Link
               onClick={toggleMobileMenu}
               to="/signin"
-              className="block w-full bg-gradient-to-r from-[#e99b63] to-[#c9743d] text-black text-center py-2 rounded-lg font-medium hover:scale-105 hover:shadow-md transition"
+              className="block w-full bg-gradient-to-r from-[#e99b63] to-[#c9743d] text-black text-center py-2 rounded-lg font-medium hover:bg-[#08292e] bg-[#becac8] text-[#08292e] hover:text-[#becac8] hover:shadow-md transition"
             >
               SIGN IN
             </Link>
