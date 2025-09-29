@@ -38,21 +38,19 @@ const LandingPage = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-[#becac8] 
              text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.2rem] 
-             font-semibold tracking-wider my-5 mb-12 
-             font-['Times_New_Roman',_serif]"
+             font-semibold tracking-wider my-5 mb-10 "
           >
-            <span className="text-blue-300">
+            <span className="text-[#becac8]">
               Understand the Law. Anytime. Anywhere.
             </span>
           </motion.h1>
 
           {/* Description */}
           <p
-            className="text-base sm:text-lg md:text-xl lg:text-[1.6rem] 
-             tracking-wide text-gray-200 
-             max-w-[25rem] lg:max-w-[36rem] 
-             mx-auto lg:mx-0 
-             font-['Times_New_Roman',_serif]"
+            className="text-base sm:text-lg md:text-xl lg:text-[1.3rem] 
+             tracking-wide text-[#becac8]/90 
+             max-w-[25rem] lg:max-w-[30rem] 
+             mx-auto lg:mx-0"
           >
             <Typewriter
               words={[
