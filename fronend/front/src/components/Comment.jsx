@@ -15,21 +15,21 @@ export default function Comment() {
             type="text"
             name="name"
             placeholder="Your Name"
-            className="p-3 rounded-lg text-black"
+            className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[#092226]"
             required
           />
           <input
             type="email"
             name="email"
             placeholder="Your Email"
-            className="p-3 rounded-lg text-black"
+            className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[#092226]"
             required
           />
           <textarea
             name="message"
             placeholder="Write your comment here..."
             required
-            className="p-3 rounded-lg text-black"
+            className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[#092226]"
             rows="4"
           ></textarea>
 
@@ -43,7 +43,7 @@ export default function Comment() {
 
           <button
             type="submit"
-            className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+            className="bg-[#89a2a6] text-[#08292e] py-2 px-4 rounded-lg hover:bg-[#08292e] hover:text-[#89a2a6] transition font-semibold hover:border hover:border-[#89a2a6]"
           >
             Send
           </button>
