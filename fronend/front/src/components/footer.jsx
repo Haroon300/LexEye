@@ -7,7 +7,7 @@ const Footer = () => {
         {/* Logo + About */}
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <img src="/logo-2.png" alt="LexEye Logo" className="w-16 h-12" />
+            <img src="/logo-2.png" alt="LexEye Logo" className="w-12 h-12" />
             <h2 className="text-2xl font-light text-white">LexEye</h2>
           </div>
           <p className="text-sm leading-relaxed">

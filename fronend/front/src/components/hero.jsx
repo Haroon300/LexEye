@@ -107,26 +107,26 @@ const LandingPage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-[#111] p-6 rounded-xl border border-[#89a2a6]/20 hover:border-[#89a2a6] hover:scale-105 transition-all duration-500 shadow-lg">
-              <FaLightbulb className="text-3xl text-[#89a2a6] mb-4 animate-pulse" />
-              <h3 className="text-xl font-semibold mb-2">Simplicity</h3>
-              <p className="text-gray-300">
+            <div className="bg-[#89a2a6] p-6 rounded-xl border border-[#89a2a6]/20 hover:border-[#89a2a6] hover:scale-105 transition-all duration-500 shadow-lg">
+              <FaLightbulb className="text-3xl text-[#08292e] mb-4 animate-pulse" />
+              <h3 className="text-xl text-[#08292e] font-semibold mb-2">Simplicity</h3>
+              <p className="text-[#08292e]">
                 We translate the Pakistan Penal Code and other complex statutes
                 into short, step-by-step guides. No legal jargon required.
               </p>
             </div>
-            <div className="bg-[#111] p-6 rounded-xl border border-[#89a2a6]/20 hover:border-[#89a2a6] hover:scale-105 transition-all duration-500 shadow-lg">
-              <FaBook className="text-3xl text-[#89a2a6] mb-4 animate-pulse" />
-              <h3 className="text-xl font-semibold mb-2">Accessibility</h3>
-              <p className="text-gray-300">
+            <div className="bg-[#89a2a6] p-6 rounded-xl border border-[#89a2a6]/20 hover:border-[#89a2a6] hover:scale-105 transition-all duration-500 shadow-lg">
+              <FaBook className="text-3xl text-[#08292e] mb-4 animate-pulse" />
+              <h3 className="text-xl text-[#08292e] font-semibold mb-2">Accessibility</h3>
+              <p className="text-[#08292e]">
                 Anytime, anywhere. Access guides on your phone or computer, and
                 even save them for limited offline use.
               </p>
             </div>
-            <div className="bg-[#111] p-6 rounded-xl border border-[#89a2a6]/20 hover:border-[#89a2a6] hover:scale-105 transition-all duration-500 shadow-lg">
-              <FaBalanceScale className="text-3xl text-[#89a2a6] mb-4 animate-pulse" />
-              <h3 className="text-xl font-semibold mb-2">Everyday Focus</h3>
-              <p className="text-gray-300">
+            <div className="bg-[#89a2a6] p-6 rounded-xl border border-[#89a2a6]/20 hover:border-[#89a2a6] hover:scale-105 transition-all duration-500 shadow-lg">
+              <FaBalanceScale className="text-3xl text-[#08292e] mb-4 animate-pulse" />
+              <h3 className="text-xl text-[#08292e] font-semibold mb-2">Everyday Focus</h3>
+              <p className="text-[#08292e]">
                 Practical topics like police stops, landlord disputes, workplace
                 harassment, and consumer fraud explained simply.
               </p>
