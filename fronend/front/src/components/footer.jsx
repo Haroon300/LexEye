@@ -2,60 +2,93 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#092226]/70 backdrop-blur-md border-t border-gray-800 text-gray-400 py-10 px-6 lg:px-20">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Logo + About */}
-        <div>
-          <div className="flex items-center gap-3 mb-4">
-            <img src="/logo-2.png" alt="LexEye Logo" className="w-12 h-12" />
-            <h2 className="text-2xl font-light text-white">LexEye</h2>
+    <>
+      {/* Transparency Bar */}
+      <div className="w-full bg-gray-100 text-gray-900 py-3 px-6 text-center text-sm font-semibold">
+        IMPORTANT: LexEye provides informational guidance only. For specific
+        advice, laws, or personal cases, always consult a{" "}
+        <span className="font-bold">licensed legal professional</span>.
+      </div>
+
+      <footer className="bg-[#071b1e] text-gray-300 py-12 px-6 lg:px-20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+          {/* Logo + About */}
+          <div className="flex flex-col items-center md:items-start text-sm font-normal">
+            <div className="flex items-center gap-3 mb-4 justify-center md:justify-start">
+              <img src="/logo-2.png" alt="LexEye Logo" className="w-12 h-12" />
+              <h2 className="text-sm font-normal text-white">LexEye</h2>
+            </div>
+            <p className="leading-relaxed text-gray-300">
+              LexEye is your clarity engine for legal knowledge. Explore
+              categories, search laws, and bookmark what matters most, all at
+              your fingertips.
+            </p>
           </div>
-          <p className="text-sm leading-relaxed">
-            LexEye is your clarity engine for legal knowledge. Explore
-            categories, search laws, and bookmark what matters most — all at
-            your fingertips.
-          </p>
+
+          {/* Column 2: Get Involved */}
+          <div className="flex flex-col items-center md:items-start md:pl-8 text-sm font-normal">
+            <h3 className="text-sm font-normal text-white mb-4">Get Involved</h3>
+            <ul className="space-y-2 text-gray-300">
+              <li>
+                <a
+                  href="/feedback"
+                  className="hover:text-[#89a2a6] transition-colors"
+                >
+                  Feedback & Help
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/about"
+                  className="hover:text-[#89a2a6] transition-colors"
+                >
+                  About LexEye
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Fast Links */}
+          <div className="flex flex-col items-center md:items-start md:pl-8 text-sm font-normal">
+            <h3 className="text-sm font-normal text-white mb-4">Fast Links</h3>
+            <ul className="flex flex-col gap-y-2 text-gray-300">
+              <li>
+                <a href="/" className="hover:text-[#89a2a6] transition-colors">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/glossary"
+                  className="hover:text-[#89a2a6] transition-colors"
+                >
+                  Glossary
+                </a>
+              </li>
+              <li>
+                <a href="/faq" className="hover:text-[#89a2a6] transition-colors">
+                  FAQ
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/signin"
+                  className="hover:text-[#89a2a6] transition-colors"
+                >
+                  Sign In / Sign Up
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        {/* Quick Links */}
-        <div className="flex flex-col gap-3 text-sm">
-          <h3 className="text-lg font-semibold text-white mb-2">Quick Links</h3>
-          <Link to="/" className="hover:text-white transition">
-            Home
-          </Link>
-          <Link to="/search" className="hover:text-white transition">
-            Search
-          </Link>
-          <Link to="/category" className="hover:text-white transition">
-            Categories
-          </Link>
-          <Link to="/bookmarks" className="hover:text-white transition">
-            Bookmarks
-          </Link>
-          <Link to="/signin" className="hover:text-white transition">
-            Sign In
-          </Link>
+        {/* Divider & Copyright */}
+        <div className="mt-10 border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
+          © {new Date().getFullYear()} LexEye • A University Project by Team
+          Mavericks
         </div>
-
-        {/* Call to Action */}
-        <div className="flex flex-col items-start md:items-center">
-          <h3 className="text-lg font-semibold text-white mb-4">
-            Leave Some Comments!
-          </h3>
-          <Link
-            to="/comment"
-            className="flex items-center justify-center gap-2 border py-2 sm:py-3 px-8 sm:px-10 rounded-full sm:text-lg text-sm font-semibold tracking-wider transition-all duration-300 hover:bg-[#08292e] bg-[#becac8] text-[#08292e] hover:text-[#becac8] w-full md:w-auto"
-          >
-            Leave it Here!
-          </Link>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="mt-10 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} LexEye. All rights reserved.
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 };
 
