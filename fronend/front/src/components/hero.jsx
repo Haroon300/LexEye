@@ -302,7 +302,7 @@ const LandingPage = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-white">
             Guides for Real Life{" "}
             <span className="text-[#89a2a6]">
-              : Practical Answers, Simplified.
+              : Direct Access to Clarity.
             </span>
           </h2>
 
