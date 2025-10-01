@@ -14,6 +14,7 @@ import Spline from "@splinetool/react-spline";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 
+
 /* animation variants - declare at top level */
 const fadeUp = {
   hidden: { opacity: 0, y: 50 },
