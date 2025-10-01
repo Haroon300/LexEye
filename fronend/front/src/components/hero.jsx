@@ -295,290 +295,110 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Section 3: Topics You Can Trust */}
-      <section className="py-20 px-6 lg:px-20 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Topics You Can <span className="text-[#89a2a6]">Trust</span>
-          </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            Explore our most reliable guides across key areas of daily life.
-            Clear, accessible, and legally accurate.
-          </p>
-          <div className="w-20 h-1 bg-gradient-to-r from-[#89a2a6] to-[#becac8] mx-auto mt-6 animate-glow rounded-full"></div>
-        </div>
-
-        {/* Cards */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Workplace Disputes */}
-          <motion.div
-            variants={fadeUp}
-            whileHover={{ scale: 1.05, rotate: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 10 }}
-            className="p-6 rounded-2xl bg-gradient-to-b from-[#0b2c30]/80 to-[#0f3a41]/40 
-                 border border-[#89a2a6]/20 hover:border-[#89a2a6] shadow-lg 
-                 hover:shadow-[#89a2a6]/40 text-center cursor-pointer animate-glow"
-          >
-            <Link
-              to="/category/workplace"
-              className="flex flex-col items-center text-[#becac8]"
-            >
-              <FaBook className="text-4xl mb-4 text-[#89a2a6]" />
-              <h3 className="text-lg font-semibold mb-2">Workplace Disputes</h3>
-              <p className="text-sm text-gray-400">
-                Unfair dismissal, harassment
-              </p>
-            </Link>
-          </motion.div>
-
-          {/* Police Interactions */}
-          <motion.div
-            variants={fadeUp}
-            whileHover={{ scale: 1.05, rotate: -1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 10 }}
-            className="p-6 rounded-2xl bg-gradient-to-b from-[#0b2c30]/80 to-[#0f3a41]/40 
-                 border border-[#89a2a6]/20 hover:border-[#89a2a6] shadow-lg 
-                 hover:shadow-[#89a2a6]/40 text-center cursor-pointer animate-glow"
-          >
-            <Link
-              to="/category/police"
-              className="flex flex-col items-center text-[#becac8]"
-            >
-              <FaBalanceScale className="text-4xl mb-4 text-[#89a2a6]" />
-              <h3 className="text-lg font-semibold mb-2">
-                Police Interactions
-              </h3>
-              <p className="text-sm text-gray-400">
-                Traffic stops, FIR process
-              </p>
-            </Link>
-          </motion.div>
-
-          {/* Landlord & Tenant Rights */}
-          <motion.div
-            variants={fadeUp}
-            whileHover={{ scale: 1.05, rotate: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 10 }}
-            className="p-6 rounded-2xl bg-gradient-to-b from-[#0b2c30]/80 to-[#0f3a41]/40 
-                 border border-[#89a2a6]/20 hover:border-[#89a2a6] shadow-lg 
-                 hover:shadow-[#89a2a6]/40 text-center cursor-pointer animate-glow"
-          >
-            <Link
-              to="/category/landlord"
-              className="flex flex-col items-center text-[#becac8]"
-            >
-              <FaBookmark className="text-4xl mb-4 text-[#89a2a6]" />
-              <h3 className="text-lg font-semibold mb-2">Landlord & Tenant</h3>
-              <p className="text-sm text-gray-400">Rent disputes, eviction</p>
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Secondary CTA */}
-        <div className="text-center mt-12">
-          <Link
-            to="/category"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#89a2a6] to-[#becac8] 
-                 text-black py-3 px-8 rounded-full font-medium transition-all hover:scale-110 animate-glow"
-          >
-            Browse All 10+ Categories <FaArrowRight />
-          </Link>
-        </div>
-      </section>
-
-      {/* Section X: Your Daily Issues (Accordion/Tab View) */}
-      <section className="py-20 px-6 lg:px-20 bg-[#0a2b30]/60">
-        <div className="max-w-7xl mx-auto">
-          {/* Title */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ amount: 0.25 }}
-            className="text-center mb-16"
-          >
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl md:text-4xl font-bold mb-4"
-            >
-              Your Daily Issues.{" "}
-              <span className="text-[#89a2a6]">Simplified Law.</span>
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="text-gray-300 max-w-2xl mx-auto"
-            >
-              Choose a common legal problem and see the clear steps you can take
-              — no jargon, just solutions.
-            </motion.p>
-            <motion.div
-              variants={fadeUp}
-              className="w-20 h-1 bg-gradient-to-r from-[#89a2a6] to-[#becac8] mx-auto mt-6 animate-pulse"
-            />
-          </motion.div>
-
-          {/* Accordion/Tab Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            {/* Issue List */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ amount: 0.25 }}
-              className="flex flex-col gap-4"
-            >
-              {/* Workplace Disputes */}
-              <motion.button
-                variants={fadeUp}
-                className="flex items-center gap-3 p-4 rounded-lg bg-[#092226]/60 border border-[#89a2a6]/20 hover:border-[#89a2a6] transition-all"
-              >
-                <span className="text-[#89a2a6] text-xl">💼</span>
-                <span className="font-medium">Workplace Disputes</span>
-              </motion.button>
-
-              {/* Police Interactions */}
-              <motion.button
-                variants={fadeUp}
-                className="flex items-center gap-3 p-4 rounded-lg bg-[#092226]/60 border border-[#89a2a6]/20 hover:border-[#89a2a6] transition-all"
-              >
-                <span className="text-[#89a2a6] text-xl">🚔</span>
-                <span className="font-medium">Police Interactions</span>
-              </motion.button>
-
-              {/* Landlord & Tenant Rights */}
-              <motion.button
-                variants={fadeUp}
-                className="flex items-center gap-3 p-4 rounded-lg bg-[#092226]/60 border border-[#89a2a6]/20 hover:border-[#89a2a6] transition-all"
-              >
-                <span className="text-[#89a2a6] text-xl">🏠</span>
-                <span className="font-medium">Landlord & Tenant</span>
-              </motion.button>
-
-              {/* Gender Harassment */}
-              <motion.button
-                variants={fadeUp}
-                className="flex items-center gap-3 p-4 rounded-lg bg-[#092226]/60 border border-[#89a2a6]/20 hover:border-[#89a2a6] transition-all"
-              >
-                <span className="text-[#89a2a6] text-xl">🛡️</span>
-                <span className="font-medium">Gender Harassment</span>
-              </motion.button>
-            </motion.div>
-
-            {/* Active Panel Content */}
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ amount: 0.25 }}
-              className="lg:col-span-2 bg-[#092226]/70 p-8 rounded-xl border border-[#89a2a6]/20 shadow-lg"
-            >
-              <h3 className="text-2xl font-semibold mb-4 text-[#89a2a6]">
-                Workplace Disputes
-              </h3>
-              <p className="text-gray-300 mb-6">
-                Facing unfair dismissal or harassment? Get the immediate legal
-                steps and documentation required under local labor law.
-              </p>
-              <Link
-                to="/category/workplace"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-[#89a2a6] to-[#becac8] 
-            text-black py-3 px-8 rounded-full font-medium transition-all hover:scale-110"
-              >
-                View Step-by-Step Guide <FaArrowRight />
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Section X: Daily Life Filter */}
-      <section className="relative py-20 px-6 lg:px-20 bg-[#0a2b30] overflow-hidden">
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-          {/* Title */}
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-white">
-            The LexEye Command Center{" "}
-            <span className="text-[#89a2a6]">: Direct Access to Clarity.</span>
-          </h2>
+<section className="relative py-20 px-6 lg:px-20 bg-[#0a2b30] overflow-hidden">
+  <div className="max-w-7xl mx-auto text-center relative z-10">
+    {/* Title */}
+    <h2 className="text-3xl md:text-4xl font-bold mb-12 text-white">
+      Guides for Real Life{" "}
+      <span className="text-[#89a2a6]">: Practical Answers, Simplified.</span>
+    </h2>
 
-          {/* Chaos Background (Layer 1) */}
-          <div className="absolute inset-0 opacity-20 blur-sm flex flex-wrap gap-6 justify-center items-center">
-            {["📞", "🚔", "📄", "⏰", "💼", "🏠"].map((icon, idx) => (
-              <span key={idx} className="text-5xl text-gray-400 animate-pulse">
-                {icon}
-              </span>
-            ))}
+    {/* Categories Grid with Prism per column */}
+    <div className="relative z-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[
+        [
+          {
+            icon: "💼",
+            title: "Workplace Disputes",
+            desc: "Harassment, unfair dismissal, and labor rights explained.",
+            link: "/category/workplace",
+          },
+          {
+            icon: "🚔",
+            title: "Police Interactions",
+            desc: "Your rights during traffic stops and FIR processes.",
+            link: "/category/police",
+          },
+        ],
+        [
+          {
+            icon: "🏠",
+            title: "Landlord & Tenant",
+            desc: "Tenancy agreements, rent hikes, and eviction rules.",
+            link: "/category/landlord",
+          },
+          {
+            icon: "🛡️",
+            title: "Gender Harassment",
+            desc: "Filing complaints and understanding legal protections.",
+            link: "/category/harassment",
+          },
+        ],
+        [
+          {
+            icon: "🛒",
+            title: "Consumer Protection",
+            desc: "Refunds, fraud complaints, and buyer’s rights.",
+            link: "/category/consumer",
+          },
+          {
+            icon: "📄",
+            title: "Property Rights",
+            desc: "Ownership transfers and dispute resolution made simple.",
+            link: "/category/property",
+          },
+        ],
+      ].map((colItems, colIdx) => (
+        <div key={colIdx} className="relative flex flex-col gap-6">
+          {/* Prism behind each 2-card column */}
+          <div className="absolute inset-0 flex justify-center items-center pointer-events-none -z-10">
+            <div className="relative w-72 h-72 rounded-full overflow-hidden backdrop-blur-md border-2 border-[#89a2a6]/40 shadow-[0_0_70px_#89a2a6]">
+              {/* Rotating prism beams */}
+              <div className="absolute inset-0 bg-[conic-gradient(from_0deg,#89a2a6_20%,transparent_60%,#89a2a6_90%)] animate-spin-slow" />
+              {/* Soft glow */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#89a2a6]/20 to-transparent animate-pulse" />
+            </div>
           </div>
 
-          {/* LexEye Lens (Layer 2, spotlight effect) */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-72 h-72 rounded-full bg-[#89a2a6]/20 backdrop-blur-md border-2 border-[#89a2a6] shadow-[0_0_40px_#89a2a6] animate-pulse" />
-          </div>
-
-          {/* Order Columns (Layer 3, clean categories) */}
-          <div className="relative z-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                icon: "💼",
-                title: "Workplace Disputes",
-                desc: "Harassment, unfair dismissal, and labor rights explained.",
-                link: "/category/workplace",
-              },
-              {
-                icon: "🚔",
-                title: "Police Interactions",
-                desc: "Your rights during traffic stops and FIR processes.",
-                link: "/category/police",
-              },
-              {
-                icon: "🏠",
-                title: "Landlord & Tenant",
-                desc: "Tenancy agreements, rent hikes, and eviction rules.",
-                link: "/category/landlord",
-              },
-              {
-                icon: "🛡️",
-                title: "Gender Harassment",
-                desc: "Filing complaints and understanding legal protections.",
-                link: "/category/harassment",
-              },
-              {
-                icon: "🛒",
-                title: "Consumer Protection",
-                desc: "Refunds, fraud complaints, and buyer’s rights.",
-                link: "/category/consumer",
-              },
-              {
-                icon: "📄",
-                title: "Property Rights",
-                desc: "Ownership transfers and dispute resolution made simple.",
-                link: "/category/property",
-              },
-            ].map((item, idx) => (
-              <a
-                key={idx}
-                href={item.link}
-                className="group relative p-6 bg-[#092226]/70 border border-[#89a2a6]/30 rounded-xl shadow-md hover:border-[#89a2a6] hover:shadow-[0_0_15px_#89a2a6] transition-all duration-300"
-              >
-                <div className="text-3xl mb-3">{item.icon}</div>
-                <h3 className="text-xl font-semibold text-white group-hover:text-[#89a2a6] transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-gray-300 text-sm mt-2">{item.desc}</p>
-              </a>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <div className="mt-12">
+          {/* Cards inside this column */}
+          {colItems.map((item, idx) => (
             <a
-              href="/category"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black font-medium rounded-full shadow hover:scale-105 transition-transform"
+              key={idx}
+              href={item.link}
+              className="group relative p-6 bg-[#092226]/70 border border-[#89a2a6]/30 rounded-xl shadow-md hover:border-[#89a2a6] hover:shadow-[0_0_15px_#89a2a6] transition-all duration-300"
             >
-              Explore All Guides
+              <div className="text-3xl mb-3">{item.icon}</div>
+              <h3 className="text-xl font-semibold text-white group-hover:text-[#89a2a6] transition-colors">
+                {item.title}
+              </h3>
+              <p className="text-gray-300 text-sm mt-2">{item.desc}</p>
             </a>
-          </div>
+          ))}
         </div>
-      </section>
+      ))}
+    </div>
+
+    {/* CTA */}
+    <div className="mt-12">
+      <a
+        href="/category"
+        className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black font-medium rounded-full shadow hover:scale-105 transition-transform"
+      >
+        Explore All Guides
+      </a>
+    </div>
+  </div>
+
+  {/* Custom animation */}
+  <style jsx>{`
+    .animate-spin-slow {
+      animation: spin 14s linear infinite;
+    }
+  `}</style>
+</section>
+
+
       {/* Section X: Call to Action (Sign In / Sign Up) */}
       <section className="relative py-20 px-6 lg:px-20 bg-[#0a2b30]">
         <div className="max-w-3xl mx-auto text-center">
