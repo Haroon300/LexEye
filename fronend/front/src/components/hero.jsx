@@ -411,7 +411,7 @@ const LandingPage = () => {
           }
         `}</style>
       </section>
-      <section className="relative py-20 px-6 lg:px-20 bg-[#0a2b30]">
+      <section className="relative pt-[3rem] pb-[6rem] px-6 lg:px-20 bg-[#0a2b30]">
         <div className="max-w-3xl mx-auto text-center">
           {/* Icon / Visual */}
           <div className="flex justify-center mb-6">
