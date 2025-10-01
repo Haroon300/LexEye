@@ -13,8 +13,8 @@ const Footer = () => {
       <footer className="bg-[#071b1e] text-gray-300 py-12 px-6 lg:px-20">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Logo + About */}
-          <div className="flex flex-col items-center md:items-start text-sm font-normal">
-            <div className="flex items-center gap-3 mb-4 justify-center md:justify-start">
+          <div className="flex flex-col items-start text-sm font-normal">
+            <div className="flex items-center gap-3 mb-4">
               <img src="/logo-2.png" alt="LexEye Logo" className="w-12 h-12" />
               <h2 className="text-sm font-normal text-white">LexEye</h2>
             </div>
@@ -26,7 +26,7 @@ const Footer = () => {
           </div>
 
           {/* Column 2: Get Involved */}
-          <div className="flex flex-col items-center md:items-start md:pl-8 text-sm font-normal">
+          <div className="flex flex-col items-start md:pl-8 text-sm font-normal">
             <h3 className="text-sm font-normal text-white mb-4">Get Involved</h3>
             <ul className="space-y-2 text-gray-300">
               <li>
@@ -49,7 +49,7 @@ const Footer = () => {
           </div>
 
           {/* Column 3: Fast Links */}
-          <div className="flex flex-col items-center md:items-start md:pl-8 text-sm font-normal">
+          <div className="flex flex-col items-start md:pl-8 text-sm font-normal">
             <h3 className="text-sm font-normal text-white mb-4">Fast Links</h3>
             <ul className="flex flex-col gap-y-2 text-gray-300">
               <li>

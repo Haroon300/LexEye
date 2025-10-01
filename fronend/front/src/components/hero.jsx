@@ -296,130 +296,162 @@ const LandingPage = () => {
       </section>
 
       {/* Section X: Daily Life Filter */}
-<section className="relative py-20 px-6 lg:px-20 bg-[#0a2b30] overflow-hidden">
-  <div className="max-w-7xl mx-auto text-center relative z-10">
-    {/* Title */}
-    <h2 className="text-3xl md:text-4xl font-bold mb-12 text-white">
-      Guides for Real Life{" "}
-      <span className="text-[#89a2a6]">: Practical Answers, Simplified.</span>
-    </h2>
+      <section className="relative py-20 px-6 lg:px-20 bg-[#0a2b30] overflow-hidden">
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          {/* Title */}
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-white">
+            Guides for Real Life{" "}
+            <span className="text-[#89a2a6]">
+              : Practical Answers, Simplified.
+            </span>
+          </h2>
 
-    {/* Categories Grid with Prism per column */}
-    <div className="relative z-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[
-        [
-          {
-            icon: "💼",
-            title: "Workplace Disputes",
-            desc: "Harassment, unfair dismissal, and labor rights explained.",
-            link: "/category/workplace",
-          },
-          {
-            icon: "🚔",
-            title: "Police Interactions",
-            desc: "Your rights during traffic stops and FIR processes.",
-            link: "/category/police",
-          },
-        ],
-        [
-          {
-            icon: "🏠",
-            title: "Landlord & Tenant",
-            desc: "Tenancy agreements, rent hikes, and eviction rules.",
-            link: "/category/landlord",
-          },
-          {
-            icon: "🛡️",
-            title: "Gender Harassment",
-            desc: "Filing complaints and understanding legal protections.",
-            link: "/category/harassment",
-          },
-        ],
-        [
-          {
-            icon: "🛒",
-            title: "Consumer Protection",
-            desc: "Refunds, fraud complaints, and buyer’s rights.",
-            link: "/category/consumer",
-          },
-          {
-            icon: "📄",
-            title: "Property Rights",
-            desc: "Ownership transfers and dispute resolution made simple.",
-            link: "/category/property",
-          },
-        ],
-      ].map((colItems, colIdx) => (
-        <div key={colIdx} className="relative flex flex-col gap-6">
-          {/* Prism behind each 2-card column */}
-          <div className="absolute inset-0 flex justify-center items-center pointer-events-none -z-10">
-            <div className="relative w-72 h-72 rounded-full overflow-hidden backdrop-blur-md border-2 border-[#89a2a6]/40 shadow-[0_0_70px_#89a2a6]">
-              {/* Rotating prism beams */}
-              <div className="absolute inset-0 bg-[conic-gradient(from_0deg,#89a2a6_20%,transparent_60%,#89a2a6_90%)] animate-spin-slow" />
-              {/* Soft glow */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#89a2a6]/20 to-transparent animate-pulse" />
-            </div>
+          {/* Categories Grid with Floating Orbs */}
+          <div className="relative z-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              [
+                {
+                  icon: "💼",
+                  title: "Workplace Disputes",
+                  desc: "Harassment, unfair dismissal, and labor rights explained.",
+                  link: "/category/workplace",
+                },
+                {
+                  icon: "🚔",
+                  title: "Police Interactions",
+                  desc: "Your rights during traffic stops and FIR processes.",
+                  link: "/category/police",
+                },
+              ],
+              [
+                {
+                  icon: "🏠",
+                  title: "Landlord & Tenant",
+                  desc: "Tenancy agreements, rent hikes, and eviction rules.",
+                  link: "/category/landlord",
+                },
+                {
+                  icon: "🛡️",
+                  title: "Gender Harassment",
+                  desc: "Filing complaints and understanding legal protections.",
+                  link: "/category/harassment",
+                },
+              ],
+              [
+                {
+                  icon: "🛒",
+                  title: "Consumer Protection",
+                  desc: "Refunds, fraud complaints, and buyer’s rights.",
+                  link: "/category/consumer",
+                },
+                {
+                  icon: "📄",
+                  title: "Property Rights",
+                  desc: "Ownership transfers and dispute resolution made simple.",
+                  link: "/category/property",
+                },
+              ],
+            ].map((colItems, colIdx) => (
+              <div key={colIdx} className="relative flex flex-col gap-6">
+                {/* Floating Orb behind each column */}
+                <div className="absolute inset-0 flex justify-center items-center pointer-events-none -z-10">
+                  <div
+                    className="relative w-56 h-56 rounded-full bg-[#89a2a6]/30 blur-3xl animate-float"
+                    style={{
+                      animationDelay: `${colIdx * 2}s`, // stagger float animations
+                    }}
+                  >
+                    {/* Core glow */}
+                    <div className="absolute inset-0 rounded-full bg-[#89a2a6]/100 blur-2xl animate-pulse" />
+                  </div>
+                </div>
+
+                {/* Cards inside this column */}
+                {colItems.map((item, idx) => (
+                  <a
+                    key={idx}
+                    href={item.link}
+                    className="group relative p-6 bg-[#092226]/70 border border-[#89a2a6]/30 rounded-xl shadow-md hover:border-[#89a2a6] hover:shadow-[0_0_15px_#89a2a6] transition-all duration-300"
+                  >
+                    <div className="text-3xl mb-3">{item.icon}</div>
+                    <h3 className="text-xl font-semibold text-white group-hover:text-[#89a2a6] transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-300 text-sm mt-2">{item.desc}</p>
+                  </a>
+                ))}
+              </div>
+            ))}
           </div>
 
-          {/* Cards inside this column */}
-          {colItems.map((item, idx) => (
+          {/* CTA */}
+          <div className="mt-12">
             <a
-              key={idx}
-              href={item.link}
-              className="group relative p-6 bg-[#092226]/70 border border-[#89a2a6]/30 rounded-xl shadow-md hover:border-[#89a2a6] hover:shadow-[0_0_15px_#89a2a6] transition-all duration-300"
+              href="/category"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black font-medium rounded-full shadow hover:scale-105 transition-transform"
             >
-              <div className="text-3xl mb-3">{item.icon}</div>
-              <h3 className="text-xl font-semibold text-white group-hover:text-[#89a2a6] transition-colors">
-                {item.title}
-              </h3>
-              <p className="text-gray-300 text-sm mt-2">{item.desc}</p>
+              Explore All Guides
             </a>
-          ))}
+          </div>
         </div>
-      ))}
-    </div>
 
-    {/* CTA */}
-    <div className="mt-12">
-      <a
-        href="/category"
-        className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black font-medium rounded-full shadow hover:scale-105 transition-transform"
-      >
-        Explore All Guides
-      </a>
-    </div>
-  </div>
-
-  {/* Custom animation */}
-  <style jsx>{`
-    .animate-spin-slow {
-      animation: spin 14s linear infinite;
-    }
-  `}</style>
-</section>
-
-
-      {/* Section X: Call to Action (Sign In / Sign Up) */}
+        {/* Custom animations */}
+        <style jsx>{`
+          .animate-float {
+            animation: floatOrb 8s ease-in-out infinite;
+          }
+          @keyframes floatOrb {
+            0%,
+            100% {
+              transform: translateY(0px) translateX(0px);
+            }
+            50% {
+              transform: translateY(-25px) translateX(15px);
+            }
+          }
+        `}</style>
+      </section>
       <section className="relative py-20 px-6 lg:px-20 bg-[#0a2b30]">
         <div className="max-w-3xl mx-auto text-center">
           {/* Icon / Visual */}
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 flex items-center justify-center rounded-full bg-[#092226] border border-[#89a2a6]/50 shadow-lg">
-              <span className="text-3xl text-[#89a2a6]">🔑</span>
+            <div className="w-16 h-16 flex items-center justify-center rounded-full border-none">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 216.757 216.757"
+                className="w-15 h-15 text-white"
+                fill="currentColor"
+              >
+                <path
+                  d="M214.257,187.552H124.78c-1.381,0-2.5-1.119-2.5-2.5V173.63c0-1.381,1.119-2.5,2.5-2.5h89.478  
+    c1.381,0,2.5,1.119,2.5,2.5v11.422C216.757,186.433,215.638,187.552,214.257,187.552z M127.28,182.552h84.478v-6.422H127.28V182.552  
+    z M7.148,144.969c-1.06,0-2.043-0.679-2.381-1.742l-4.648-14.605c-0.419-1.316,0.308-2.722,1.624-3.141L77.091,101.5  
+    c0.63-0.201,1.317-0.143,1.906,0.162c0.589,0.305,1.033,0.831,1.233,1.462l0.491,1.542l37.688-11.994l-0.947-2.975  
+    c-0.201-0.632-0.144-1.318,0.161-1.907c0.305-0.589,0.831-1.033,1.463-1.234l6.622-2.107l-1.225-3.849  
+    c-0.201-0.632-0.144-1.318,0.161-1.907s0.831-1.033,1.463-1.234l3.979-1.266l-2.033-6.388l-0.293,0.093  
+    c-0.627,0.2-1.277,0.301-1.932,0.301c-2.785,0-5.224-1.784-6.068-4.438l-2.399-7.542c-2.104-6.612,1.563-13.703,8.175-15.807  
+    L165.163,29.8c1.241-0.395,2.525-0.595,3.818-0.595c5.501,0,10.318,3.524,11.987,8.77l2.4,7.542  
+    c1.064,3.347-0.792,6.936-4.137,8.001l-0.293,0.093l2.033,6.388l3.979-1.267c0.633-0.2,1.318-0.143,1.907,0.162  
+    c0.589,0.305,1.033,0.831,1.233,1.462l9.527,29.935c0.201,0.632,0.144,1.318-0.161,1.907s-0.831,1.033-1.463,1.234l-3.979,1.267  
+    l2.032,6.388l0.292-0.093c0.628-0.2,1.278-0.301,1.933-0.301c2.784,0,5.223,1.783,6.068,4.438l2.4,7.542  
+    c1.02,3.203,0.73,6.611-0.813,9.597c-1.544,2.986-4.158,5.191-7.361,6.21l-39.626,12.611c-1.241,0.395-2.525,0.595-3.817,0.595  
+    c-5.501,0-10.319-3.524-11.988-8.77l-2.4-7.542c-0.516-1.62-0.369-3.345,0.412-4.856s2.104-2.627,3.726-3.144l0.292-0.093  
+    l-2.032-6.388l-3.979,1.267c-1.312,0.416-2.722-0.308-3.14-1.624l-1.226-3.849l-6.622,2.107c-1.313,0.417-2.722-0.308-3.14-1.624  
+    l-0.947-2.976l-37.688,11.994l0.49,1.542c0.419,1.316-0.308,2.722-1.624,3.141l-75.349,23.98C7.655,144.931,7.4,144.969,7.148,144.969z"
+                />
+              </svg>
             </div>
           </div>
 
           {/* Title */}
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Unlock Your{" "}
-            <span className="text-[#89a2a6]">Personal Legal Toolkit.</span>
+            Master Your <span className="text-[#89a2a6]">Rights.</span>
           </h2>
 
-          {/* Description */}
+          {/* Encouragement */}
           <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-10">
-            Create your free LexEye account to bookmark essential guides, save
-            legal terms to your glossary, and keep your most important rights
-            ready for use, anytime.
+            Take the first step toward legal confidence. Your personalized
+            library awaits.
           </p>
 
           {/* Buttons */}
@@ -429,86 +461,10 @@ const LandingPage = () => {
               href="/signup"
               className="px-8 py-3 bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black font-semibold rounded-full shadow hover:scale-105 transition-transform w-full sm:w-auto text-center"
             >
-              Create Free Account
-            </a>
-
-            {/* Secondary CTA */}
-            <a
-              href="/signin"
-              className="px-8 py-3 border border-[#89a2a6]/50 text-[#89a2a6] rounded-full hover:bg-[#092226]/60 transition-colors w-full sm:w-auto text-center"
-            >
-              Already using LexEye? Sign In
+              Join LexEye
             </a>
           </div>
         </div>
-      </section>
-
-      <section className="bg-[#f0f7f9] py-12 px-6 lg:px-20 rounded-lg shadow-md text-center max-w-3xl mx-auto my-12">
-        {/* Title */}
-        <div className="flex items-center justify-center mb-4">
-          <svg
-            className="w-6 h-6 mr-2 text-[#0891b2]"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
-          </svg>
-          <h2 className="text-2xl font-semibold text-gray-800">
-            Your Law Profile
-          </h2>
-        </div>
-
-        {/* Body Text */}
-        <p className="text-gray-700 mb-6">
-          Access personalized features like saved articles and quick-reference
-          glossary terms. Your legal clarity is one step away.
-        </p>
-
-        {/* Primary CTA */}
-        <a
-          href="/signup"
-          className="inline-block bg-[#0891b2] text-white font-semibold px-8 py-3 rounded-md hover:bg-[#056978] transition-colors mb-3"
-        >
-          Get Started Now
-        </a>
-
-        {/* Secondary CTA */}
-        <div>
-          <a href="/signin" className="text-gray-600 text-sm hover:underline">
-            Already here? Sign In
-          </a>
-        </div>
-      </section>
-
-      {/* Section 4: LexEye Promise */}
-      <section className="py-20 px-6 lg:px-20 bg-transparent">
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.25 }}
-          className="max-w-4xl mx-auto text-center"
-        >
-          <motion.h2
-            variants={fadeUp}
-            className="text-3xl md:text-4xl font-bold mb-6"
-          >
-            The LexEye Promise
-          </motion.h2>
-          <motion.p variants={fadeUp} className="text-xl text-gray-300 mb-10">
-            LexEye is built for you. We are a university project committed to
-            increasing legal awareness in Pakistan. Your confidence is our
-            measure of success.
-          </motion.p>
-          <motion.div variants={fadeUp}>
-            <Link
-              to="/feedback"
-              className="bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black py-3 px-8 rounded-full font-medium transition-all hover:shadow-lg hover:scale-110 inline-flex items-center gap-2"
-            >
-              Give Feedback <FaArrowRight />
-            </Link>
-          </motion.div>
-        </motion.div>
       </section>
     </div>
   );
