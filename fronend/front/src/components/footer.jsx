@@ -31,7 +31,7 @@ const Footer = () => {
             <ul className="space-y-2 text-gray-300">
               <li>
                 <a
-                  href="/feedback"
+                  href="/Comment"
                   className="hover:text-[#89a2a6] transition-colors"
                 >
                   Feedback & Help

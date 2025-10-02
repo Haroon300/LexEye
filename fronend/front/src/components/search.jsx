@@ -1,85 +1,128 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import img from "/gradient.png";
-import icon from "/logo-2.png";
 import { AiOutlineSearch } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
-const Search = () => {
+const SearchPage = () => {
   const [query, setQuery] = useState("");
-  const navigate = useNavigate();
+  const [results, setResults] = useState([]);
+  const [recent, setRecent] = useState(["Harassment", "Deposit Dispute", "Police Stop"]);
 
-  const handleSearch = (customQuery) => {
-    const queryToSearch = customQuery || query;
-    if (!queryToSearch.trim()) return;
-    navigate(`/laws?query=${encodeURIComponent(queryToSearch)}`);
+  // ✅ Added unique IDs so LawDetail can fetch properly
+  const mockResults = [
+    {
+      _id: "1",
+      title: "Workplace Harassment: 3-Step Guide",
+      category: "HARASSMENT",
+      snippet: "Learn how to handle harassment at work in three steps, including filing a complaint.",
+      read: "3 min read",
+    },
+    {
+      _id: "2",
+      title: "Tenancy Rights Explained",
+      category: "TENANCY",
+      snippet: "Understand your rights when your landlord refuses to return your security deposit.",
+      read: "4 min read",
+    },
+    {
+      _id: "3",
+      title: "Digital Safety Basics",
+      category: "DIGITAL SAFETY",
+      snippet: "Tips to protect yourself from online fraud and report digital crimes.",
+      read: "5 min read",
+    },
+  ];
+
+  const handleSearch = () => {
+    if (!query.trim()) return;
+    setResults(mockResults);
+    setRecent((prev) => [query, ...prev.slice(0, 4)]);
   };
 
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 overflow-hidden">
-      {/* Glow Effect */}
-      <div className="h-0 w-[40rem] absolute top-[50%] right-[25%] shadow-[0_0_900px_40px_#000000] rotate-[150deg] -z-10"></div>
+    <main className="min-h-screen bg-[#0a2b30] text-white flex flex-col items-center px-6 lg:px-20">
 
-      {/* Background */}
-      <img
-        src={img}
-        className="absolute top-0 right-0 w-full h-full object-cover opacity-40 -z-20"
-        alt="background"
-      />
-
-      <div className="relative z-10 w-full max-w-2xl text-center">
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-4">
-          Search Laws of Pakistan
+      {/* Command Center */}
+      <div className="max-w-3xl w-full text-center mt-[9rem]">
+        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
+          Find Simple Answers for Your Everyday Rights
         </h1>
-        <p className="text-gray-300 text-base sm:text-lg mb-8 leading-relaxed">
-          Quickly find laws, categories, and resources that matter to you.
-          <br />
-          <span className="text-[#89a2a6] flex items-center justify-center mt-2">
-            Powered by{" "}
-            <span className="ml-2 text-[#becac8] font-semibold flex items-center gap-2">
-              <img src={icon} className="w-8 h-8 inline-block" />
-              LexEye
-            </span>
-          </span>
+        <p className="text-gray-300 mb-8">
+          Quickly access simplified guides, step-by-step actions, and the clarity you need.
         </p>
 
         {/* Search Bar */}
-        <div className="flex items-center bg-[#89a2a6]/70 border border-[#89a2a6] rounded-full px-4 py-3 focus-within:border-[#89a2a6] transition-all shadow-lg">
-          <AiOutlineSearch className="text-[#08292e] text-xl sm:text-2xl" />
+        <div className="flex items-center bg-white/10 border border-[#89a2a6] rounded-full px-4 py-4 shadow-lg">
+          <AiOutlineSearch className="text-[#89a2a6] text-2xl" />
           <input
             type="text"
-            placeholder="Search laws, categories, or keywords..."
+            placeholder="Search your issue: harassment, deposit disputes, police stops, consumer rights..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full bg-transparent outline-none text-gray-200 placeholder-[#08292e] px-3 text-sm sm:text-base"
+            className="w-full bg-transparent outline-none text-gray-200 placeholder-gray-400 px-3 text-lg"
           />
           <button
-            onClick={() => handleSearch()}
-            className="ml-3 bg-[#08292e] hover:bg-gray-900 text-[#89a2a6] font-semibold rounded-full px-5 py-2 text-sm sm:text-base transition-all disabled:opacity-60"
+            onClick={handleSearch}
+            className="ml-3 bg-[#89a2a6] hover:bg-[#becac8] text-[#08292e] font-semibold rounded-full px-6 py-2 transition-all"
           >
             Search
           </button>
         </div>
 
-        {/* Quick Keywords */}
-        <div className="flex flex-wrap justify-center gap-3 mt-10">
-          {[
-            "Criminal Law",
-            "Property Law",
-            "Human Rights",
-            "Contract Law",
-            "Cybercrime",
-            "Family Law",
-            "Taxation",
-            "Narcotics",
-          ].map((keyword) => (
+        {/* Filters - simplified tags */}
+        <div className="flex flex-wrap justify-center gap-3 mt-6">
+          {["Police Stops", "Tenancy Rights", "Harassment", "Workplace Disputes", "Digital Safety", "Consumer Issues"].map((tag) => (
             <span
-              key={keyword}
-              onClick={() => handleSearch(keyword)}
-              className="px-5 py-2 bg-[#89a2a6]/70 text-[#08292e] text-sm rounded-full border border-[#89a2a6] transition hover:scale-110 hover:bg-[#08292e] hover:text-[#89a2a6]"
+              key={tag}
+              onClick={() => setQuery(tag)}
+              className="px-4 py-2 bg-white/10 border border-[#89a2a6] rounded-full text-sm text-gray-200 cursor-pointer hover:bg-white/20"
             >
-              {keyword}
+              {tag}
             </span>
+          ))}
+        </div>
+
+        {/* Past Searches */}
+        <div className="mt-4 text-gray-400 text-sm">
+          Recent Searches:
+          {recent.map((r, i) => (
+            <span
+              key={i}
+              onClick={() => setQuery(r)}
+              className="cursor-pointer text-[#89a2a6] hover:underline ml-2"
+            >
+              {r}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Results */}
+      <div className="max-w-4xl w-full mt-12 mb-20">
+        {results.length > 0 && (
+          <h2 className="text-lg mb-6 text-gray-300">
+            Showing {results.length} results for "{query}"
+          </h2>
+        )}
+        <div className="grid gap-6">
+          {results.map((r, i) => (
+            <Link
+              to={`/law/${r._id}`}
+              key={i}
+              className="block p-5 bg-white/5 border border-white/10 rounded-xl shadow hover:bg-white/10 transition"
+            >
+              <h3 className="text-xl font-semibold">{r.title}</h3>
+              <span className="inline-block mt-2 text-xs px-3 py-1 rounded-full bg-[#89a2a6]/30 text-[#89a2a6]">
+                {r.category}
+              </span>
+              <p className="text-gray-300 mt-3">{r.snippet}</p>
+              <div className="flex justify-between items-center mt-4">
+                <button className="text-sm text-[#89a2a6] hover:underline">
+                  Save
+                </button>
+                <span className="text-gray-400 text-xs">{r.read}</span>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -87,4 +130,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchPage;
