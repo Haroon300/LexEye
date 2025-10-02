@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import "./index.css";
 
 // Components
@@ -18,6 +18,25 @@ import NoInternet from "./components/NoInternet";
 import Comment from "./components/Comment";
 
 import { useEffect, useState } from "react";
+
+// --- ScrollToTop Component ---
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Scroll to top whenever pathname changes
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  // Scroll to top on hard refresh
+  useEffect(() => {
+    window.onbeforeunload = () => {
+      window.scrollTo(0, 0);
+    };
+  }, []);
+
+  return null;
+}
 
 export default function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -46,6 +65,9 @@ export default function App() {
       <div className="h-0 w-[40rem] absolute top-[20%] right-[-5%] shadow-[0_0_900px_20px_#ffff] rotate-[150deg] -z-10"></div>
 
       <Router>
+        {/* ScrollToTop inside Router */}
+        <ScrollToTop />
+
         <Header />
 
         <Routes>
