@@ -4,11 +4,12 @@ import { GiScales } from "react-icons/gi";
 export default function FeedbackPage() {
   const [clarity, setClarity] = useState(5);
   const [speed, setSpeed] = useState(3);
+  const [submitted, setSubmitted] = useState(false);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#092226] text-white px-4 pt-[6rem] pb-[6rem]">
       <div className="max-w-3xl w-full bg-[#0e2f34] p-10 rounded-2xl shadow-xl border border-gray-700 transition-all duration-300 hover:shadow-[0_0_25px_rgba(137,162,166,0.4)]">
-        
+
         {/* Title + Intro */}
         <div className="flex items-center gap-3 mb-6 animate-fadeIn">
           <GiScales className="text-4xl text-[#89a2a6] animate-pulse" />
@@ -19,9 +20,17 @@ export default function FeedbackPage() {
           Please take a minute to share your thoughts below.
         </p>
 
+        {/* Success Toast */}
+        {submitted && (
+          <div className="mb-6 p-4 rounded-lg bg-green-700/40 border border-green-400 text-green-200 animate-fadeIn">
+            ✅ Thanks for your feedback! Redirecting...
+          </div>
+        )}
+
         <form
           action="https://formsubmit.co/contact.lexeye78@gmail.com"
           method="POST"
+          onSubmit={() => setSubmitted(true)}
           className="flex flex-col gap-10"
         >
           {/* Contact Info */}
@@ -32,8 +41,9 @@ export default function FeedbackPage() {
 
             {/* Name */}
             <div className="mb-4">
-              <label className="block font-semibold mb-2">Your Name:</label>
+              <label htmlFor="name" className="block font-semibold mb-2">Your Name:</label>
               <input
+                id="name"
                 type="text"
                 name="name"
                 placeholder="John Doe"
@@ -45,8 +55,9 @@ export default function FeedbackPage() {
 
             {/* Email */}
             <div>
-              <label className="block font-semibold mb-2">📧 Your Email:</label>
+              <label htmlFor="email" className="block font-semibold mb-2">📧 Your Email:</label>
               <input
+                id="email"
                 type="email"
                 name="email"
                 placeholder="example@email.com"
@@ -65,8 +76,9 @@ export default function FeedbackPage() {
 
             {/* Topic Reviewed */}
             <div className="mb-4 relative">
-              <label className="block font-semibold mb-2">📂 Which topic did you review?</label>
+              <label htmlFor="topicReviewed" className="block font-semibold mb-2">📂 Which topic did you review?</label>
               <select
+                id="topicReviewed"
                 name="topicReviewed"
                 required
                 className="w-full px-4 py-3 pr-10 rounded-lg bg-black/30 border border-gray-700 text-white 
@@ -96,13 +108,14 @@ export default function FeedbackPage() {
                 min="1"
                 max="5"
                 value={clarity}
-                onChange={(e) => setClarity(e.target.value)}
+                onChange={(e) => setClarity(Number(e.target.value))}
                 className="w-full cursor-pointer accent-[#89a2a6] hover:accent-[#a3c8cc] transition"
               />
               <div className="flex justify-between text-xs text-gray-400 mt-1">
                 <span>Too Complex</span>
                 <span>Perfectly Clear</span>
               </div>
+              <p className="text-sm text-[#89a2a6] mt-1">Selected: {clarity}/5</p>
             </div>
 
             {/* Accuracy */}
@@ -115,7 +128,7 @@ export default function FeedbackPage() {
                       type="radio"
                       name="accuracy"
                       value={val}
-                      required={val === "Yes"}
+                      required
                       className="peer hidden"
                     />
                     <span className="w-4 h-4 rounded-full border border-gray-500 flex items-center justify-center 
@@ -143,7 +156,7 @@ export default function FeedbackPage() {
                       type="radio"
                       name="featureFocus"
                       value={val}
-                      required={val === "Search"}
+                      required
                       className="peer hidden"
                     />
                     <span className="w-4 h-4 rounded-full border border-gray-500 flex items-center justify-center 
@@ -163,13 +176,14 @@ export default function FeedbackPage() {
                 min="1"
                 max="5"
                 value={speed}
-                onChange={(e) => setSpeed(e.target.value)}
+                onChange={(e) => setSpeed(Number(e.target.value))}
                 className="w-full cursor-pointer accent-[#89a2a6] hover:accent-[#a3c8cc] transition"
               />
               <div className="flex justify-between text-xs text-gray-400 mt-1">
                 <span>Too Slow</span>
                 <span>Instantly Fast</span>
               </div>
+              <p className="text-sm text-[#89a2a6] mt-1">Selected: {speed}/5</p>
             </div>
 
             {/* Bug Report */}
@@ -193,8 +207,9 @@ export default function FeedbackPage() {
 
             {/* Suggestion */}
             <div className="mb-4">
-              <label className="block font-semibold mb-2">💡 Suggest a new topic we should cover:</label>
+              <label htmlFor="newTopic" className="block font-semibold mb-2">💡 Suggest a new topic we should cover:</label>
               <input
+                id="newTopic"
                 type="text"
                 name="newTopic"
                 placeholder="E.g., Traffic Fines..."
@@ -213,7 +228,7 @@ export default function FeedbackPage() {
                       type="radio"
                       name="satisfaction"
                       value={i + 1}
-                      required={i === 0}
+                      required
                       className="hidden peer"
                     />
                     <span className="peer-checked:drop-shadow-[0_0_8px_#89a2a6]">{emoji}</span>
