@@ -369,9 +369,9 @@ const LandingPage = () => {
 
                 {/* Cards inside this column */}
                 {colItems.map((item, idx) => (
-                  <a
+                  <Link
                     key={idx}
-                    href={item.link}
+                    to={item.link}
                     className="group relative p-6 bg-[#092226]/70 border border-[#89a2a6]/30 rounded-xl shadow-md hover:border-[#89a2a6] hover:shadow-[0_0_15px_#89a2a6] transition-all duration-300"
                   >
                     <div className="text-3xl mb-3">{item.icon}</div>
@@ -379,7 +379,7 @@ const LandingPage = () => {
                       {item.title}
                     </h3>
                     <p className="text-gray-300 text-sm mt-2">{item.desc}</p>
-                  </a>
+                  </Link>
                 ))}
               </div>
             ))}
@@ -458,12 +458,12 @@ const LandingPage = () => {
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             {/* Primary CTA */}
-            <a
-              href="/signup"
+            <Link
+              to="/signup"
               className="px-8 py-3 bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black font-semibold rounded-full shadow hover:scale-105 transition-transform w-full sm:w-auto text-center"
             >
               Join LexEye
-            </a>
+            </Link>
           </div>
         </div>
       </section>

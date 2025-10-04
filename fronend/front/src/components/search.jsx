@@ -1,41 +1,43 @@
 import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [recent, setRecent] = useState(["Harassment", "Deposit Dispute", "Police Stop"]);
+  const navigate = useNavigate();
+  
+  // const [results, setResults] = useState([]);
+  // const [recent, setRecent] = useState(["Harassment", "Deposit Dispute", "Police Stop"]);
 
   // ✅ Added unique IDs so LawDetail can fetch properly
-  const mockResults = [
-    {
-      _id: "1",
-      title: "Workplace Harassment: 3-Step Guide",
-      category: "HARASSMENT",
-      snippet: "Learn how to handle harassment at work in three steps, including filing a complaint.",
-      read: "3 min read",
-    },
-    {
-      _id: "2",
-      title: "Tenancy Rights Explained",
-      category: "TENANCY",
-      snippet: "Understand your rights when your landlord refuses to return your security deposit.",
-      read: "4 min read",
-    },
-    {
-      _id: "3",
-      title: "Digital Safety Basics",
-      category: "DIGITAL SAFETY",
-      snippet: "Tips to protect yourself from online fraud and report digital crimes.",
-      read: "5 min read",
-    },
-  ];
+  // const mockResults = [
+  //   {
+  //     _id: "1",
+  //     title: "Workplace Harassment: 3-Step Guide",
+  //     category: "HARASSMENT",
+  //     snippet: "Learn how to handle harassment at work in three steps, including filing a complaint.",
+  //     read: "3 min read",
+  //   },
+  //   {
+  //     _id: "2",
+  //     title: "Tenancy Rights Explained",
+  //     category: "TENANCY",
+  //     snippet: "Understand your rights when your landlord refuses to return your security deposit.",
+  //     read: "4 min read",
+  //   },
+  //   {
+  //     _id: "3",
+  //     title: "Digital Safety Basics",
+  //     category: "DIGITAL SAFETY",
+  //     snippet: "Tips to protect yourself from online fraud and report digital crimes.",
+  //     read: "5 min read",
+  //   },
+  // ];
 
-  const handleSearch = () => {
-    if (!query.trim()) return;
-    setResults(mockResults);
-    setRecent((prev) => [query, ...prev.slice(0, 4)]);
+  const handleSearch = (customQuery) => {
+    const queryToSearch = customQuery || query;
+    if (!queryToSearch.trim()) return;
+    navigate(`/laws?query=${encodeURIComponent(queryToSearch)}`);
   };
 
   return (
@@ -58,7 +60,7 @@ const SearchPage = () => {
             placeholder="Search your issue: harassment, deposit disputes, police stops, consumer rights..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch(query)}
             className="w-full bg-transparent outline-none text-gray-200 placeholder-gray-400 px-3 text-lg"
           />
           <button
@@ -75,7 +77,7 @@ const SearchPage = () => {
             <span
               key={tag}
               onClick={() => setQuery(tag)}
-              className="px-4 py-2 bg-white/10 border border-[#89a2a6] rounded-full text-sm text-gray-200 cursor-pointer hover:bg-white/20"
+              className="px-4 py-2 bg-white/10 border border-[#89a2a6] rounded-full text-sm text-gray-200 hover:bg-white/20"
             >
               {tag}
             </span>
@@ -83,7 +85,7 @@ const SearchPage = () => {
         </div>
 
         {/* Past Searches */}
-        <div className="mt-4 text-gray-400 text-sm">
+        {/* <div className="mt-4 text-gray-400 text-sm">
           Recent Searches:
           {recent.map((r, i) => (
             <span
@@ -94,10 +96,10 @@ const SearchPage = () => {
               {r}
             </span>
           ))}
-        </div>
+        </div> */}
       </div>
 
-      {/* Results */}
+      {/* Results
       <div className="max-w-4xl w-full mt-12 mb-20">
         {results.length > 0 && (
           <h2 className="text-lg mb-6 text-gray-300">
@@ -125,7 +127,7 @@ const SearchPage = () => {
             </Link>
           ))}
         </div>
-      </div>
+      </div> */}
     </main>
   );
 };
