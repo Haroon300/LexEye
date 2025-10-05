@@ -5,7 +5,7 @@ import {
   getLawById,
   updateLaw,
   deleteLaw,
-  getCategoriesWithCounts,
+  getAllLawCategories,
   searchLaws,
   getLawsByCategory,
 } from "../controllers/lawController.js";
@@ -19,13 +19,13 @@ router.post("/", createLaw);
 router.get("/", getAllLaws);
 
 // Categories with counts
-router.get("/categories/counts", getCategoriesWithCounts);
+router.get("/categories", getAllLawCategories);
 
 // Search (GET not POST ✅)
 router.post("/search", searchLaws);
 
 // Get laws by category
-router.post("/categories/:category", getLawsByCategory);
+router.get("/categories/:category", getLawsByCategory);
 
 // Single law by ID
 router.get("/:id", getLawById);

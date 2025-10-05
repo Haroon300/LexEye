@@ -13,11 +13,9 @@ const Category = () => {
     const fetchCategories = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/laws/categories"
-        );
-        // API returns { _id: "Human Rights", count: 22 }
-        setCategories(res.data);
+        const res = await axios.get("http://localhost:5000/api/laws/categories");
+        // ✅ API returns { success: true, categories: [...] }
+        setCategories(res.data.categories || []);
       } catch (err) {
         setError("Failed to load categories");
       } finally {
@@ -29,7 +27,7 @@ const Category = () => {
   }, []);
 
   const filteredCategories = categories.filter((cat) =>
-    cat._id.toLowerCase().includes(search.toLowerCase())
+    cat.category.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -62,11 +60,12 @@ const Category = () => {
       <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-5 w-full max-w-5xl">
         {filteredCategories.map((cat) => (
           <Link
-            key={cat._id}
-            to={`/category/${cat._id.toLowerCase().replace(/\s+/g, "-")}`}
-            className="px-4 sm:px-6 py-3 sm:py-4 bg-black/60 text-gray-300 text-center rounded-xl border border-gray-700 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:bg-[#e99b63] hover:text-black shadow-md text-sm sm:text-base md:text-lg"
+            key={cat.category}
+            to={`/category/${cat.category.toLowerCase().replace(/\s+/g, "-")}`}
+            className="px-4 py-2 bg-white/10 border border-[#89a2a6] rounded-full text-sm text-gray-200 hover:bg-white/20 flex justify-between items-center"
           >
-            {cat._id} <span className="text-sm text-gray-400">({cat.count})</span>
+            {cat.category}{" "}
+            <span className="text-sm text-gray-400">({cat.count})</span>
           </Link>
         ))}
 

@@ -16,6 +16,8 @@ import Footer from "./components/footer";
 import NotFound from "./components/NotFound";
 import NoInternet from "./components/NoInternet";
 import Comment from "./components/Comment";
+import CommentList from "./components/Comment";
+import CategoryDetail from "./components/CategoryDetail";
 
 import { useEffect, useState } from "react";
 
@@ -85,9 +87,10 @@ export default function App() {
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/category" element={<Category />} />
-              <Route path="/category/:categoryId" element={<LawList />} />
               <Route path="/laws" element={<LawList />} />
               <Route path="/law/:lawId" element={<LawDetail />} />
+              <Route path="/category/:categoryName" element={<CategoryDetail />} />
+              <Route path="/comments" element={<CommentList />} />
 
               {/* Extra Pages */}
               <Route path="/comment" element={<Comment />} />

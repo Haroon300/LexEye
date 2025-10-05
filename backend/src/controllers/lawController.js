@@ -11,9 +11,6 @@ export const createLaw = asyncWrapper(async (req, res) => {
 });
 
 
-
-
-
 // ✅ Update
 export const updateLaw = asyncWrapper(async (req, res) => {
   const law = await Law.findByIdAndUpdate(req.params.id, req.body, {
@@ -30,42 +27,49 @@ export const deleteLaw = asyncWrapper(async (req, res) => {
   res.json({ message: "Law deleted" });
 });
 
-// ✅ Get Categories with counts
-export const getCategoriesWithCounts = asyncWrapper(async (req, res) => {
-  const categories = await Law.aggregate([
-    { $group: { _id: "$category", count: { $sum: 1 } } },
-    { $sort: { count: -1 } },
-  ]);
-  res.json(categories);
-});
 
-// ✅ Read All
+// ✅ Read All (with pagination, keyword search, and category filter)
 export const getAllLaws = asyncWrapper(async (req, res) => {
-  const { page = 1, pageSize = 10, keyword } = req.query;
+  const { page = 1, pageSize = 10, keyword, category } = req.query;
   const skip = (page - 1) * pageSize;
 
-  const filter = keyword
-    ? {
-        $or: [
-          { section: { $regex: keyword, $options: "i" } },
-          { legalConcept: { $regex: keyword, $options: "i" } },
-          { description: { $regex: keyword, $options: "i" } },
-          { legalConsequence: { $regex: keyword, $options: "i" } },
-          { preventionSolutions: { $regex: keyword, $options: "i" } },
-        ],
-      }
-    : {};
+  // --- Filter ---
+  const filter = {};
 
+  // keyword filter
+  if (keyword) {
+    filter.$or = [
+      { section: { $regex: keyword, $options: "i" } },
+      { legalConcept: { $regex: keyword, $options: "i" } },
+      { description: { $regex: keyword, $options: "i" } },
+      { legalConsequence: { $regex: keyword, $options: "i" } },
+      { preventionSolutions: { $regex: keyword, $options: "i" } },
+    ];
+  }
+
+  // category filter
+  if (category) {
+    filter.category = category;
+  }
+
+  // --- Fetch Laws ---
   const laws = await Law.find(filter)
     .skip(skip)
     .limit(Number(pageSize))
     .sort({ createdAt: -1 })
-    .lean(); // 🔥 plain objects
+    .lean();
 
   const count = await Law.countDocuments(filter);
 
-  res.json({ laws, count });
+  res.json({
+    success: true,
+    currentPage: Number(page),
+    totalPages: Math.ceil(count / pageSize),
+    count,
+    laws,
+  });
 });
+
 
 // ✅ Read Single
 export const getLawById = asyncWrapper(async (req, res) => {
@@ -152,14 +156,33 @@ export const searchLaws = asyncWrapper(async (req, res) => {
 
 
 
-// 📂 Get laws by category
+// ✅ Get All Law Categories (with counts)
+export const getAllLawCategories = asyncWrapper(async (req, res) => {
+  const categories = await Law.aggregate([
+    { $group: { _id: "$category", count: { $sum: 1 } } },
+    { $sort: { count: -1 } },
+  ]);
+
+  res.json({
+    success: true,
+    categories: categories.map(c => ({
+      category: c._id,
+      count: c.count,
+    })),
+  });
+});
+
+
+// ✅ Get Laws By Category
 export const getLawsByCategory = asyncWrapper(async (req, res) => {
   const { category } = req.params;
-  const laws = await Law.find({ category });
 
-  if (!laws.length) {
-    return res.status(404).json({ error: "No laws found for this category" });
-  }
+  const laws = await Law.find({ category }).lean();
 
-  res.json(laws);
+  res.json({
+    success: true,
+    category,
+    count: laws.length,
+    laws,
+  });
 });
