@@ -13,7 +13,7 @@ const CategoryDetail = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/laws?category=${categoryName}`
+          `https://lex-eye-backend.vercel.app/api/laws?category=${categoryName}`
         );
         setLaws(res.data.laws || []);
       } catch (err) {

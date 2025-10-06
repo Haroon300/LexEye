@@ -34,7 +34,7 @@ const SearchPage = () => {
   //   },
   // ];
 
-  const handleSearch = (customQuery) => {
+  const handleSearch = () => {
     const queryToSearch = customQuery || query;
     if (!queryToSearch.trim()) return;
     navigate(`/laws?query=${encodeURIComponent(queryToSearch)}`);
@@ -76,7 +76,7 @@ const SearchPage = () => {
           {["Police Stops", "Tenancy Rights", "Harassment", "Workplace Disputes", "Digital Safety", "Consumer Issues"].map((tag) => (
             <span
               key={tag}
-              onClick={() => setQuery(tag)}
+              onClick={() => handleSearch(tag)}
               className="px-4 py-2 bg-white/10 border border-[#89a2a6] rounded-full text-sm text-gray-200 hover:bg-white/20"
             >
               {tag}

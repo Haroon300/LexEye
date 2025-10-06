@@ -173,16 +173,22 @@ export const getAllLawCategories = asyncWrapper(async (req, res) => {
 });
 
 
-// ✅ Get Laws By Category
-export const getLawsByCategory = asyncWrapper(async (req, res) => {
-  const { category } = req.params;
+export const getLawsByCategory = async (req, res) => {
+  try {
+    const { category } = req.query;
+    if (!category) {
+      return res.status(400).json({ error: "Category is required" });
+    }
 
-  const laws = await Law.find({ category }).lean();
+    // Case-insensitive search
+    const laws = await Law.find({
+      category: { $regex: new RegExp("^" + category + "$", "i") }
+    });
 
-  res.json({
-    success: true,
-    category,
-    count: laws.length,
-    laws,
-  });
-});
+    res.json({ laws });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
