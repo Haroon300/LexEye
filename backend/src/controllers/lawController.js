@@ -156,39 +156,45 @@ export const searchLaws = asyncWrapper(async (req, res) => {
 
 
 
-// ✅ Get All Law Categories (with counts)
-export const getAllLawCategories = asyncWrapper(async (req, res) => {
-  const categories = await Law.aggregate([
-    { $group: { _id: "$category", count: { $sum: 1 } } },
-    { $sort: { count: -1 } },
-  ]);
 
-  res.json({
-    success: true,
-    categories: categories.map(c => ({
-      category: c._id,
-      count: c.count,
-    })),
-  });
-});
+// ✅ Get all categories
+export const getAllLawCategories = async (req, res) => {
+  try {
+    const categories = await Law.aggregate([
+      { $group: { _id: "$category", count: { $sum: 1 } } },
+      { $project: { _id: 0, category: "$_id", count: 1 } },
+      { $sort: { category: 1 } },
+    ]);
 
+    res.status(200).json({ success: true, categories });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error fetching categories", error });
+  }
+};
 
+// getLawsByCategory (POST)
 export const getLawsByCategory = async (req, res) => {
   try {
-    const { category } = req.query;
+    let { category } = req.body;
+
     if (!category) {
       return res.status(400).json({ error: "Category is required" });
     }
 
-    // Case-insensitive search
+    // Handle slug-like names (property-law → Property Law)
+    category = category.replace(/-/g, " ");
+
     const laws = await Law.find({
-      category: { $regex: new RegExp("^" + category + "$", "i") }
+      category: { $regex: new RegExp("^" + category + "$", "i") },
     });
 
-    res.json({ laws });
+    if (laws.length === 0) {
+      return res.status(404).json({ message: "No laws found in this category" });
+    }
+
+    res.json({ success: true, laws });
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching laws by category:", error);
     res.status(500).json({ error: "Server error" });
   }
 };
-

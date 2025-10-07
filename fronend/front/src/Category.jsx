@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import Loader from "./components/Loader";
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
+  const [laws, setLaws] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // ✅ Fetch all categories
   useEffect(() => {
     const fetchCategories = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("https://lex-eye-backend.vercel.app/api/laws/categories");
-        // ✅ API returns { success: true, categories: [...] }
+        const res = await axios.get("http://localhost:5000/api/laws/categories");
         setCategories(res.data.categories || []);
       } catch (err) {
         setError("Failed to load categories");
@@ -26,55 +28,82 @@ const Category = () => {
     fetchCategories();
   }, []);
 
+  // ✅ Fetch laws when category clicked
+  const handleCategoryClick = async (category) => {
+    setLoading(true);
+    setError("");
+    setLaws([]);
+    try {
+      const res = await axios.post("http://localhost:5000/api/laws/category", {
+        category,
+      });
+      setLaws(res.data.laws || []);
+    } catch (err) {
+      setError("No laws found in this category.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filteredCategories = categories.filter((cat) =>
     cat.category.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <main className="relative mt-[20%] sm:mt-[10%] min-h-screen flex flex-col items-center px-4 sm:px-8 md:px-12 py-12">
-      {/* Glow Effect */}
-      <div className="h-0 w-[20rem] sm:w-[30rem] md:w-[40rem] absolute top-[35%] sm:top-[40%] left-[10%] sm:left-[20%] shadow-[0_0_600px_30px_#000000] sm:shadow-[0_0_900px_40px_#000000] rotate-[150deg] -z-10"></div>
+    <main className="relative mt-[20%] sm:mt-[10%] min-h-screen flex flex-col items-center px-4 sm:px-8 md:px-12 py-12 text-white">
+      <h1 className="text-4xl font-bold mb-6 text-center">Law Categories</h1>
 
-      {/* Title */}
-      <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-wide text-white mb-6 sm:mb-10 text-center">
-        Law Categories
-      </h1>
-
-      {/* Search Input */}
-      <div className="flex items-center w-full max-w-md sm:max-w-lg bg-[#89a2a6]/60 border border-[#08292e] rounded-full px-3 sm:px-4 py-2 sm:py-3 focus-within:border-[#08292e] transition-all mb-8 sm:mb-10">
-        <AiOutlineSearch className="text-[#08292e] text-lg sm:text-xl md:text-2xl" />
+      {/* 🔍 Search Bar */}
+      <div className="flex items-center w-full max-w-md bg-[#89a2a6]/60 border border-[#08292e] rounded-full px-4 py-2 mb-8">
+        <AiOutlineSearch className="text-[#08292e] text-xl" />
         <input
           type="text"
           placeholder="Search categories..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-transparent outline-none text-[#08292e] placeholder-[#08292e] px-2 sm:px-3 text-sm sm:text-base md:text-lg"
+          className="w-full bg-transparent outline-none text-[#08292e] px-2"
         />
       </div>
 
-      {/* Loading / Error */}
-      {loading && <p className="text-gray-400">Loading categories...</p>}
-      {error && <p className="text-red-400">{error}</p>}
-
-      {/* Categories Grid */}
-      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-5 w-full max-w-5xl">
+      {/* 🧾 Categories List */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-5xl">
         {filteredCategories.map((cat) => (
-          <Link
+          <button
             key={cat.category}
-            to={`/category/${cat.category.toLowerCase().replace(/\s+/g, "-")}`}
-            className="px-4 py-2 bg-white/10 border border-[#89a2a6] rounded-full text-sm text-gray-200 hover:bg-white/20 flex justify-between items-center"
+            onClick={() => handleCategoryClick(cat.category)}
+            className="px-4 py-2 bg-white/10 border border-[#89a2a6] rounded-full text-sm hover:bg-white/20"
           >
-            {cat.category}{" "}
-            <span className="text-sm text-gray-400">({cat.count})</span>
-          </Link>
+            {cat.category} ({cat.count})
+          </button>
         ))}
-
-        {filteredCategories.length === 0 && !loading && (
-          <p className="col-span-full text-gray-400 text-center text-sm sm:text-base">
-            No categories found.
-          </p>
-        )}
       </div>
+
+      {loading && <Loader />}
+      {error && <p className="mt-4 text-red-400">{error}</p>}
+
+      {/* ⚖️ Show Laws */}
+      {laws.length > 0 && (
+        <div className="mt-8 w-full max-w-3xl text-left">
+          <h2 className="text-2xl font-semibold mb-4">Laws in this Category:</h2>
+          <ul className="space-y-3">
+            {laws.map((law) => (
+              <li
+                key={law._id}
+                className="p-3 border border-[#89a2a6]/50 rounded-lg bg-white/5 hover:bg-white/20 transition"
+              >
+                <Link to={`/law/${law._id}`}>
+                  <p className="text-lg font-bold text-[#89a2a6]">
+                    {law.section || "Unnamed Law"}
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    {law.description || "No description available."}
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </main>
   );
 };

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import Loader from "./Loader";
 
 const CategoryDetail = () => {
   const { categoryName } = useParams();
@@ -12,12 +13,13 @@ const CategoryDetail = () => {
     const fetchLaws = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          `https://lex-eye-backend.vercel.app/api/laws?category=${categoryName}`
+        const res = await axios.post(
+          "http://localhost:5000/api/laws/category",
+          { category: categoryName }
         );
         setLaws(res.data.laws || []);
       } catch (err) {
-        setError("Failed to load laws");
+        setError("No laws found in this category.");
       } finally {
         setLoading(false);
       }
@@ -28,21 +30,18 @@ const CategoryDetail = () => {
 
   return (
     <main className="relative mt-[5%] min-h-screen flex flex-col items-center px-4 sm:px-8 md:px-12 py-12">
-      {/* Title */}
       <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-wide text-white mb-6 sm:mb-10 text-center capitalize">
-        {categoryName} Laws
+        {categoryName.replace(/-/g, " ")} Laws
       </h1>
 
-      {/* Loading / Error */}
-      {loading && <p className="text-gray-400">Loading laws...</p>}
+      {loading && <Loader />}
       {error && <p className="text-red-400">{error}</p>}
 
-      {/* Laws List */}
       <div className="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         {laws.map((law) => (
           <div
             key={law._id}
-            className="bg-black/60 border border-gray-700 p-4 sm:p-6 rounded-xl shadow-md hover:bg-[#e99b63] hover:text-black transition-all duration-300"
+            className="bg-black/60 border border-gray-700 p-4 sm:p-6 rounded-xl shadow-md hover:bg-white/20 hover:text-black transition-all duration-300"
           >
             <h2 className="text-lg sm:text-xl font-semibold mb-2">
               Section: {law.section}

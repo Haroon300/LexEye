@@ -15,25 +15,23 @@ const router = express.Router();
 // Create
 router.post("/", createLaw);
 
-// Read all (with pagination & optional keyword)
+// Read all
 router.get("/", getAllLaws);
 
-// Categories with counts
+// Categories
 router.get("/categories", getAllLawCategories);
 
-// Search (GET not POST ✅)
+// Search
 router.post("/search", searchLaws);
 
-// Get laws by category
-router.get("/categories/:category", getLawsByCategory);
+// ✅ Get laws by category (now POST)
+router.post("/category", getLawsByCategory);
 
-// Single law by ID
+// Single law
 router.get("/:id", getLawById);
 
-// Update law
+// Update & Delete
 router.put("/:id", updateLaw);
-
-// Delete law
 router.delete("/:id", deleteLaw);
 
 export default router;
