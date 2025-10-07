@@ -17,7 +17,7 @@ const LawDetail = () => {
     const fetchLaw = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/laws/${lawId}`
+          `https://lex-eye-backend.vercel.app/api/laws/${lawId}`
         );
         setLaw(data);
       } catch (err) {

@@ -34,7 +34,7 @@ const Category = () => {
     setError("");
     setLaws([]);
     try {
-      const res = await axios.post("http://localhost:5000/api/laws/category", {
+      const res = await axios.post("https://lex-eye-backend.vercel.app/api/laws/category", {
         category,
       });
       setLaws(res.data.laws || []);
