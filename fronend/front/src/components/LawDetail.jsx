@@ -65,6 +65,12 @@ const LawDetail = () => {
           {law.legalConsequence || "Not specified."}
         </p>
       </div>
+      <div className="p-6 mb-8 bg-[#89a2a6]/40 rounded-2xl border border-gray-700 shadow-lg">
+        <h2 className="text-2xl font-semibold mb-3">⚖️ preventionSolutions</h2>
+        <p className="text-gray-300 leading-relaxed">
+          {law.preventionSolutions || "Not provided."}
+        </p>
+      </div>
     </main>
   );
 };
