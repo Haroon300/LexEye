@@ -387,12 +387,12 @@ const LandingPage = () => {
 
           {/* CTA */}
           <div className="mt-12">
-            <a
-              href="/category"
+            <Link
+              to="/category"
               className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black font-medium rounded-full shadow hover:scale-105 transition-transform"
             >
               Explore All Guides
-            </a>
+            </Link>
           </div>
         </div>
 
