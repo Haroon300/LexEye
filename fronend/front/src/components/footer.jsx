@@ -30,20 +30,20 @@ const Footer = () => {
             <h3 className="text-sm font-normal text-white mb-4">Get Involved</h3>
             <ul className="space-y-2 text-gray-300">
               <li>
-                <a
-                  href="/Comment"
+                <Link
+                  to="/Comment"
                   className="hover:text-[#89a2a6] transition-colors"
                 >
                   Feedback & Help
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/about"
+                <Link
+                  to="/about"
                   className="hover:text-[#89a2a6] transition-colors"
                 >
                   About LexEye
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -53,30 +53,30 @@ const Footer = () => {
             <h3 className="text-sm font-normal text-white mb-4">Fast Links</h3>
             <ul className="flex flex-col gap-y-2 text-gray-300">
               <li>
-                <a href="/" className="hover:text-[#89a2a6] transition-colors">
+                <Link to="/" className="hover:text-[#89a2a6] transition-colors">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/glossary"
                   className="hover:text-[#89a2a6] transition-colors"
                 >
                   Glossary
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/faq" className="hover:text-[#89a2a6] transition-colors">
+                <Link href="/faq" className="hover:text-[#89a2a6] transition-colors">
                   FAQ
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/signin"
                   className="hover:text-[#89a2a6] transition-colors"
                 >
                   Sign In / Sign Up
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
