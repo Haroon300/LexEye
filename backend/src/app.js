@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import errorMiddleware from './middlewares/errorMiddleware.js';
 import Router from './routes/index.js';
 import lawRoutes from "./routes/lawRoutes.js";
+import BookmarkRouter from "./routes/bookmarkRoutes.js";
 import connectDB from './config/db.js';
 
 dotenv.config();
@@ -17,8 +18,9 @@ await connectDB();
 app.get("/", (reg, res)=>{res.send("server is running");});
 
 app.use("/api", Router);
-app.use("/api/user", Router);
-app.use("/api/laws", lawRoutes);
+// app.use("/api/user", Router);
+// app.use("/api/laws", lawRoutes);
+// aap.use("/api/bookmarks", BookmarkRouter);
 
 
 app.use(errorMiddleware);

@@ -15,13 +15,21 @@ export default function Header() {
   const location = useLocation();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("User");
-    if (storedUser) setUserName(storedUser);
+    // 🟢 Use correct key and parse JSON
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const userObj = JSON.parse(storedUser);
+        setUserName(userObj.name || userObj.email || "User");
+      } catch (err) {
+        console.error("Invalid user data:", err);
+      }
+    }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("User");
+    localStorage.removeItem("user");
     setUserName(null);
     setIsDropdownOpen(false);
     navigate("/signin");
@@ -35,7 +43,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 w-full flex justify-between items-center py-4 px-6 lg:px-20 bg-#092226/40 backdrop-blur-md shadow-md z-50">
+    <header className="fixed top-0 left-0 w-full flex justify-between items-center py-4 px-6 lg:px-20 bg-[#092226]/40 backdrop-blur-md shadow-md z-50">
       {/* Logo */}
       <div className="flex items-center gap-3">
         <img
@@ -50,7 +58,7 @@ export default function Header() {
 
       {/* Right Side */}
       <div className="flex items-center gap-4">
-        {/* User Avatar / Signin */}
+        {/* 🟢 User Avatar / Signin */}
         {userName ? (
           <div className="relative">
             <button
@@ -68,7 +76,7 @@ export default function Header() {
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-[#89a2a6] hover:bg-[#08292e] transition"
+                  className="w-full text-left px-4 py-2 text-sm text-[#89a2a6] hover:bg-[#08292e] hover:text-white transition"
                 >
                   Logout
                 </button>

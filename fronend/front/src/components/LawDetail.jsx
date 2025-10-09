@@ -12,7 +12,12 @@ const LawDetail = () => {
   const [law, setLaw] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
+  const user = localStorage.getItem("User");
+  const token = localStorage.getItem("token");
+
+  // --- Fetch Law ---
   useEffect(() => {
     const fetchLaw = async () => {
       try {
@@ -29,6 +34,48 @@ const LawDetail = () => {
 
     fetchLaw();
   }, [lawId]);
+
+  // --- Load bookmark state ---
+  useEffect(() => {
+    if (!user) return;
+    const savedBookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+    setIsBookmarked(savedBookmarks.some((b) => b._id === lawId));
+  }, [lawId, user]);
+
+  // --- Toggle Bookmark ---
+  const toggleBookmark = async () => {
+    if (!user) {
+      alert("Please sign in to bookmark laws.");
+      navigate("/signin");
+      return;
+    }
+
+    let updatedBookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+
+    if (isBookmarked) {
+      // Remove from bookmarks
+      updatedBookmarks = updatedBookmarks.filter((b) => b._id !== lawId);
+      setIsBookmarked(false);
+    } else {
+      // Add to bookmarks
+      updatedBookmarks.push(law);
+      setIsBookmarked(true);
+    }
+
+    // Save to localStorage
+    localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
+
+    // --- Sync with backend ---
+    try {
+      await axios.post(
+        "https://lex-eye-backend.vercel.app/api/bookmarks/sync",
+        { bookmarks: updatedBookmarks },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (err) {
+      console.error("Failed to sync bookmarks:", err.message);
+    }
+  };
 
   if (loading) return <Loader />;
   if (error || !law)
@@ -48,9 +95,21 @@ const LawDetail = () => {
         Back
       </button>
 
-      <h1 className="text-3xl sm:text-5xl font-bold mb-8 text-[#89a2a6]">
-        {law.section} — {law.legalConcept}
-      </h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl sm:text-5xl font-bold text-[#89a2a6]">
+          {law.section} — {law.legalConcept}
+        </h1>
+
+        {/* Bookmark Button */}
+        <button
+          onClick={toggleBookmark}
+          className={`text-3xl transition ${
+            isBookmarked ? "text-yellow-400" : "text-gray-400 hover:text-yellow-400"
+          }`}
+        >
+          <IoBookmarkSharp />
+        </button>
+      </div>
 
       <div className="p-6 mb-8 bg-[#89a2a6]/40 rounded-2xl border border-gray-700 shadow-lg">
         <h2 className="text-2xl font-semibold mb-3">📖 Description</h2>
@@ -65,8 +124,9 @@ const LawDetail = () => {
           {law.legalConsequence || "Not specified."}
         </p>
       </div>
+
       <div className="p-6 mb-8 bg-[#89a2a6]/40 rounded-2xl border border-gray-700 shadow-lg">
-        <h2 className="text-2xl font-semibold mb-3">⚖️ preventionSolutions</h2>
+        <h2 className="text-2xl font-semibold mb-3">🛡️ Prevention Solutions</h2>
         <p className="text-gray-300 leading-relaxed">
           {law.preventionSolutions || "Not provided."}
         </p>

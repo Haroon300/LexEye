@@ -85,7 +85,7 @@ export const searchLaws = asyncWrapper(async (req, res) => {
     return res.status(400).json({ error: "Keyword is required" });
   }
 
-  try {
+  
     // --- Break sentence into words ---
     const words = query.split(" ").filter((w) => w.length > 2);
 
@@ -144,13 +144,7 @@ export const searchLaws = asyncWrapper(async (req, res) => {
       count: results.length,
       results,
     });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server error during search",
-      error: err.message,
-    });
-  }
+  
 });
 
 
@@ -158,8 +152,8 @@ export const searchLaws = asyncWrapper(async (req, res) => {
 
 
 // ✅ Get all categories
-export const getAllLawCategories = async (req, res) => {
-  try {
+export const getAllLawCategories = asyncWrapper(async (req, res) => {
+  
     const categories = await Law.aggregate([
       { $group: { _id: "$category", count: { $sum: 1 } } },
       { $project: { _id: 0, category: "$_id", count: 1 } },
@@ -167,14 +161,12 @@ export const getAllLawCategories = async (req, res) => {
     ]);
 
     res.status(200).json({ success: true, categories });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Error fetching categories", error });
-  }
-};
+  
+});
 
 // getLawsByCategory (POST)
-export const getLawsByCategory = async (req, res) => {
-  try {
+export const getLawsByCategory = asyncWrapper(async (req, res) => {
+  
     let { category } = req.body;
 
     if (!category) {
@@ -193,8 +185,5 @@ export const getLawsByCategory = async (req, res) => {
     }
 
     res.json({ success: true, laws });
-  } catch (error) {
-    console.error("Error fetching laws by category:", error);
-    res.status(500).json({ error: "Server error" });
-  }
-};
+  
+});

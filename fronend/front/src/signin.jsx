@@ -1,57 +1,71 @@
 import img from "/gradient.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Loader from "./components/Loader";
 import axios from "axios";
+import { syncBookmarks } from "../utils/bookmarkUtils"; // optional if you added it
 
 const SignIn = () => {
-  const [data, setdata] = useState({email:"",password:""});
-  const [loader, setloader] = useState(false);
+  const [data, setData] = useState({ email: "", password: "" });
+  const [loader, setLoader] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setloader(true);
-  try {
-    const response = await axios.post("https://lex-eye-backend.vercel.app/api/auth/signin", data);
-    setloader(false);
+    e.preventDefault();
+    setLoader(true);
 
-    // Assuming your backend returns a token and user info
-    const { token, User } = response.data;
+    try {
+      const response = await axios.post(
+        "https://lex-eye-backend.vercel.app/api/auth/signin",
+        data
+      );
 
-    // Store token (e.g., in localStorage)
-    localStorage.setItem("token", token);
-    localStorage.setItem("User",User);
+      setLoader(false);
 
-    console.log("Signed in successfully:", User);
-    alert(User + " Thank you for signing in! You can now access all features.");
-    // Navigate to homepage
-    window.location.href = "/";
+      const { token, user } = response.data; // use consistent naming from backend
 
-  } catch (error) {
-    if (error.response) {
-      // Server responded with a status other than 2xx
-      console.error("Server Error:", error.response.data.message || error.response.data);
-    } else if (error.request) {
-      // Request was made but no response received
-      console.error("Network Error:", error.message);
-    } else {
-      // Something else happened
-      console.error("Error:", error.message);
+      if (!token || !user) {
+        alert("Invalid server response. Please try again.");
+        return;
+      }
+
+      // ✅ Store user + token properly
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // ✅ Optionally sync bookmarks from DB → localStorage
+      try {
+        await syncBookmarks(token);
+      } catch (err) {
+        console.warn("Could not sync bookmarks:", err.message);
+      }
+
+      alert(`Welcome ${user.name || user.email}!`);
+      navigate("/");
+
+    } catch (error) {
+      setLoader(false);
+      if (error.response) {
+        console.error("Server Error:", error.response.data.message || error.response.data);
+        alert(error.response.data.message || "Invalid credentials");
+      } else if (error.request) {
+        alert("Network error. Please check your internet connection.");
+      } else {
+        alert("Error: " + error.message);
+      }
     }
-  }
-};
+  };
 
   return (
     <>
-      {
-      loader ? (
-          <Loader />
+      {loader ? (
+        <Loader />
       ) : (
         <main className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 overflow-hidden">
           {/* Background Glow */}
           <div className="h-0 w-[40rem] absolute top-[50%] left-[25%] shadow-[0_0_900px_40px_#53674d] rotate-[150deg] -z-10"></div>
 
-          {/* Background Gradient Image */}
+          {/* Background Gradient */}
           <img
             src={img}
             className="absolute top-0 left-0 w-full h-full object-cover opacity-40 -z-20"
@@ -73,8 +87,9 @@ const SignIn = () => {
                   name="email"
                   placeholder="Enter your email"
                   value={data.email}
-                  onChange={(e) => setdata({ ...data, email: e.target.value })}
+                  onChange={(e) => setData({ ...data, email: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[#092226]"
+                  required
                 />
               </div>
 
@@ -86,8 +101,9 @@ const SignIn = () => {
                   name="password"
                   placeholder="Enter your password"
                   value={data.password}
-                  onChange={(e) => setdata({ ...data, password: e.target.value })}
+                  onChange={(e) => setData({ ...data, password: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[#092226]"
+                  required
                 />
               </div>
 
@@ -109,10 +125,8 @@ const SignIn = () => {
             </p>
           </div>
         </main>
-      )
-    }
-
-  </>
+      )}
+    </>
   );
 };
 
