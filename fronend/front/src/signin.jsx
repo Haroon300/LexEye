@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Loader from "./components/Loader";
 import axios from "axios";
-import { syncBookmarks } from "../utils/bookmarkUtils"; // optional if you added it
+import { syncBookmarks } from "./utils/bookmarkUtils"; // optional if you added it
 
 const SignIn = () => {
   const [data, setData] = useState({ email: "", password: "" });
@@ -16,22 +16,22 @@ const SignIn = () => {
 
     try {
       const response = await axios.post(
-        "https://lex-eye-backend.vercel.app/api/auth/signin",
+        "http://localhost:5000/api/auth/signin",
         data
       );
 
       setLoader(false);
 
-      const { token, user } = response.data; // use consistent naming from backend
+      const { token, User } = response.data; // use consistent naming from backend
 
-      if (!token || !user) {
+      if (!token || !User) {
         alert("Invalid server response. Please try again.");
         return;
       }
 
       // ✅ Store user + token properly
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(User));
 
       // ✅ Optionally sync bookmarks from DB → localStorage
       try {
@@ -40,7 +40,7 @@ const SignIn = () => {
         console.warn("Could not sync bookmarks:", err.message);
       }
 
-      alert(`Welcome ${user.name || user.email}!`);
+      alert(`Welcome ${User.name || User.email}!`);
       navigate("/");
 
     } catch (error) {

@@ -14,7 +14,7 @@ export const registerUser = async ({ name, email, password }) => {
   const hashed = await bcrypt.hash(password, 10);
   const otp = generateOtp();
   const otpExpiry = new Date(Date.now() + 15 * 60 * 1000);
-
+  
   const user = await User.create({
     name,
     email,
@@ -22,7 +22,8 @@ export const registerUser = async ({ name, email, password }) => {
     otp,
     otpExpiry,
   });
-
+  // console.log("test",user);
+  
   await sendEmail(
     email,
     "Your OTP Code",

@@ -1,11 +1,17 @@
 import express from "express";
-import { addBookmark, getBookmarks, removeBookmark } from "../controllers/bookmarkController.js";
+import {
+  addBookmark,
+  getBookmarks,
+  removeBookmark,
+} from "../controllers/bookmarkController.js";
 import { signinUser } from "../services/authService.js"; // JWT verify
 
 const router = express.Router();
 
-router.post("/", signinUser, addBookmark);
-router.get("/", signinUser, getBookmarks);
-router.delete("/:lawId", signinUser, removeBookmark);
+router.use(signinUser);
+
+router.post("/add", addBookmark);
+router.get("/", getBookmarks);
+router.delete("/:lawId", removeBookmark);
 
 export default router;
