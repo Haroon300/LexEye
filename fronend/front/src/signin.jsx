@@ -1,5 +1,5 @@
 import img from "/gradient.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import Loader from "./components/Loader";
 import axios from "axios";
@@ -8,52 +8,50 @@ import { syncBookmarks } from "./utils/bookmarkUtils"; // optional if you added 
 const SignIn = () => {
   const [data, setData] = useState({ email: "", password: "" });
   const [loader, setLoader] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoader(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/signin",
-        data
-      );
+  const response = await axios.post(
+    "http://localhost:5000/api/auth/signin",
+    data
+  );
 
-      setLoader(false);
+  setLoader(false);
 
-      const { token, User } = response.data; // use consistent naming from backend
+  const { token, user } = response.data; // ✅ lowercase user
 
-      if (!token || !User) {
-        alert("Invalid server response. Please try again.");
-        return;
-      }
+  if (!token || !user) {
+    alert("Invalid server response. Please try again.");
+    return;
+  }
 
-      // ✅ Store user + token properly
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(User));
+  // ✅ Store user + token properly
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(user));
 
-      // ✅ Optionally sync bookmarks from DB → localStorage
-      try {
-        await syncBookmarks(token);
-      } catch (err) {
-        console.warn("Could not sync bookmarks:", err.message);
-      }
+  try {
+    await syncBookmarks(token);
+  } catch (err) {
+    console.warn("Could not sync bookmarks:", err.message);
+  }
 
-      alert(`Welcome ${User.name || User.email}!`);
-      navigate("/");
+  alert(`Welcome ${user.name || user.email}!`);
+  window.location.href = "/";
+  
+} catch (error) {
+  setLoader(false);
+  if (error.response) {
+    alert(error.response.data.message || "Invalid credentials");
+  } else if (error.request) {
+    alert("Network error. Please check your internet connection.");
+  } else {
+    alert("Error: " + error.message);
+  }
+}
 
-    } catch (error) {
-      setLoader(false);
-      if (error.response) {
-        console.error("Server Error:", error.response.data.message || error.response.data);
-        alert(error.response.data.message || "Invalid credentials");
-      } else if (error.request) {
-        alert("Network error. Please check your internet connection.");
-      } else {
-        alert("Error: " + error.message);
-      }
-    }
   };
 
   return (

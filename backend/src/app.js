@@ -18,10 +18,6 @@ await connectDB();
 app.get("/", (reg, res)=>{res.send("server is running");});
 
 app.use("/api", Router);
-// app.use("/api/user", Router);
-// app.use("/api/laws", lawRoutes);
-// aap.use("/api/bookmarks", BookmarkRouter);
-
 
 app.use(errorMiddleware);
 export default app;

@@ -43,8 +43,18 @@ export const signinUser = async ({ email, password }) => {
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-  return { success: true, message: "User logged in successfully", token , User: user.name };
+  return {
+    success: true,
+    message: "User logged in successfully",
+    token,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email
+    }
+  };
 };
+
 
 // VERIFY OTP
 export const verifyUserOtp = async ({ email, otp }) => {
