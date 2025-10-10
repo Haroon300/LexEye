@@ -108,7 +108,7 @@ const SignIn = () => {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full hover:bg-[#08292e] bg-[#becac8] text-[#08292e] hover:text-[#becac8] hover:scale-105 font-semibold rounded-lg py-3 transition-all"
+                className="flex items-center justify-center gap-2 w-full border py-2 sm:py-3 px-8 sm:px-10 rounded-full sm:text-lg text-sm font-semibold tracking-wider transition-all duration-300 bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-[#08292e] hover:from-[#08292e] hover:to-[#111] hover:text-[#becac8] hover:scale-105"
               >
                 Sign In
               </button>

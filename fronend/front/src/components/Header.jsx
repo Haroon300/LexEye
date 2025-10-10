@@ -63,7 +63,7 @@ export default function Header() {
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="rounded-full bg-gradient-to-r from-[#89a2a6] to-[#89a2a6] h-11 w-11 flex items-center justify-center text-white text-lg font-bold shadow-md hover:scale-105 transition"
+              className="rounded-full bg-gradient-to-r from-[#0c606d] to-[#111] h-11 w-11 flex items-center justify-center text-white text-lg font-bold shadow-md hover:scale-105 transition"
             >
               {userName.charAt(0).toUpperCase()}
             </button>
@@ -76,7 +76,7 @@ export default function Header() {
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-[#89a2a6] hover:bg-[#08292e] hover:text-white transition"
+                  className="w-full text-left px-4 py-2 text-sm text-[#89a2a6] hover:bg-gradient-to-r from-[#0c606d] to-[#111] hover:text-white transition"
                 >
                   Logout
                 </button>
@@ -134,8 +134,8 @@ export default function Header() {
                 onClick={() => setIsPopupOpen(false)}
                 className={`flex flex-col items-center justify-center py-2 rounded-xl transition-all ${
                   location.pathname === to
-                    ? "bg-[#222] text-[#89a2a6]"
-                    : "bg-[#1a1a1a] text-gray-300 hover:bg-[#222] hover:text-[#89a2a6] hover:scale-105"
+                    ? " text-[#ffffff] border bg-gradient-to-r from-[#0c606d] to-[#111]"
+                    : "bg-[#1a1a1a] text-gray-300 hover:bg-gradient-to-r from-[#0c606d] to-[#111] hover:text-[#ffffff] hover:scale-105"
                 }`}
               >
                 <span className="text-3xl mb-2">{icon}</span>
