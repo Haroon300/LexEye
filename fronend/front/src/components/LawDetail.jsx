@@ -65,7 +65,7 @@ const LawDetail = () => {
   if (loading) return <Loader />;
 
   return (
-    <main className="min-h-screen px-6 sm:px-12 py-16 text-white bg-gradient-to-b from-[#0a1a1d] via-[#0f2c30] to-[#08292e]">
+    <main className="min-h-screen mt-[5%] px-6 sm:px-12 py-16 text-white bg-gradient-to-b from-[#0a1a1d] via-[#0f2c30] to-[#08292e]">
       {/* Back button */}
       <button
         onClick={() => navigate(-1)}
