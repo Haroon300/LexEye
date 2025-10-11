@@ -67,8 +67,11 @@ const LawDetail = () => {
         </button>
       </div>
       <h3>{law?.legalConcept}</h3>
+      <h4>Description:</h4>
       <p>{law?.description || "No description available."}</p>
+      <h4>legalConsequence:</h4>
       <p>{law?.legalConsequence || "No legalConsequence available."}</p>
+      <h4>preventionSolutions:</h4>
       <p>{law?.preventionSolutions || "No preventionSolutions available."}</p>
     </main>
   );
