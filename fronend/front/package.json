@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@splinetool/react-spline": "^4.1.0",
-    "aos": "^3.0.0-beta.6",
     "axios": "^1.12.1",
     "framer-motion": "^12.23.22",
     "react": "^19.1.1",
