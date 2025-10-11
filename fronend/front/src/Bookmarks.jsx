@@ -15,7 +15,7 @@ const Bookmarks = () => {
   const fetchBookmarks = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/api/bookmarks", {
+      const res = await axios.get("https://lex-eye-backend.vercel.app/api/bookmarks", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookmarks(res.data.bookmarks || []);
