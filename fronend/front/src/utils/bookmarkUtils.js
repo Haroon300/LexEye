@@ -13,7 +13,7 @@ export const saveLocalBookmarks = (bookmarks) =>
   localStorage.setItem(LOCAL_KEY, JSON.stringify(bookmarks));
 
 // --- Sync from server on login ---
-export const syncFromServer = async (token) => {
+export const Server = async (token) => {
   try {
     const res = await axios.get(API, {
       headers: { Authorization: `Bearer ${token}` },

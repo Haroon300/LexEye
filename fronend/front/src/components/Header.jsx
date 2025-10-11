@@ -1,180 +1,119 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { CgMenuGridR } from "react-icons/cg";
-import { TbBrandGoogleHome } from "react-icons/tb";
-import { AiOutlineFileSearch } from "react-icons/ai";
-import { TfiLayoutAccordionList } from "react-icons/tfi";
-import { FaBookBookmark } from "react-icons/fa6";
-import { IoClose } from "react-icons/io5";
-import { useState, useEffect } from "react";
+import img from "/gradient.png";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import Loader from "./Loader";
+import axios from "axios";
+import { Server } from "../utils/bookmarkUtils";
 
-export default function Header() {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [userName, setUserName] = useState(null);
-  const navigate = useNavigate();
-  const location = useLocation();
+const SignIn = () => {
+  const [data, setData] = useState({ email: "", password: "" });
+  const [loader, setLoader] = useState(false);
 
-  // ✅ Load user info from localStorage
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoader(true);
+
+    try {
+      const response = await axios.post(
+        "https://lex-eye-backend.vercel.app/api/auth/signin",
+        data
+      );
+
+      setLoader(false);
+
+      const { token, user } = response.data;
+
+      if (!token || !user) {
+        alert("Invalid server response. Please try again.");
+        return;
+      }
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
       try {
-        const userObj = JSON.parse(storedUser);
-        setUserName(userObj.name || userObj.email || "User");
+        await Server(token);
       } catch (err) {
-        console.error("Invalid user data:", err);
+        console.warn("Could not sync bookmarks:", err.message);
+      }
+
+      alert(`Welcome ${user.name || user.email}!`);
+      window.location.href = "/";
+    } catch (error) {
+      setLoader(false);
+      if (error.response) {
+        alert(error.response.data.message || "Invalid credentials");
+      } else if (error.request) {
+        alert("Network error. Please check your internet connection.");
+      } else {
+        alert("Error: " + error.message);
       }
     }
-  }, []);
-
-  // ✅ Logout Handler
-  const handleLogout = () => {
-    // clear auth + local data
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("offlineBookmarks");
-    localStorage.removeItem("pendingBookmarkActions");
-    localStorage.removeItem("bookmarks"); // clear synced cache
-
-    setUserName(null);
-    setIsDropdownOpen(false);
-    navigate("/signin");
   };
 
-  // ✅ Navbar links
-  const navLinks = [
-    { to: "/", label: "Home", icon: <TbBrandGoogleHome /> },
-    { to: "/search", label: "Search", icon: <AiOutlineFileSearch /> },
-    { to: "/category", label: "Category", icon: <TfiLayoutAccordionList /> },
-    { to: "/bookmarks", label: "Bookmarks", icon: <FaBookBookmark /> },
-  ];
-
   return (
-    <header className="fixed top-0 left-0 w-full flex justify-between items-center py-4 px-6 lg:px-20 bg-[#092226]/40 backdrop-blur-md shadow-md z-50">
-      {/* Logo */}
-      <div className="flex items-center gap-3">
-        <img
-          src="/logo-2.png"
-          className="w-11 h-11 rounded-lg border-none"
-          alt="LexEYE"
-        />
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-wide text-white">
-          Lex<span className="text-[#89a2a6]">Eye</span>
-        </h1>
-      </div>
-
-      {/* Right Side */}
-      <div className="flex items-center gap-4">
-        {/* 🧍 User Avatar / Signin */}
-        {userName ? (
-          <div className="relative">
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="rounded-full bg-gradient-to-r from-[#0c606d] to-[#111] h-11 w-11 flex items-center justify-center text-white text-lg font-bold shadow-md hover:scale-105 transition"
-            >
-              {userName.charAt(0).toUpperCase()}
-            </button>
-
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-3 w-40 bg-white rounded-xl shadow-xl overflow-hidden animate-fadeIn">
-                <div className="px-4 py-2 text-[#08292e] text-sm border-b">
-                  Signed in as <br />
-                  <span className="font-semibold">{userName}</span>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-[#89a2a6] hover:bg-gradient-to-r from-[#0c606d] to-[#111] hover:text-white transition"
-                >
-                  Logout
-                </button>
+    <>
+      {loader ? (
+        <Loader />
+      ) : (
+        <main className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 overflow-hidden">
+          <div className="h-0 w-[40rem] absolute top-[50%] left-[25%] shadow-[0_0_900px_40px_#53674d] rotate-[150deg] -z-10"></div>
+          <img
+            src={img}
+            className="absolute top-0 left-0 w-full h-full object-cover opacity-40 -z-20"
+            alt="background"
+          />
+          <div className="relative z-10 w-full max-w-md bg-[#092226]/40 backdrop-blur-lg rounded-2xl p-8 shadow-lg border border-gray-800">
+            <h2 className="text-3xl font-bold text-white text-center mb-6">
+              Sign In
+            </h2>
+            <form className="space-y-5" onSubmit={handleSubmit}>
+              <div>
+                <label className="block text-gray-300 mb-2 text-sm">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={data.email}
+                  onChange={(e) => setData({ ...data, email: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[#092226]"
+                  required
+                />
               </div>
-            )}
-          </div>
-        ) : (
-          <Link
-            to="/signin"
-            className="hidden min-[451px]:inline-block bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black py-2.5 px-7 rounded-full font-medium transition-all hover:shadow-lg hover:scale-105"
-          >
-            SIGN IN
-          </Link>
-        )}
-
-        {/* Popup Menu Button */}
-        <button
-          type="button"
-          onClick={() => setIsPopupOpen(true)}
-          className="text-3xl p-2 text-white hover:text-[#89a2a6] transition"
-        >
-          <CgMenuGridR />
-        </button>
-      </div>
-
-      {/* Overlay */}
-      {isPopupOpen && (
-        <div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
-          onClick={() => setIsPopupOpen(false)}
-        />
-      )}
-
-      {/* Popup Grid */}
-      {isPopupOpen && (
-        <div
-          className="fixed left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md bg-[#111] rounded-2xl shadow-2xl z-50 p-8 animate-scaleIn 
-               top-[350%] max-[450px]:top-[350%] min-[451px]:top-[300%] sm:top-[200%]"
-        >
-          {/* Close Button */}
-          <button
-            className="absolute top-4 right-4 text-3xl text-gray-400 hover:text-[#89a2a6] transition"
-            onClick={() => setIsPopupOpen(false)}
-          >
-            <IoClose />
-          </button>
-
-          {/* Grid Links */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-            {navLinks.map(({ to, label, icon }) => (
-              <Link
-                key={label}
-                to={to}
-                onClick={() => setIsPopupOpen(false)}
-                className={`flex flex-col items-center justify-center py-2 rounded-xl transition-all ${
-                  location.pathname === to
-                    ? "text-[#ffffff] border bg-gradient-to-r from-[#0c606d] to-[#111]"
-                    : "bg-[#1a1a1a] text-gray-300 hover:bg-gradient-to-r from-[#0c606d] to-[#111] hover:text-[#ffffff] hover:scale-105"
-                }`}
+              <div>
+                <label className="block text-gray-300 mb-2 text-sm">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  value={data.password}
+                  onChange={(e) =>
+                    setData({ ...data, password: e.target.value })
+                  }
+                  className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[#092226]"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="flex items-center justify-center gap-2 w-full border py-2 sm:py-3 px-8 sm:px-10 rounded-full sm:text-lg text-sm font-semibold tracking-wider transition-all duration-300 bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-[#08292e] hover:from-[#08292e] hover:to-[#111] hover:text-[#becac8] hover:scale-105"
               >
-                <span className="text-3xl mb-2">{icon}</span>
-                <span className="text-sm font-medium">{label}</span>
+                Sign In
+              </button>
+            </form>
+            <p className="text-gray-400 text-sm font-medium text-center mt-6">
+              Don’t have an account?{" "}
+              <Link to="/signup" className="text-[#becac8]/70 hover:underline">
+                Sign Up
               </Link>
-            ))}
-
-            {/* Sign In Button (for mobile) */}
-            {!userName && (
-              <Link
-                to="/signin"
-                onClick={() => setIsPopupOpen(false)}
-                className="hidden max-[450px]:flex flex-col items-center justify-center py-6 rounded-xl bg-[#1a1a1a] text-gray-300 hover:bg-[#222] hover:text-[#89a2a6] hover:scale-105 transition-all"
-              >
-                <span className="text-sm font-medium">SIGN IN</span>
-              </Link>
-            )}
+            </p>
           </div>
-        </div>
+        </main>
       )}
-
-      {/* Animations */}
-      <style>
-        {`
-          @keyframes scaleIn {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-          }
-          .animate-scaleIn {
-            animation: scaleIn 0.3s ease-out;
-          }
-        `}
-      </style>
-    </header>
+    </>
   );
-}
+};
+
+export default SignIn;

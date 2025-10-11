@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Loader from "./components/Loader";
 import axios from "axios";
-import { syncFromServer as syncBookmarks } from "./utils/bookmarkUtils";
+import { Server } from "./utils/bookmarkUtils";
 
 
 const SignIn = () => {
@@ -34,7 +34,7 @@ const SignIn = () => {
   localStorage.setItem("user", JSON.stringify(user));
 
   try {
-    await syncBookmarks(token);
+    await Server(token);
   } catch (err) {
     console.warn("Could not sync bookmarks:", err.message);
   }
