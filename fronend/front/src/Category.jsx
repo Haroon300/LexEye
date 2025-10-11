@@ -96,7 +96,7 @@ const Category = () => {
                     {law.section || "Unnamed Law"}
                   </p>
                   <p className="text-gray-300 text-sm">
-                    {law.description || "No description available."}
+                    {law.legalConcept || "No legalConcept available."}
                   </p>
                 </Link>
               </li>
