@@ -2,7 +2,7 @@ import Bookmark from "../models/bookmarkModel.js";
 import Law from "../models/lawModel.js";
 import { asyncWrapper } from "../utils/asyncWrapper.js";
 
-// ✅ Add bookmark
+// ✅ Add Bookmark
 export const addBookmark = asyncWrapper(async (req, res) => {
   const { lawId } = req.body;
   const userId = req.user?.id;
@@ -10,22 +10,22 @@ export const addBookmark = asyncWrapper(async (req, res) => {
   if (!userId) return res.status(401).json({ message: "Unauthorized" });
   if (!lawId) return res.status(400).json({ message: "Law ID is required" });
 
-  // Check if law exists
+  // Check if the law exists
   const law = await Law.findById(lawId);
   if (!law) return res.status(404).json({ message: "Law not found" });
 
-  // Get or create user bookmark document
+  // Find or create a bookmark document for this user
   let bookmarkDoc = await Bookmark.findOne({ userId });
   if (!bookmarkDoc) {
     bookmarkDoc = await Bookmark.create({ userId, bookmarks: [] });
   }
 
-  // Check if already bookmarked
+  // Check if this law is already bookmarked
   const already = bookmarkDoc.bookmarks.some((b) => b._id === lawId);
   if (already)
     return res.status(400).json({ message: "Already bookmarked" });
 
-  // Add new law details
+  // Add this law to the bookmarks array
   bookmarkDoc.bookmarks.push({
     _id: law._id.toString(),
     section: law.section,
@@ -56,7 +56,7 @@ export const getBookmarks = asyncWrapper(async (req, res) => {
   });
 });
 
-// ✅ Remove bookmark
+// ✅ Remove a bookmark
 export const removeBookmark = asyncWrapper(async (req, res) => {
   const { lawId } = req.params;
   const userId = req.user?.id;
@@ -69,6 +69,8 @@ export const removeBookmark = asyncWrapper(async (req, res) => {
     return res.status(404).json({ message: "No bookmarks found" });
 
   const before = bookmarkDoc.bookmarks.length;
+
+  // Filter out the removed one
   bookmarkDoc.bookmarks = bookmarkDoc.bookmarks.filter((b) => b._id !== lawId);
 
   if (bookmarkDoc.bookmarks.length === before)

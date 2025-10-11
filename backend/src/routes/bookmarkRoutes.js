@@ -4,12 +4,14 @@ import {
   getBookmarks,
   removeBookmark,
 } from "../controllers/bookmarkController.js";
-import { signinUser } from "../services/authService.js"; // JWT verify
+import { verifyUser } from "../middlewares/authMiddleware.js"; // ⬅️ correct JWT middleware
 
 const router = express.Router();
 
-router.use(signinUser);
+// All routes require authentication
+router.use(verifyUser);
 
+// Routes
 router.post("/add", addBookmark);
 router.get("/", getBookmarks);
 router.delete("/:lawId", removeBookmark);
