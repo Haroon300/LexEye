@@ -315,13 +315,13 @@ const LandingPage = () => {
                   icon: "💼",
                   title: "Workplace Disputes",
                   desc: "Harassment, unfair dismissal, and labor rights explained.",
-                  link: "/law?query=workplace",
+                  link: "/law/search?query=workplace",
                 },
                 {
                   icon: "🚔",
                   title: "Police Interactions",
                   desc: "Your rights during traffic stops and FIR processes.",
-                  link: "/law?query=police",
+                  link: "/law/search?query=police",
                 },
               ],
               [
@@ -329,13 +329,13 @@ const LandingPage = () => {
                   icon: "🏠",
                   title: "Landlord & Tenant",
                   desc: "Tenancy agreements, rent hikes, and eviction rules.",
-                  link: "/law?query=landlord",
+                  link: "/law/search?query=landlord",
                 },
                 {
                   icon: "🛡️",
                   title: "Gender Harassment",
                   desc: "Filing complaints and understanding legal protections.",
-                  link: "/law?query=harassment",
+                  link: "/law/search?queryharassment",
                 },
               ],
               [
@@ -343,13 +343,13 @@ const LandingPage = () => {
                   icon: "🛒",
                   title: "Consumer Protection",
                   desc: "Refunds, fraud complaints, and buyer’s rights.",
-                  link: "/law?query=consumer",
+                  link: "/law/search?query=consumer",
                 },
                 {
                   icon: "📄",
                   title: "Property Rights",
                   desc: "Ownership transfers and dispute resolution made simple.",
-                  link: "/law?query=property",
+                  link: "/law/search?query=property",
                 },
               ],
             ].map((colItems, colIdx) => (
