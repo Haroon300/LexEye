@@ -58,7 +58,7 @@ const LawDetail = () => {
         <TiArrowBack className="mr-2 text-2xl" /> Back
       </button>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">{law?.section} — {law?.legalConcept}</h1>
+        <h1 className="text-3xl font-bold">{law?.section}</h1>
         <button
           onClick={toggleBookmark}
           className={`text-3xl ${isBookmarked ? "text-yellow-400" : "text-gray-400 hover:text-yellow-400"}`}
@@ -66,7 +66,10 @@ const LawDetail = () => {
           <IoBookmarkSharp />
         </button>
       </div>
+      <h3>{law?.legalConcept}</h3>
       <p>{law?.description || "No description available."}</p>
+      <p>{law?.legalConsequence || "No legalConsequence available."}</p>
+      <p>{law?.preventionSolutions || "No preventionSolutions available."}</p>
     </main>
   );
 };
