@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import Loader from "./components/Loader";
-import { syncBookmarks } from "./utils/bookmarkUtils"; // optional if you added it
 
 const SignUp = () => {
   const [data, setData] = useState({ name: "", email: "", password: "" });
