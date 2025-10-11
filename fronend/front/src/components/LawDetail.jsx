@@ -66,12 +66,12 @@ const LawDetail = () => {
           <IoBookmarkSharp />
         </button>
       </div>
-      <h3>{law?.legalConcept}</h3>
-      <h4>Description:</h4>
+      <h2>{law?.legalConcept}</h2>
+      <h3>Description:</h3>
       <p>{law?.description || "No description available."}</p>
-      <h4>legalConsequence:</h4>
+      <h3>legalConsequence:</h3>
       <p>{law?.legalConsequence || "No legalConsequence available."}</p>
-      <h4>preventionSolutions:</h4>
+      <h3>preventionSolutions:</h3>
       <p>{law?.preventionSolutions || "No preventionSolutions available."}</p>
     </main>
   );
