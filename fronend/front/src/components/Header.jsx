@@ -32,6 +32,7 @@ export default function Header() {
     // clear auth + local data
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("User");
     localStorage.removeItem("offlineBookmarks");
     localStorage.removeItem("pendingBookmarkActions");
     localStorage.removeItem("bookmarks"); // clear synced cache
