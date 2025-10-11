@@ -59,8 +59,8 @@ const Bookmarks = () => {
               key={law._id}
               className="p-6 bg-black/60 rounded-xl border border-gray-700 shadow-md"
             >
-              <h2 className="text-xl font-semibold mb-2">{law.title}</h2>
-              <p className="text-gray-400 mb-4">{law.description}</p>
+              <h2 className="text-xl font-semibold mb-2">{law.section}</h2>
+              <p className="text-gray-400 mb-4">{law.legalConcept}</p>
 
               <div className="flex justify-between">
                 <Link
