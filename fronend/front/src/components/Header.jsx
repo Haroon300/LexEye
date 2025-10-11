@@ -14,8 +14,8 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // ✅ Load user info from localStorage
   useEffect(() => {
-    // 🟢 Use correct key and parse JSON
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       try {
@@ -27,17 +27,21 @@ export default function Header() {
     }
   }, []);
 
+  // ✅ Logout Handler
   const handleLogout = () => {
+    // clear auth + local data
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    localStorage.removeItem("offlineBookmarks"); // 🧹 clear local
-
+    localStorage.removeItem("offlineBookmarks");
+    localStorage.removeItem("pendingBookmarkActions");
+    localStorage.removeItem("bookmarks"); // clear synced cache
 
     setUserName(null);
     setIsDropdownOpen(false);
     navigate("/signin");
   };
 
+  // ✅ Navbar links
   const navLinks = [
     { to: "/", label: "Home", icon: <TbBrandGoogleHome /> },
     { to: "/search", label: "Search", icon: <AiOutlineFileSearch /> },
@@ -61,7 +65,7 @@ export default function Header() {
 
       {/* Right Side */}
       <div className="flex items-center gap-4">
-        {/* 🟢 User Avatar / Signin */}
+        {/* 🧍 User Avatar / Signin */}
         {userName ? (
           <div className="relative">
             <button
@@ -87,7 +91,6 @@ export default function Header() {
             )}
           </div>
         ) : (
-          // Show only when width > 450
           <Link
             to="/signin"
             className="hidden min-[451px]:inline-block bg-gradient-to-r from-[#89a2a6] to-[#becac8] text-black py-2.5 px-7 rounded-full font-medium transition-all hover:shadow-lg hover:scale-105"
@@ -137,7 +140,7 @@ export default function Header() {
                 onClick={() => setIsPopupOpen(false)}
                 className={`flex flex-col items-center justify-center py-2 rounded-xl transition-all ${
                   location.pathname === to
-                    ? " text-[#ffffff] border bg-gradient-to-r from-[#0c606d] to-[#111]"
+                    ? "text-[#ffffff] border bg-gradient-to-r from-[#0c606d] to-[#111]"
                     : "bg-[#1a1a1a] text-gray-300 hover:bg-gradient-to-r from-[#0c606d] to-[#111] hover:text-[#ffffff] hover:scale-105"
                 }`}
               >
@@ -146,7 +149,7 @@ export default function Header() {
               </Link>
             ))}
 
-            {/* Sign In in Grid only when width ≤ 450 */}
+            {/* Sign In Button (for mobile) */}
             {!userName && (
               <Link
                 to="/signin"
