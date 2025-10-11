@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { GrView } from "react-icons/gr";
-import { loadLocalBookmarks, removeBookmark } from "../utils/bookmarkUtils";
+import { loadLocalBookmarks, removeBookmark } from "./utils/bookmarkUtils";
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);
