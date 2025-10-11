@@ -4,7 +4,10 @@ import { IoBookmarkSharp } from "react-icons/io5";
 import { TiArrowBack } from "react-icons/ti";
 import axios from "axios";
 import Loader from "./Loader";
-import { addBookmark, removeBookmark } from "../utils/bookmarkUtils";
+
+const LAW_CACHE_KEY = "offlineLaws";
+const BOOKMARK_KEY = "offlineBookmarks";
+const PENDING_SYNC_KEY = "pendingBookmarkActions";
 
 const LawDetail = () => {
   const { lawId } = useParams();
@@ -18,38 +21,61 @@ const LawDetail = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
 
-  // --- Fetch Law details ---
+  // ✅ Helper: Load cached laws
+  const loadCachedLaws = () => {
+    const data = localStorage.getItem(LAW_CACHE_KEY);
+    return data ? JSON.parse(data) : [];
+  };
+
+  // ✅ Helper: Save law to cache
+  const cacheLaw = (lawData) => {
+    const cached = loadCachedLaws();
+    const exists = cached.some((l) => l._id === lawData._id);
+    if (!exists) {
+      localStorage.setItem(LAW_CACHE_KEY, JSON.stringify([...cached, lawData]));
+    }
+  };
+
+  // ✅ Fetch law (with offline fallback)
   useEffect(() => {
     const fetchLaw = async () => {
+      if (!navigator.onLine) {
+        const cached = loadCachedLaws();
+        const found = cached.find((l) => l._id === lawId);
+        if (found) {
+          setLaw(found);
+          setLoading(false);
+        } else {
+          setError("Law not available offline.");
+          setLoading(false);
+        }
+        return;
+      }
+
       try {
         const { data } = await axios.get(
           `https://lex-eye-backend.vercel.app/api/laws/${lawId}`
         );
         setLaw(data);
+        cacheLaw(data);
       } catch (err) {
         setError("Failed to fetch law details.");
       } finally {
         setLoading(false);
       }
     };
+
     fetchLaw();
   }, [lawId]);
 
-  // --- Check if current law is bookmarked (from localStorage) ---
+  // ✅ Check if law is bookmarked (localStorage)
   useEffect(() => {
-    if (!user) return;
-
-    const saved = JSON.parse(localStorage.getItem("bookmarks")) || [];
-
-    // handle both ID strings and object arrays
-    const found = saved.some((b) =>
-      typeof b === "string" ? b === lawId : b?._id === lawId
-    );
-
+    const saved = JSON.parse(localStorage.getItem(BOOKMARK_KEY)) || [];
+    const found = saved.some((b) => b._id === lawId || b.id === lawId);
     setIsBookmarked(found);
-  }, [lawId, user]);
+  }, [lawId]);
 
-  // --- Toggle Bookmark (Add / Remove) ---
+  // ✅ Toggle Bookmark (works online + offline)
   const toggleBookmark = async () => {
     if (!user) {
       alert("Please sign in to bookmark laws.");
@@ -58,18 +84,87 @@ const LawDetail = () => {
     }
 
     try {
+      const saved = JSON.parse(localStorage.getItem(BOOKMARK_KEY)) || [];
+      let updated = [...saved];
+
       if (isBookmarked) {
-        await removeBookmark(lawId, token);
+        // Remove bookmark
+        updated = saved.filter((b) => b._id !== lawId && b.id !== lawId);
+        localStorage.setItem(BOOKMARK_KEY, JSON.stringify(updated));
         setIsBookmarked(false);
+
+        // Queue sync if offline
+        if (!navigator.onLine) {
+          const pending = JSON.parse(localStorage.getItem(PENDING_SYNC_KEY)) || [];
+          pending.push({ type: "remove", lawId });
+          localStorage.setItem(PENDING_SYNC_KEY, JSON.stringify(pending));
+          return;
+        }
+
+        // Sync with server if online
+        await axios.delete(`/api/bookmarks/${lawId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       } else {
-        await addBookmark(lawId, token);
+        // Add bookmark
+        const newBookmark = { _id: lawId, title: law.title, description: law.description };
+        updated.push(newBookmark);
+        localStorage.setItem(BOOKMARK_KEY, JSON.stringify(updated));
         setIsBookmarked(true);
+
+        // Queue sync if offline
+        if (!navigator.onLine) {
+          const pending = JSON.parse(localStorage.getItem(PENDING_SYNC_KEY)) || [];
+          pending.push({ type: "add", law: newBookmark });
+          localStorage.setItem(PENDING_SYNC_KEY, JSON.stringify(pending));
+          return;
+        }
+
+        // Sync with server if online
+        await axios.post(
+          `/api/bookmarks`,
+          { lawId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
       }
     } catch (err) {
-      console.error("Bookmark action failed:", err.response?.data || err.message);
+      console.error("❌ Bookmark action failed:", err.message);
     }
   };
 
+  // ✅ Sync pending actions when back online
+  useEffect(() => {
+    const syncPendingActions = async () => {
+      const pending = JSON.parse(localStorage.getItem(PENDING_SYNC_KEY)) || [];
+      if (pending.length === 0 || !navigator.onLine) return;
+
+      for (const action of pending) {
+        try {
+          if (action.type === "add") {
+            await axios.post(
+              `/api/bookmarks`,
+              { lawId: action.law._id },
+              { headers: { Authorization: `Bearer ${token}` } }
+            );
+          } else if (action.type === "remove") {
+            await axios.delete(`/api/bookmarks/${action.lawId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+          }
+        } catch (err) {
+          console.warn("⚠️ Sync failed for:", action, err.message);
+        }
+      }
+
+      // Clear pending queue after sync
+      localStorage.removeItem(PENDING_SYNC_KEY);
+    };
+
+    window.addEventListener("online", syncPendingActions);
+    return () => window.removeEventListener("online", syncPendingActions);
+  }, []);
+
+  // --- UI ---
   if (loading) return <Loader />;
 
   if (error || !law)
