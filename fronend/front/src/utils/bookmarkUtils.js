@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = (import.meta.env.VITE_API_URL || "") + "/bookmarks";
+const API = "https://lex-eye-backend.vercel.app/api/bookmarks";
 
 // --- Normalize backend response ---
 const normalize = (arr = []) =>
