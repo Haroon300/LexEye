@@ -4,230 +4,69 @@ import { IoBookmarkSharp } from "react-icons/io5";
 import { TiArrowBack } from "react-icons/ti";
 import axios from "axios";
 import Loader from "./Loader";
-
-const LAW_CACHE_KEY = "offlineLaws";
-const BOOKMARK_KEY = "offlineBookmarks";
-const PENDING_SYNC_KEY = "pendingBookmarkActions";
+import { addBookmark, removeBookmark, loadLocalBookmarks, processPendingSyncs } from "../utils/bookmarkUtils";
 
 const LawDetail = () => {
   const { lawId } = useParams();
   const navigate = useNavigate();
-
   const [law, setLaw] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [isBookmarked, setIsBookmarked] = useState(false);
-
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
 
-  // ✅ Helper: Load cached laws
-  const loadCachedLaws = () => {
-    const data = localStorage.getItem(LAW_CACHE_KEY);
-    return data ? JSON.parse(data) : [];
-  };
-
-  // ✅ Helper: Save law to cache
-  const cacheLaw = (lawData) => {
-    const cached = loadCachedLaws();
-    const exists = cached.some((l) => l._id === lawData._id);
-    if (!exists) {
-      localStorage.setItem(LAW_CACHE_KEY, JSON.stringify([...cached, lawData]));
-    }
-  };
-
-  // ✅ Fetch law (with offline fallback)
   useEffect(() => {
     const fetchLaw = async () => {
-      if (!navigator.onLine) {
-        const cached = loadCachedLaws();
-        const found = cached.find((l) => l._id === lawId);
-        if (found) {
-          setLaw(found);
-          setLoading(false);
-        } else {
-          setError("Law not available offline.");
-          setLoading(false);
-        }
-        return;
-      }
-
       try {
-        const { data } = await axios.get(
-          `https://lex-eye-backend.vercel.app/api/laws/${lawId}`
-        );
+        const { data } = await axios.get(`https://lex-eye-backend.vercel.app/api/laws/${lawId}`);
         setLaw(data);
-        cacheLaw(data);
-      } catch (err) {
-        setError("Failed to fetch law details.");
+      } catch {
+        const local = loadLocalBookmarks();
+        const found = local.find((l) => l._id === lawId);
+        setLaw(found || null);
       } finally {
         setLoading(false);
       }
     };
-
     fetchLaw();
   }, [lawId]);
 
-  // ✅ Check if law is bookmarked (localStorage)
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem(BOOKMARK_KEY)) || [];
-    const found = saved.some((b) => b._id === lawId || b.id === lawId);
-    setIsBookmarked(found);
-  }, [lawId]);
+    const local = loadLocalBookmarks();
+    setIsBookmarked(local.some((b) => b._id === lawId));
+    window.addEventListener("online", () => processPendingSyncs(token));
+    return () => window.removeEventListener("online", () => processPendingSyncs(token));
+  }, [lawId, token]);
 
-  // ✅ Toggle Bookmark (works online + offline)
   const toggleBookmark = async () => {
-    if (!user) {
-      alert("Please sign in to bookmark laws.");
-      navigate("/signin");
-      return;
-    }
+    if (!law) return;
+    if (!token) return navigate("/signin");
 
-    try {
-      const saved = JSON.parse(localStorage.getItem(BOOKMARK_KEY)) || [];
-      let updated = [...saved];
-
-      if (isBookmarked) {
-        // Remove bookmark
-        updated = saved.filter((b) => b._id !== lawId && b.id !== lawId);
-        localStorage.setItem(BOOKMARK_KEY, JSON.stringify(updated));
-        setIsBookmarked(false);
-
-        // Queue sync if offline
-        if (!navigator.onLine) {
-          const pending = JSON.parse(localStorage.getItem(PENDING_SYNC_KEY)) || [];
-          pending.push({ type: "remove", lawId });
-          localStorage.setItem(PENDING_SYNC_KEY, JSON.stringify(pending));
-          return;
-        }
-
-        // Sync with server if online
-        await axios.delete(`/api/bookmarks/${lawId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      } else {
-        // Add bookmark
-        const newBookmark = { _id: lawId, title: law.title, description: law.description };
-        updated.push(newBookmark);
-        localStorage.setItem(BOOKMARK_KEY, JSON.stringify(updated));
-        setIsBookmarked(true);
-
-        // Queue sync if offline
-        if (!navigator.onLine) {
-          const pending = JSON.parse(localStorage.getItem(PENDING_SYNC_KEY)) || [];
-          pending.push({ type: "add", law: newBookmark });
-          localStorage.setItem(PENDING_SYNC_KEY, JSON.stringify(pending));
-          return;
-        }
-
-        // Sync with server if online
-        await axios.post(
-          `/api/bookmarks`,
-          { lawId },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-      }
-    } catch (err) {
-      console.error("❌ Bookmark action failed:", err.message);
+    if (isBookmarked) {
+      await removeBookmark(law._id, token);
+      setIsBookmarked(false);
+    } else {
+      await addBookmark(law, token);
+      setIsBookmarked(true);
     }
   };
 
-  // ✅ Sync pending actions when back online
-  useEffect(() => {
-    const syncPendingActions = async () => {
-      const pending = JSON.parse(localStorage.getItem(PENDING_SYNC_KEY)) || [];
-      if (pending.length === 0 || !navigator.onLine) return;
-
-      for (const action of pending) {
-        try {
-          if (action.type === "add") {
-            await axios.post(
-              `/api/bookmarks`,
-              { lawId: action.law._id },
-              { headers: { Authorization: `Bearer ${token}` } }
-            );
-          } else if (action.type === "remove") {
-            await axios.delete(`/api/bookmarks/${action.lawId}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-          }
-        } catch (err) {
-          console.warn("⚠️ Sync failed for:", action, err.message);
-        }
-      }
-
-      // Clear pending queue after sync
-      localStorage.removeItem(PENDING_SYNC_KEY);
-    };
-
-    window.addEventListener("online", syncPendingActions);
-    return () => window.removeEventListener("online", syncPendingActions);
-  }, []);
-
-  // --- UI ---
   if (loading) return <Loader />;
 
-  if (error || !law)
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-[#08292e] text-[#89a2a6]">
-        <p>{error || "Law details not found."}</p>
-      </main>
-    );
-
   return (
-    <main className="relative min-h-screen mt-[6%] px-6 sm:px-12 py-16 text-white">
-      {/* Back Button */}
-      <button
-        onClick={() => navigate(-1)}
-        className="flex items-center mb-10 px-5 py-2 hover:text-[#89a2a6] text-white font-semibold"
-      >
-        <TiArrowBack className="text-2xl mr-2" />
-        Back
+    <main className="min-h-screen text-white mt-[5%] px-8 py-16">
+      <button onClick={() => navigate(-1)} className="mb-8 flex items-center">
+        <TiArrowBack className="mr-2 text-2xl" /> Back
       </button>
-
-      {/* Header with Bookmark */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl sm:text-5xl font-bold text-[#89a2a6]">
-          {law.section} — {law.legalConcept}
-        </h1>
-
-        {/* ⭐ Bookmark Button */}
+        <h1 className="text-3xl font-bold">{law?.section} — {law?.legalConcept}</h1>
         <button
           onClick={toggleBookmark}
-          className={`text-3xl transition ${
-            isBookmarked
-              ? "text-yellow-400"
-              : "text-gray-400 hover:text-yellow-400"
-          }`}
-          title={isBookmarked ? "Remove Bookmark" : "Add Bookmark"}
+          className={`text-3xl ${isBookmarked ? "text-yellow-400" : "text-gray-400 hover:text-yellow-400"}`}
         >
           <IoBookmarkSharp />
         </button>
       </div>
-
-      {/* Description */}
-      <div className="p-6 mb-8 bg-[#89a2a6]/40 rounded-2xl border border-gray-700 shadow-lg">
-        <h2 className="text-2xl font-semibold mb-3">📖 Description</h2>
-        <p className="text-gray-300 leading-relaxed">
-          {law.description || "No description provided."}
-        </p>
-      </div>
-
-      {/* Legal Consequence */}
-      <div className="p-6 mb-8 bg-[#89a2a6]/40 rounded-2xl border border-gray-700 shadow-lg">
-        <h2 className="text-2xl font-semibold mb-3">⚖️ Legal Consequence</h2>
-        <p className="text-gray-300 leading-relaxed">
-          {law.legalConsequence || "Not specified."}
-        </p>
-      </div>
-
-      {/* Prevention Solutions */}
-      <div className="p-6 mb-8 bg-[#89a2a6]/40 rounded-2xl border border-gray-700 shadow-lg">
-        <h2 className="text-2xl font-semibold mb-3">🛡️ Prevention Solutions</h2>
-        <p className="text-gray-300 leading-relaxed">
-          {law.preventionSolutions || "Not provided."}
-        </p>
-      </div>
+      <p>{law?.description || "No description available."}</p>
     </main>
   );
 };

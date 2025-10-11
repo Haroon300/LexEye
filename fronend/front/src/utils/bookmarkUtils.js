@@ -1,65 +1,106 @@
 import axios from "axios";
 
 const API = "https://lex-eye-backend.vercel.app/api/bookmarks";
+const LOCAL_KEY = "offlineBookmarks";
+const PENDING_SYNC_KEY = "pendingBookmarkActions";
 
-// --- Normalize backend response ---
-const normalize = (arr = []) =>
-  arr
-    .map((b) => {
-      if (!b) return null;
+// --- Load Local ---
+export const loadLocalBookmarks = () =>
+  JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]");
 
-      if (b._id && b.section) return b; // Already a law object
-      if (b.lawId && typeof b.lawId === "object") return b.lawId; // Populated case
-      if (typeof b === "string") return { _id: b }; // String-only case
+// --- Save Local ---
+export const saveLocalBookmarks = (bookmarks) =>
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(bookmarks));
 
-      return null;
-    })
-    .filter(Boolean);
-
-// --- Get bookmarks from backend ---
-export const getBookmarks = async (token) => {
+// --- Sync from server on login ---
+export const syncFromServer = async (token) => {
   try {
     const res = await axios.get(API, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
-
-    const raw = res.data?.bookmarks ?? [];
-    const laws = normalize(raw);
-    localStorage.setItem("bookmarks", JSON.stringify(laws));
-    return laws;
-  } catch (err) {
-    console.error("getBookmarks error:", err.response?.data || err.message);
-    return [];
-  }
-};
-
-// --- Add bookmark ---
-export const addBookmark = async (lawId, token) => {
-  try {
-    await axios.post(
-      `${API}/add`,
-      { lawId },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    return await getBookmarks(token);
-  } catch (err) {
-    console.error("addBookmark error:", err.response?.data || err.message);
-    throw err;
-  }
-};
-
-// --- Remove bookmark ---
-export const removeBookmark = async (lawId, token) => {
-  try {
-    await axios.delete(`${API}/${lawId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return await getBookmarks(token);
+    const data = res.data.bookmarks || [];
+    saveLocalBookmarks(data);
+    return data;
   } catch (err) {
-    console.error("removeBookmark error:", err.response?.data || err.message);
-    throw err;
+    console.error("⚠️ Sync from server failed:", err.message);
+    return loadLocalBookmarks();
   }
 };
 
-// --- Alias ---
-export const syncBookmarks = getBookmarks;
+// --- Add Bookmark ---
+export const addBookmark = async (law, token) => {
+  const current = loadLocalBookmarks();
+  if (!current.some((b) => b._id === law._id)) {
+    const updated = [...current, law];
+    saveLocalBookmarks(updated);
+  }
+
+  // Online Sync
+  if (navigator.onLine && token) {
+    try {
+      await axios.post(
+        `${API}/add`,
+        { lawId: law._id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (err) {
+      console.warn("⚠️ Add bookmark sync failed, queueing:", err.message);
+      queueSyncAction({ type: "add", law });
+    }
+  } else {
+    queueSyncAction({ type: "add", law });
+  }
+};
+
+// --- Remove Bookmark ---
+export const removeBookmark = async (lawId, token) => {
+  const updated = loadLocalBookmarks().filter((b) => b._id !== lawId);
+  saveLocalBookmarks(updated);
+
+  // Online Sync
+  if (navigator.onLine && token) {
+    try {
+      await axios.delete(`${API}/${lawId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (err) {
+      console.warn("⚠️ Remove bookmark sync failed, queueing:", err.message);
+      queueSyncAction({ type: "remove", lawId });
+    }
+  } else {
+    queueSyncAction({ type: "remove", lawId });
+  }
+};
+
+// --- Queue offline sync actions ---
+const queueSyncAction = (action) => {
+  const pending = JSON.parse(localStorage.getItem(PENDING_SYNC_KEY) || "[]");
+  pending.push(action);
+  localStorage.setItem(PENDING_SYNC_KEY, JSON.stringify(pending));
+};
+
+// --- Process pending syncs on reconnect ---
+export const processPendingSyncs = async (token) => {
+  const pending = JSON.parse(localStorage.getItem(PENDING_SYNC_KEY) || "[]");
+  if (pending.length === 0 || !navigator.onLine) return;
+
+  for (const action of pending) {
+    try {
+      if (action.type === "add") {
+        await axios.post(
+          `${API}/add`,
+          { lawId: action.law._id },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      } else if (action.type === "remove") {
+        await axios.delete(`${API}/${action.lawId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      }
+    } catch (err) {
+      console.warn("⚠️ Sync failed for", action, err.message);
+    }
+  }
+
+  localStorage.removeItem(PENDING_SYNC_KEY);
+};

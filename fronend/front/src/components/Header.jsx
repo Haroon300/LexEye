@@ -30,6 +30,9 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("offlineBookmarks"); // 🧹 clear local
+
+
     setUserName(null);
     setIsDropdownOpen(false);
     navigate("/signin");
