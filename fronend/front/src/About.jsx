@@ -10,10 +10,10 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen mt-[5%] bg-gradient-to-b from-gray-900 to-gray-800 text-white px-6 py-12">
+    <div className="min-h-screen mt-[5%] bg-gradient-to-b from-[#08292e] to-gray-800 text-white px-6 py-12">
       <div className="max-w-5xl mx-auto">
         {/* Heading */}
-        <h1 className="text-4xl font-bold text-center mb-6 text-green-400">
+        <h1 className="text-4xl font-bold text-center mb-6 text-[#89a2a6]">
           About <span className="text-white">LexEye</span>
         </h1>
 
@@ -23,8 +23,8 @@ const About = () => {
           platform developed by <strong>Team Mavericks</strong>. It aims to
           simplify access to legal documents, laws, and regulations by providing
           a fast, intelligent, and user-friendly interface. Users can easily
-          search, bookmark, and explore laws using powerful search tools powered
-          by AI and modern web technologies.
+          search, bookmark, and explore laws using powerful search 
+          algorithms and modern web technologies.
         </p>
 
         <p className="text-gray-300 text-lg leading-relaxed mb-10 text-justify">
@@ -35,7 +35,7 @@ const About = () => {
         </p>
 
         {/* Team Section */}
-        <h2 className="text-3xl font-semibold text-green-400 mb-4">
+        <h2 className="text-3xl font-semibold text-[#89a2a6] mb-4">
           Meet the Team Mavericks 👥
         </h2>
 
@@ -48,10 +48,10 @@ const About = () => {
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full border border-gray-700 rounded-lg overflow-hidden">
-            <thead className="bg-gray-800">
+            <thead className="bg-gradient-to-r from-[#0c606d] to-[#111]">
               <tr>
-                <th className="py-3 px-4 text-left text-green-400">Member Name</th>
-                <th className="py-3 px-4 text-left text-green-400">Role</th>
+                <th className="py-3 px-4 text-left text-white">Member Name</th>
+                <th className="py-3 px-4 text-left text-white">Role</th>
               </tr>
             </thead>
             <tbody>
