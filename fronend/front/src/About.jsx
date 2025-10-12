@@ -10,7 +10,7 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen mt-[5%] bg-gradient-to-b from-[#08292e] to-gray-800 text-white px-6 py-12">
+    <div className="min-h-screen mt-[5%] bg-[#08292e] text-white px-6 py-12">
       <div className="max-w-5xl mx-auto">
         {/* Heading */}
         <h1 className="text-4xl font-bold text-center mb-6 text-[#89a2a6]">
