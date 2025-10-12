@@ -1,15 +1,11 @@
 import { Link } from "react-router-dom";
 import {
-  FaSearch,
   FaBook,
-  FaBookmark,
   FaLightbulb,
   FaArrowRight,
   FaBalanceScale,
 } from "react-icons/fa";
-import { IoDiamondSharp } from "react-icons/io5";
 import { SiChainlink } from "react-icons/si";
-import { RiExternalLinkFill } from "react-icons/ri";
 import Spline from "@splinetool/react-spline";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
