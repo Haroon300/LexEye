@@ -68,11 +68,11 @@ const LawDetail = () => {
     <main className="min-h-screen mt-[5%] px-6 sm:px-12 py-16 text-white bg-gradient-to-b from-[#0a1a1d] via-[#0f2c30] to-[#08292e]">
       {/* Back button */}
       <button
-        onClick={() => navigate(-1)}
-        className="flex items-center text-gray-300 hover:text-white mb-10 transition-all duration-200"
-      >
-        <TiArrowBack className="mr-2 text-2xl" />
-        Back
+              onClick={() => navigate(-1)}
+              className="flex items-center bg-gradient-to-r from-[#89a2a6] to-[#becac8]  text-white hover:text-white  hover:from-[#0c606d] hover:to-[#111]  rounded-full px-4 py-2 mb-10 transition-all duration-200"
+            >
+              <TiArrowBack className="mr-2 text-2xl" />
+              Back
       </button>
 
       {/* Header section */}
