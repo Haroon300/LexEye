@@ -46,7 +46,7 @@ export default function FeedbackPage() {
                 id="name"
                 type="text"
                 name="name"
-                placeholder="John Doe"
+                placeholder="Full Name"
                 required
                 className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-700 text-white 
                   focus:outline-none focus:border-[#89a2a6] focus:shadow-[0_0_10px_#89a2a6] transition"
