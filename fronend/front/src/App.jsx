@@ -18,6 +18,7 @@ import NoInternet from "./components/NoInternet";
 import Comment from "./components/Comment";
 import CommentList from "./components/Comment";
 import CategoryDetail from "./components/CategoryDetail";
+import About from "./About.jsx";
 
 import { useEffect, useState } from "react";
 
@@ -91,6 +92,7 @@ export default function App() {
               <Route path="/law/:lawId" element={<LawDetail />} />
               <Route path="/category/:categoryName" element={<CategoryDetail />} />
               <Route path="/comments" element={<CommentList />} />
+              <Route path="/about" element={<About />} />
 
               {/* Extra Pages */}
               <Route path="/comment" element={<Comment />} />
