@@ -59,7 +59,7 @@ const Loader = () => {
 
   return (
     <motion.div 
-      className="flex flex-col items-center justify-center min-h-[60vh] gap-8"
+      className="flex flex-col items-center justify-center mt-[5%] min-h-[60vh] gap-8"
       variants={containerVariants}
       initial="initial"
       animate="animate"

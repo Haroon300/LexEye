@@ -146,17 +146,6 @@ export default function Header() {
 
                   <div className="p-2">
                     <button
-                      onClick={() => {
-                        navigate("/profile");
-                        setIsDropdownOpen(false);
-                      }}
-                      className="flex items-center gap-3 w-full px-3 py-3 text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-xl transition-all duration-300 group"
-                    >
-                      <FiUser className="text-lg group-hover:text-cyan-400" />
-                      <span className="text-sm">Profile Settings</span>
-                    </button>
-
-                    <button
                       onClick={handleLogout}
                       className="flex items-center gap-3 w-full px-3 py-3 text-gray-300 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-300 group"
                     >
