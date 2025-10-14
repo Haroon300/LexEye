@@ -59,13 +59,13 @@ const Loader = () => {
 
   return (
     <motion.div 
-      className="flex flex-col items-center justify-center min-h-[60vh] gap-8"
+      className="flex flex-col items-center justify-center mb-[5%] min-h-[60vh] gap-8"
       variants={containerVariants}
       initial="initial"
       animate="animate"
     >
       {/* Main Loader Container */}
-      <div className="relative flex items-center mt-[50%] justify-center">
+      <div className="relative flex items-center mt-[10%] justify-center">
         {/* Outer Glow Effect */}
         <div className="absolute w-44 h-44 bg-cyan-500/20 rounded-full blur-xl animate-pulse" />
         
@@ -147,23 +147,6 @@ const Loader = () => {
           Loading LexEye
         </motion.h3>
         
-        {/* Animated Dots */}
-        <div className="flex justify-center gap-1">
-          {[...Array(3)].map((_, i) => (
-            <motion.span
-              key={i}
-              className="text-cyan-400 text-lg"
-              animate={{ opacity: [0, 1, 0] }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                delay: i * 0.2
-              }}
-            >
-              .
-            </motion.span>
-          ))}
-        </div>
       </motion.div>
 
       {/* Progress Bar */}
