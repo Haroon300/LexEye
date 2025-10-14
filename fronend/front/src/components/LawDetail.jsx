@@ -112,8 +112,7 @@ const handlePrint = () => {
           
           * {
             margin: 0;
-            padding: 0;
-            paddind-right: 20;
+            padding: 0, 20, 0, 20;
             box-sizing: border-box;
           }
           
@@ -122,7 +121,7 @@ const handlePrint = () => {
             color: #1a202c;
             line-height: 1.6;
             background: #ffffff;
-            padding: 40px 60px 40px 60px; /* Increased left padding */
+            padding: 40px 40px 40px 40px; /* Increased left padding */
             max-width: 210mm;
             margin: 0 auto;
           }
