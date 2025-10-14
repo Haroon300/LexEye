@@ -198,7 +198,7 @@ export default function Header() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed top-1/4 left-auto md:left-1/3 sm:top-1.5 transform -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-sm sm:max-w-md bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl shadow-cyan-500/20 z-50 p-4 sm:p-6 mx-auto"
+            className="fixed top-1/4 left-auto md:left-1/3 sm:top-1.5 transform -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-sm sm:max-w-md bg-black/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl shadow-cyan-500/20 z-50 p-4 sm:p-6 mx-auto"
           >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-white flex items-center gap-2">
