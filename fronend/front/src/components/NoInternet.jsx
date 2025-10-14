@@ -107,7 +107,7 @@ const NoInternet = () => {
               <motion.div
                 variants={pulseVariants}
                 animate="animate"
-                className="absolute inset-0 w-32 h-32 bg-red-500/20 rounded-full -inset-4"
+                className="absolute inset-0 w-32 h-32 bg-red-500/20 rounded-full"
               />
               
               {/* Main Icon Container */}
