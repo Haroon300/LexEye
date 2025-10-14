@@ -240,7 +240,7 @@ const NoInternet = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
-        className="fixed bottom-6 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-red-500/20 border border-red-400/30 rounded-full px-4 py-2 text-red-300 text-sm"
+        className="fixed bottom-6 z-50 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-red-500/20 border border-red-400/30 rounded-full px-4 py-2 text-red-300 text-sm"
       >
         <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
         Offline Mode
