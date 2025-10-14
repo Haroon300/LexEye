@@ -91,7 +91,7 @@ export default function Header() {
     >
       {/* Logo */}
       <motion.div
-        className="flex items-center gap-3 cursor-pointer"
+        className="flex items-center gap-3 "
         whileHover={{ scale: 1.05 }}
         onClick={() => navigate("/")}
       >
