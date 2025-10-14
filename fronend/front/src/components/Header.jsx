@@ -103,7 +103,7 @@ export default function Header() {
           />
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10" />
         </div>
-        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-cyan-300 to-gray-200 text-transparent bg-clip-text tracking-wide">
+        <h1 className="text-3xl font-extrabold bg-white text-transparent bg-clip-text tracking-wide">
           Lex<span className="text-cyan-400">Eye</span>
         </h1>
       </motion.div>

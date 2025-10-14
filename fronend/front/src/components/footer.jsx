@@ -102,8 +102,8 @@ const Footer = () => {
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 shadow-2xl shadow-cyan-500/20" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-200 to-gray-200 text-transparent bg-clip-text">
-                    LexEye
+                  <h2 className="text-3xl font-extrabold bg-white text-transparent bg-clip-text tracking-wide">
+                    Lex<span className="text-cyan-400">Eye</span>
                   </h2>
                   <p className="text-cyan-400 text-sm font-medium">Legal Intelligence Platform</p>
                 </div>
