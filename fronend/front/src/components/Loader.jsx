@@ -65,7 +65,7 @@ const Loader = () => {
       animate="animate"
     >
       {/* Main Loader Container */}
-      <div className="relative flex items-center mt-[5%] justify-center">
+      <div className="relative flex items-center mt-[50%] justify-center">
         {/* Outer Glow Effect */}
         <div className="absolute w-44 h-44 bg-cyan-500/20 rounded-full blur-xl animate-pulse" />
         
