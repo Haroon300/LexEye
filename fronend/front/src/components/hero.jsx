@@ -49,12 +49,12 @@ const scaleIn = {
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#051c1f] via-[#08292e] to-[#0a1b1f] text-white overflow-hidden">
+    <div className="min-h-screen text-white overflow-hidden">
       {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" />
-        <div className="absolute w-80 h-80 bg-blue-400/10 rounded-full blur-3xl top-1/3 -right-20 animate-pulse-slower" />
-        <div className="absolute w-72 h-72 bg-teal-400/10 rounded-full blur-3xl bottom-20 left-1/4 animate-pulse-slow" />
+        <div className="absolute w-80 h-80 bg-cyan-400/10 rounded-full blur-3xl top-1/3 -right-20 animate-pulse-slower" />
+        <div className="absolute w-72 h-72 bg-cyan-300/10 rounded-full blur-3xl bottom-20 left-1/4 animate-pulse-slow" />
         
         {/* Grid Pattern */}
         <div className="absolute inset-0 opacity-5">
@@ -84,7 +84,7 @@ const LandingPage = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black bg-gradient-to-r from-cyan-200 via-gray-200 to-silver text-transparent bg-clip-text mb-6 leading-tight"
+            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black bg-gradient-to-r from-cyan-200 via-cyan-100 to-cyan-50 text-transparent bg-clip-text mb-6 leading-tight"
           >
             Understand the Law.
             <br />
@@ -128,7 +128,7 @@ const LandingPage = () => {
             >
               <Link
                 to="/search"
-                className="group flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 border border-cyan-400/30"
+                className="group flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 border border-cyan-400/30"
               >
                 <FiSearch className="text-xl group-hover:scale-110 transition-transform" />
                 Start Your Search
@@ -142,7 +142,7 @@ const LandingPage = () => {
             >
               <Link
                 to="/category"
-                className="group flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/20 text-white font-semibold py-4 px-8 rounded-2xl hover:bg-white/20 hover:shadow-2xl transition-all duration-300"
+                className="group flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/20 text-white font-semibold py-4 px-8 rounded-2xl hover:bg-cyan-500/20 hover:border-cyan-400/30 hover:shadow-2xl transition-all duration-300"
               >
                 <FiBook className="text-xl" />
                 Browse Categories
@@ -202,7 +202,7 @@ const LandingPage = () => {
               <FiTarget className="text-cyan-400" />
               <span className="text-cyan-300 text-sm font-medium">Our Mission</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-200 to-gray-200 text-transparent bg-clip-text mb-4">
+            <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-200 to-cyan-100 text-transparent bg-clip-text mb-4">
               The Law Shouldn't Be a Mystery
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -222,28 +222,25 @@ const LandingPage = () => {
                 icon: <FaLightbulb className="text-3xl" />,
                 title: "Simplicity",
                 description: "We translate the Pakistan Penal Code and other complex statutes into short summaries and easy-to-follow steps. No legal jargon required.",
-                color: "from-cyan-500 to-blue-500"
               },
               {
                 icon: <FaBook className="text-3xl" />,
                 title: "Accessibility",
                 description: "Access essential information on your phone or desktop, and save guides for limited offline use when you need them most.",
-                color: "from-green-500 to-emerald-500"
               },
               {
                 icon: <FaBalanceScale className="text-3xl" />,
                 title: "Everyday Focus",
                 description: "Stop guessing how to handle issues like police stops, landlord disputes, workplace harassment, or consumer fraud.",
-                color: "from-purple-500 to-pink-500"
               }
             ].map((feature, index) => (
               <motion.div
                 key={index}
                 variants={fadeUp}
                 whileHover={{ scale: 1.05, y: -5 }}
-                className={`group bg-gradient-to-br ${feature.color}/20 backdrop-blur-2xl border border-white/10 rounded-2xl p-8 shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300`}
+                className="group bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 backdrop-blur-2xl border border-cyan-400/30 rounded-2xl p-8 shadow-2xl hover:shadow-cyan-500/20 transition-all duration-300"
               >
-                <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.color}/30 border border-white/10 mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-cyan-500/30 to-cyan-600/30 border border-cyan-400/30 mb-6 group-hover:scale-110 transition-transform duration-300">
                   {feature.icon}
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">{feature.title}</h3>
@@ -268,7 +265,7 @@ const LandingPage = () => {
               <FiZap className="text-cyan-400" />
               <span className="text-cyan-300 text-sm font-medium">Get Started</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-200 to-gray-200 text-transparent bg-clip-text mb-4">
+            <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-200 to-cyan-100 text-transparent bg-clip-text mb-4">
               What Can You Do Right Now?
             </h2>
           </motion.div>
@@ -286,28 +283,24 @@ const LandingPage = () => {
                 title: "Guide Browsing",
                 description: "Browse organized sections like Tenancy Rights, Workplace Disputes, or Gender Harassment.",
                 link: "/category",
-                color: "from-blue-500 to-cyan-500"
               },
               {
                 icon: <FiSearch className="text-2xl" />,
                 title: "Quick LookUp",
                 description: "Find rights and sections instantly by typing keywords, not section numbers.",
                 link: "/search",
-                color: "from-green-500 to-emerald-500"
               },
               {
                 icon: <FiBookmark className="text-2xl" />,
                 title: "Personalize",
                 description: "Bookmark important guides by creating an account for quick access later.",
                 link: "/signin",
-                color: "from-purple-500 to-pink-500"
               },
               {
                 icon: <FiUsers className="text-2xl" />,
                 title: "Learn the Language",
                 description: "Quickly look up simplified definitions of key legal and technical terms.",
                 link: "/glossary",
-                color: "from-orange-500 to-amber-500"
               }
             ].map((feature, index) => (
               <motion.div
@@ -317,9 +310,9 @@ const LandingPage = () => {
               >
                 <Link
                   to={feature.link}
-                  className={`group block bg-gradient-to-br ${feature.color}/20 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 h-full`}
+                  className="group block bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 backdrop-blur-2xl border border-cyan-400/30 rounded-2xl p-6 shadow-2xl hover:shadow-cyan-500/20 transition-all duration-300 h-full"
                 >
-                  <div className={`inline-flex p-3 rounded-2xl bg-gradient-to-br ${feature.color}/30 border border-white/10 mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="inline-flex p-3 rounded-2xl bg-gradient-to-br from-cyan-500/30 to-cyan-600/30 border border-cyan-400/30 mb-4 group-hover:scale-110 transition-transform duration-300">
                     {feature.icon}
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
@@ -345,7 +338,7 @@ const LandingPage = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-200 to-gray-200 text-transparent bg-clip-text mb-4">
+            <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-200 to-cyan-100 text-transparent bg-clip-text mb-4">
               Guides for Real Life
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -366,42 +359,36 @@ const LandingPage = () => {
                 title: "Workplace Disputes",
                 description: "Harassment, unfair dismissal, and labor rights explained.",
                 link: "/laws?query=workplace",
-                color: "from-blue-500 to-cyan-500"
               },
               {
                 icon: "🚔",
                 title: "Police Interactions",
                 description: "Your rights during traffic stops and FIR processes.",
                 link: "/laws?query=police",
-                color: "from-green-500 to-emerald-500"
               },
               {
                 icon: "🏠",
                 title: "Landlord & Tenant",
                 description: "Tenancy agreements, rent hikes, and eviction rules.",
                 link: "/laws?query=landlord",
-                color: "from-purple-500 to-pink-500"
               },
               {
                 icon: "🛡️",
                 title: "Gender Harassment",
                 description: "Filing complaints and understanding legal protections.",
                 link: "/laws?query=harassment",
-                color: "from-red-500 to-pink-500"
               },
               {
                 icon: "🛒",
                 title: "Consumer Protection",
                 description: "Refunds, fraud complaints, and buyer's rights.",
                 link: "/laws?query=consumer",
-                color: "from-orange-500 to-amber-500"
               },
               {
                 icon: "📄",
                 title: "Property Rights",
                 description: "Ownership transfers and dispute resolution made simple.",
                 link: "/laws?query=property",
-                color: "from-indigo-500 to-purple-500"
               }
             ].map((category, index) => (
               <motion.div
@@ -411,7 +398,7 @@ const LandingPage = () => {
               >
                 <Link
                   to={category.link}
-                  className={`group block bg-gradient-to-br ${category.color}/20 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 h-full`}
+                  className="group block bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 backdrop-blur-2xl border border-cyan-400/30 rounded-2xl p-6 shadow-2xl hover:shadow-cyan-500/20 transition-all duration-300 h-full"
                 >
                   <div className="text-3xl mb-4">{category.icon}</div>
                   <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
@@ -436,7 +423,7 @@ const LandingPage = () => {
             >
               <Link
                 to="/category"
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 border border-cyan-400/30"
+                className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 border border-cyan-400/30"
               >
                 Explore All Guides
                 <FiArrowRight className="text-lg group-hover:translate-x-1 transition-transform" />
@@ -447,7 +434,7 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 lg:px-20 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm">
+      <section className="py-20 px-6 lg:px-20 bg-gradient-to-br from-cyan-500/10 to-cyan-600/10 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             variants={fadeUp}
@@ -458,7 +445,7 @@ const LandingPage = () => {
             <div className="inline-flex p-4 bg-cyan-500/20 rounded-2xl border border-cyan-400/30 mb-6">
               <FiAward className="text-3xl text-cyan-400" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-200 to-gray-200 text-transparent bg-clip-text mb-4">
+            <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-200 to-cyan-100 text-transparent bg-clip-text mb-4">
               Master Your <span className="text-cyan-400">Rights</span>
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
@@ -471,7 +458,7 @@ const LandingPage = () => {
               >
                 <Link
                   to="/signup"
-                  className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 border border-cyan-400/30"
+                  className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 border border-cyan-400/30"
                 >
                   <FiUser className="text-xl" />
                   Join LexEye
@@ -483,7 +470,7 @@ const LandingPage = () => {
               >
                 <Link
                   to="/about"
-                  className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/20 text-white font-semibold py-4 px-8 rounded-2xl hover:bg-white/20 hover:shadow-2xl transition-all duration-300"
+                  className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/20 text-white font-semibold py-4 px-8 rounded-2xl hover:bg-cyan-500/20 hover:border-cyan-400/30 hover:shadow-2xl transition-all duration-300"
                 >
                   Learn More
                 </Link>
