@@ -283,15 +283,6 @@ const Footer = () => {
             </div>
             
             <div className="flex items-center gap-6 text-sm text-gray-400">
-              <Link to="/privacy" className="hover:text-cyan-400 transition-colors text-xs">
-                Privacy Policy
-              </Link>
-              <Link to="/terms" className="hover:text-cyan-400 transition-colors text-xs">
-                Terms of Service
-              </Link>
-              <Link to="/sitemap" className="hover:text-cyan-400 transition-colors text-xs">
-                Sitemap
-              </Link>
               
               {/* Scroll to Top Button */}
               <motion.button
