@@ -7,9 +7,6 @@ import {
   FiBook,
   FiBookmark,
   FiUsers,
-  FiShield,
-  FiHome,
-  FiBriefcase,
   FiUser,
   FiArrowRight,
   FiAward,
@@ -19,8 +16,7 @@ import {
 import {
   FaBalanceScale,
   FaLightbulb,
-  FaBook,
-  FaArrowRight
+  FaBook
 } from "react-icons/fa";
 
 /* animation variants */

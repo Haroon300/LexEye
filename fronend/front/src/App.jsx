@@ -17,7 +17,6 @@ import NotFound from "./components/NotFound";
 import NoInternet from "./components/NoInternet";
 import Comment from "./components/Comment";
 import CommentList from "./components/Comment";
-import CategoryDetail from "./components/CategoryDetail";
 import Glossary from "./Glossary";
 import About from "./About.jsx";
 
@@ -91,7 +90,6 @@ export default function App() {
               <Route path="/category" element={<Category />} />
               <Route path="/laws" element={<LawList />} />
               <Route path="/law/:lawId" element={<LawDetail />} />
-              <Route path="/category/:categoryName" element={<CategoryDetail />} />
               <Route path="/comments" element={<CommentList />} />
               <Route path="/about" element={<About />} />
               <Route path="/glossary" element={<Glossary />} />
