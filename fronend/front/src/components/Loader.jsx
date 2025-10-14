@@ -59,13 +59,13 @@ const Loader = () => {
 
   return (
     <motion.div 
-      className="flex flex-col items-center justify-center mt-[5%] min-h-[60vh] gap-8"
+      className="flex flex-col items-center justify-center min-h-[60vh] gap-8"
       variants={containerVariants}
       initial="initial"
       animate="animate"
     >
       {/* Main Loader Container */}
-      <div className="relative flex items-center justify-center">
+      <div className="relative flex items-center mt-[5%] justify-center">
         {/* Outer Glow Effect */}
         <div className="absolute w-44 h-44 bg-cyan-500/20 rounded-full blur-xl animate-pulse" />
         
