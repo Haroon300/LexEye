@@ -105,6 +105,7 @@ export const searchLaws = asyncWrapper(async (req, res) => {
                   "legalConsequence",
                   "preventionSolutions",
                   "category",
+                  "stepByStepGuide",
                 ],
                 fuzzy: {
                   maxEdits: 2,
@@ -126,7 +127,7 @@ export const searchLaws = asyncWrapper(async (req, res) => {
     if (!results.length) {
       const allLaws = await Law.find().lean();
       const fuse = new Fuse(allLaws, {
-        keys: ["section","legalConcept","description","legalConsequence","preventionSolutions","category"],
+        keys: ["section","legalConcept","description","legalConsequence","preventionSolutions","category","stepByStepGuide"],
         threshold: 0.5,   // higher = more flexible
         distance: 200,    // allow matches across long sentences
         includeScore: true,

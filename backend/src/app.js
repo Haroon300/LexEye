@@ -3,8 +3,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import errorMiddleware from './middlewares/errorMiddleware.js';
 import Router from './routes/index.js';
-import lawRoutes from "./routes/lawRoutes.js";
-import BookmarkRouter from "./routes/bookmarkRoutes.js";
 import connectDB from './config/db.js';
 
 dotenv.config();

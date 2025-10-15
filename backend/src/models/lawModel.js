@@ -2,13 +2,14 @@ import mongoose from "mongoose";
 
 const lawSchema = new mongoose.Schema(
   {
-    section: {type: String, required: true, trim: true},
-    legalConcept: {type: String,required: true,trim: true},
-    description: {type: String,required: true,trim: true},
-    legalConsequence: {type: String,required: true,trim: true},
-    preventionSolutions: {type: String,required: true,trim: true},
-    category: {type: String,default: "General"},
-    relatedLaws: [{type: mongoose.Schema.Types.ObjectId,ref: "Law"},],
+    section: { type: String, required: true, trim: true },
+    legalConcept: { type: String, required: true, trim: true },
+    description: { type: String, required: true, trim: true },
+    legalConsequence: { type: String, required: true, trim: true },
+    preventionSolutions: { type: String, required: true, trim: true },
+    stepByStepGuide: { type: String, default: "" },
+    category: { type: String, default: "General" },
+    relatedLaws: [{ type: mongoose.Schema.Types.ObjectId, ref: "Law" }],
   },
   { timestamps: true }
 );
