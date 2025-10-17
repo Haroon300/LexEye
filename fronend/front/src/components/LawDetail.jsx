@@ -115,329 +115,458 @@ const LawDetail = () => {
     setIsPrinting(true);
 
     const stepByStepContent = law.stepByStepGuide ? `
-      <div class="section">
-        <div class="section-header">
-          <div class="section-icon" style="background: #fef3c7; color: #d97706;">SG</div>
-          <h2 class="section-title">Step-by-Step Guide</h2>
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background: #fffbeb; color: #d97706; border: 1px solid #fbbf24;">📋</div>
+      <h2 class="section-title">Step-by-Step Guide</h2>
+    </div>
+    <div class="section-content guide">
+      <div class="steps-container">
+        ${law.stepByStepGuide.split('<br>').map((step, index) => `
+          <div class="step-item">
+            <div class="step-number">${index + 1}</div>
+            <div class="step-content">
+              <div class="step-text">${step}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </div>
+` : '';
+
+const printContent = `
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>${law.section || "Law Section"} - LexEye</title>
+      <meta charset="UTF-8">
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        body {
+          font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          color: #1a202c;
+          line-height: 1.6;
+          background: #ffffff;
+          padding: 15mm;
+          max-width: 210mm;
+          margin: 0 auto;
+          min-height: 297mm;
+          position: relative;
+        }
+        
+        .print-header {
+          border-bottom: 2px solid #0e7490;
+          padding-bottom: 15px;
+          margin-bottom: 25px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        
+        .logo {
+          font-size: 18px;
+          font-weight: 700;
+          color: #0e7490;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        
+        .logo-image {
+          width: 25px !important;
+          height: 25px !important;
+        }
+        
+        .metadata {
+          text-align: right;
+          font-size: 10px;
+          color: #64748b;
+          line-height: 1.4;
+        }
+        
+        .main-title {
+          font-size: 26px;
+          font-weight: 800;
+          color: #0f766e;
+          margin: 20px 0 8px 0;
+          line-height: 1.3;
+          padding-bottom: 12px;
+          border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .subtitle {
+          font-size: 15px;
+          color: #475569;
+          font-weight: 500;
+          margin-bottom: 20px;
+          font-style: italic;
+          background: #f8fafc;
+          padding: 12px 16px;
+          border-radius: 6px;
+          border-left: 3px solid #0ea5e9;
+        }
+        
+        .section {
+          margin-bottom: 25px;
+          page-break-inside: avoid;
+        }
+        
+        .section-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 15px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .section-icon {
+          width: 28px;
+          height: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 6px;
+          font-weight: 600;
+          font-size: 12px;
+          border: 1px solid;
+        }
+        
+        .section-title {
+          font-size: 18px;
+          font-weight: 700;
+          color: #0f766e;
+          margin: 0;
+        }
+        
+        .section-content {
+          font-size: 13px;
+          color: #374151;
+          text-align: justify;
+          line-height: 1.6;
+        }
+        
+        .legal-concept {
+          background: #f8fafc;
+          border-left: 4px solid #0ea5e9;
+          padding: 18px;
+          margin: 15px 0;
+          border-radius: 0 8px 8px 0;
+        }
+        
+        .consequence {
+          background: #fef2f2;
+          border-left: 4px solid #ef4444;
+          padding: 18px;
+          margin: 15px 0;
+          border-radius: 0 8px 8px 0;
+        }
+        
+        .prevention {
+          background: #f0fdf4;
+          border-left: 4px solid #22c55e;
+          padding: 18px;
+          margin: 15px 0;
+          border-radius: 0 8px 8px 0;
+        }
+        
+        .guide {
+          background: #fffbeb;
+          border-left: 4px solid #f59e0b;
+          padding: 18px;
+          margin: 15px 0;
+          border-radius: 0 8px 8px 0;
+        }
+        
+        .steps-container {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        
+        .step-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          padding: 0;
+          background: transparent;
+        }
+        
+        .step-number {
+          width: 26px;
+          height: 26px;
+          background: #f59e0b;
+          color: white;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: 12px;
+          flex-shrink: 0;
+        }
+        
+        .step-content {
+          flex: 1;
+          padding: 0;
+        }
+        
+        .step-text {
+          color: #374151;
+          line-height: 1.5;
+          font-size: 13px;
+          padding: 4px 0;
+        }
+        
+        .footer {
+          margin-top: 30px;
+          padding-top: 15px;
+          border-top: 2px solid #e2e8f0;
+          text-align: center;
+          color: #64748b;
+          font-size: 10px;
+          background: #f8fafc;
+          padding: 15px;
+          border-radius: 6px;
+          position: absolute;
+          bottom: 20mm;
+          left: 25mm;
+          right: 25mm;
+        }
+        
+        .disclaimer {
+          background: #fffbeb;
+          border: 1px solid #f59e0b;
+          padding: 15px;
+          border-radius: 6px;
+          margin: 20px 0;
+          font-size: 11px;
+          color: #92400e;
+        }
+        
+        .disclaimer strong {
+          color: #b45309;
+        }
+        
+        @media print {
+          @page {
+            margin: 20mm;
+            size: A4;
+          }
+          
+          body {
+            padding: 20mm;
+            font-size: 12px;
+            max-width: none;
+            min-height: 257mm; /* 297mm - 20mm top - 20mm bottom */
+          }
+          
+          .print-header {
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+          }
+          
+          .main-title {
+            font-size: 22px;
+            margin: 15px 0 6px 0;
+            padding-bottom: 10px;
+          }
+          
+          .subtitle {
+            font-size: 13px;
+            margin-bottom: 15px;
+            padding: 10px 12px;
+          }
+          
+          .section {
+            margin-bottom: 20px;
+          }
+          
+          .section-header {
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+          }
+          
+          .section-title {
+            font-size: 16px;
+          }
+          
+          .section-content {
+            font-size: 11px;
+            line-height: 1.5;
+          }
+          
+          .legal-concept,
+          .consequence,
+          .prevention,
+          .guide {
+            padding: 15px;
+            margin: 12px 0;
+          }
+          
+          .logo-image {
+            width: 18px !important;
+            height: 18px !important;
+          }
+          
+          .step-number {
+            width: 22px;
+            height: 22px;
+            font-size: 10px;
+          }
+          
+          .step-text {
+            font-size: 11px;
+            padding: 3px 0;
+          }
+          
+          .steps-container {
+            gap: 10px;
+          }
+          
+          .footer {
+            margin-top: 25px;
+            padding: 12px;
+            font-size: 9px;
+            bottom: 20mm;
+            left: 20mm;
+            right: 20mm;
+          }
+          
+          .disclaimer {
+            padding: 12px;
+            font-size: 10px;
+            margin: 15px 0;
+          }
+        }
+        
+        @media (max-width: 600px) {
+          body {
+            padding: 15mm;
+          }
+          
+          .print-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+          }
+          
+          .metadata {
+            text-align: left;
+          }
+          
+          .main-title {
+            font-size: 20px;
+          }
+          
+          .section-title {
+            font-size: 16px;
+          }
+          
+          .step-item {
+            gap: 10px;
+          }
+          
+          .footer {
+            left: 15mm;
+            right: 15mm;
+          }
+        }
+        
+        /* Ensure proper page breaks */
+        .section,
+        .steps-container {
+          page-break-inside: avoid;
+        }
+        
+        .step-item {
+          page-break-inside: avoid;
+          page-break-after: auto;
+        }
+        
+        /* Add page numbers */
+        @media print {
+          .page-number:after {
+            content: counter(page);
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="print-header">
+        <div class="logo">
+          <img src="/logo-2.png" alt="LexEye Logo" class="logo-image" style="width: 22px; height: 22px;" />
+          LexEye - Legal Intelligence Platform
         </div>
-        <div class="section-content guide">
-          <ol style="padding-left: 20px; margin: 15px 0;">
-            ${law.stepByStepGuide.split('<br>').map((step, index) => `
-              <li style="margin-bottom: 12px; padding-left: 8px; text-align: justify;">
-                <strong>Step ${index + 1}:</strong> ${step}
-              </li>
-            `).join('')}
-          </ol>
+        <div class="metadata">
+          <div><strong>Printed:</strong> ${new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}</div>
+          ${law?._id ? `<div><strong>ID:</strong> ${law._id.slice(-8)}</div>` : ''}
+          <div><strong>Page:</strong> <span class="page-number"></span></div>
         </div>
       </div>
-    ` : '';
+      
+      <h1 class="main-title">${law.section || "Legal Section"}</h1>
+      ${law.legalConcept ? `<div class="subtitle">${law.legalConcept}</div>` : ''}
+      
+      <div class="disclaimer">
+        <strong>📋 Important Notice:</strong> This document contains informational guidance only. 
+        For specific legal advice, always consult a licensed legal professional.
+      </div>
 
-    const printContent = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>${law.section || "Law Section"} - LexEye</title>
-          <meta charset="UTF-8">
-          <style>
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-            
-            * {
-              margin: 0;
-              padding: 0;
-              box-sizing: border-box;
-            }
-            
-            body {
-              font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-              color: #1a202c;
-              line-height: 1.6;
-              background: #ffffff;
-              padding: 30px;
-              max-width: 210mm;
-              margin: 0 auto;
-            }
-            
-            .print-header {
-              border-bottom: 3px solid #0e7490;
-              padding-bottom: 20px;
-              margin-bottom: 30px;
-              display: flex;
-              align-items: center;
-              gap: 15px;
-            }
-            
-            .logo {
-              font-size: 20px;
-              font-weight: 700;
-              color: #0e7490;
-              display: flex;
-              align-items: center;
-              gap: 8px;
-            }
-            
-            .logo-image {
-              width: 24px !important;
-              height: 24px !important;
-              max-width: 24px !important;
-              max-height: 24px !important;
-            }
-            
-            .metadata {
-              margin-left: auto;
-              text-align: right;
-              font-size: 11px;
-              color: #64748b;
-            }
-            
-            .main-title {
-              font-size: 24px;
-              font-weight: 700;
-              color: #0f766e;
-              margin: 25px 0 10px 0;
-              line-height: 1.3;
-            }
-            
-            .subtitle {
-              font-size: 16px;
-              color: #475569;
-              font-weight: 500;
-              margin-bottom: 25px;
-              font-style: italic;
-            }
-            
-            .section {
-              margin-bottom: 30px;
-              page-break-inside: avoid;
-            }
-            
-            .section-header {
-              display: flex;
-              align-items: center;
-              gap: 12px;
-              margin-bottom: 15px;
-              padding-bottom: 8px;
-              border-bottom: 2px solid #e2e8f0;
-            }
-            
-            .section-icon {
-              width: 22px;
-              height: 22px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border-radius: 6px;
-              font-weight: 600;
-              font-size: 11px;
-            }
-            
-            .section-title {
-              font-size: 18px;
-              font-weight: 600;
-              color: #0f766e;
-            }
-            
-            .section-content {
-              font-size: 14px;
-              color: #374151;
-              text-align: justify;
-              line-height: 1.6;
-            }
-            
-            .legal-concept {
-              background: #f0f9ff;
-              border-left: 4px solid #0ea5e9;
-              padding: 20px;
-              margin: 20px 0;
-              border-radius: 0 8px 8px 0;
-            }
-            
-            .consequence {
-              background: #fef2f2;
-              border-left: 4px solid #ef4444;
-              padding: 20px;
-              margin: 20px 0;
-              border-radius: 0 8px 8px 0;
-            }
-            
-            .prevention {
-              background: #f0fdf4;
-              border-left: 4px solid #22c55e;
-              padding: 20px;
-              margin: 20px 0;
-              border-radius: 0 8px 8px 0;
-            }
-            
-            .guide {
-              background: #fffbeb;
-              border-left: 4px solid #f59e0b;
-              padding: 20px;
-              margin: 20px 0;
-              border-radius: 0 8px 8px 0;
-            }
-            
-            .footer {
-              margin-top: 40px;
-              padding-top: 20px;
-              border-top: 2px solid #e2e8f0;
-              text-align: center;
-              color: #64748b;
-              font-size: 11px;
-            }
-            
-            .disclaimer {
-              background: #fffbeb;
-              border: 1px solid #f59e0b;
-              padding: 18px;
-              border-radius: 8px;
-              margin: 20px 0;
-              font-size: 12px;
-              color: #92400e;
-            }
-            
-            @media print {
-              @page {
-                margin: 15mm;
-              }
-              
-              body {
-                padding: 0;
-                padding-top: 30px;
-                font-size: 12px;
-              }
-              
-              .print-header {
-                padding-bottom: 15px;
-                margin-bottom: 20px;
-              }
-              
-              .main-title {
-                font-size: 20px;
-                margin: 20px 0 8px 0;
-              }
-              
-              .subtitle {
-                font-size: 14px;
-                margin-bottom: 20px;
-              }
-              
-              .section {
-                margin-bottom: 25px;
-              }
-              
-              .section-title {
-                font-size: 16px;
-              }
-              
-              .section-content {
-                font-size: 12px;
-              }
-              
-              .legal-concept,
-              .consequence,
-              .prevention,
-              .guide {
-                padding: 15px;
-                margin: 15px 0;
-              }
-              
-              .logo-image {
-                width: 20px !important;
-                height: 20px !important;
-              }
-              
-              .footer {
-                margin-top: 30px;
-                font-size: 10px;
-              }
-            }
-            
-            @media (max-width: 600px) {
-              body {
-                padding: 20px;
-              }
-              
-              .print-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-              }
-              
-              .metadata {
-                margin-left: 0;
-                text-align: left;
-              }
-              
-              .main-title {
-                font-size: 20px;
-              }
-              
-              .section-title {
-                font-size: 16px;
-              }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="print-header">
-            <div class="logo">
-              <img src="/logo-2.png" alt="LexEye Logo" class="logo-image" style="width: 24px; height: 24px;" />
-              LexEye
-            </div>
-            <div class="metadata">
-              <div>Legal Intelligence Platform</div>
-              <div>Printed on: ${new Date().toLocaleDateString()}</div>
-              ${law?._id ? `<div>Document ID: ${law._id.slice(-8)}</div>` : ''}
-            </div>
-          </div>
-          
-          <h1 class="main-title">${law.section || "Legal Section"}</h1>
-          ${law.legalConcept ? `<div class="subtitle">${law.legalConcept}</div>` : ''}
-          
-          <div class="disclaimer">
-            <strong>Important Notice:</strong> This document contains informational guidance only. 
-            For specific legal advice, always consult a licensed legal professional.
-          </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon" style="background: #dbeafe; color: #1d4ed8; border-color: #3b82f6;">⚖️</div>
+          <h2 class="section-title">Legal Description</h2>
+        </div>
+        <div class="section-content legal-concept">
+          ${law.description || "No description available."}
+        </div>
+      </div>
 
-          <div class="section">
-            <div class="section-header">
-              <div class="section-icon" style="background: #dbeafe; color: #1d4ed8;">LD</div>
-              <h2 class="section-title">Legal Description</h2>
-            </div>
-            <div class="section-content legal-concept">
-              ${law.description || "No description available."}
-            </div>
-          </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon" style="background: #fee2e2; color: #dc2626; border-color: #ef4444;">⚠️</div>
+          <h2 class="section-title">Legal Consequence</h2>
+        </div>
+        <div class="section-content consequence">
+          ${law.legalConsequence || "No legal consequence available."}
+        </div>
+      </div>
 
-          <div class="section">
-            <div class="section-header">
-              <div class="section-icon" style="background: #fee2e2; color: #dc2626;">LC</div>
-              <h2 class="section-title">Legal Consequence</h2>
-            </div>
-            <div class="section-content consequence">
-              ${law.legalConsequence || "No legal consequence available."}
-            </div>
-          </div>
-
-          <div class="section">
-            <div class="section-header">
-              <div class="section-icon" style="background: #dcfce7; color: #16a34a;">PS</div>
-              <h2 class="section-title">Prevention Solutions</h2>
-            </div>
-            <div class="section-content prevention">
-              ${law.preventionSolutions || "No prevention solutions available."}
-            </div>
-          </div>
-          
-          ${stepByStepContent}
-          
-          <div class="footer">
-            <p>Generated by LexEye - Your Legal Intelligence Platform</p>
-            <p>${window.location.href}</p>
-            <p>© ${new Date().getFullYear()} LexEye - Team Mavericks</p>
-          </div>
-        </body>
-      </html>
-    `;
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon" style="background: #dcfce7; color: #16a34a; border-color: #22c55e;">🛡️</div>
+          <h2 class="section-title">Prevention Solutions</h2>
+        </div>
+        <div class="section-content prevention">
+          ${law.preventionSolutions || "No prevention solutions available."}
+        </div>
+      </div>
+      
+      ${stepByStepContent}
+      
+      <div class="footer">
+        <p><strong>Generated by LexEye - Your Legal Intelligence Platform</strong></p>
+        <p>${window.location.href}</p>
+        <p>© ${new Date().getFullYear()} LexEye - Team Mavericks</p>
+      </div>
+    </body>
+  </html>
+`;
 
     const printWindow = window.open("", "_blank");
     printWindow.document.write(printContent);
