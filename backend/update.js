@@ -15,7 +15,7 @@ await mongoose.connect(MONGO_URI);
 console.log("✅ Connected to MongoDB");
 
 // ✅ Load Excel Sheet2
-const workbook = xlsx.readFile("./traffic law 3.xlsx");
+const workbook = xlsx.readFile("./cyber laws 3.xlsx");
 const sheet = workbook.Sheets["Sheet2"];
 const data = xlsx.utils.sheet_to_json(sheet);
 
@@ -49,7 +49,7 @@ let notFound = [];
 for (const row of data) {
   const legalConcept = row["legalConcept"];
   const stepByStepGuide = row["stepByStepGuide"];
-  const relevantLaws = row["Relevant Law(s) (PPC / PMVO)"] || row["Relevant Law(s) (PPC/PMVO)"];
+  const relevantLaws = row["relatedLaws"] || row["relatedLaws"];
 
   if (!legalConcept) continue;
 
