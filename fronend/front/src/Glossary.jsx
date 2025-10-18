@@ -291,7 +291,7 @@ const Glossary = () => {
         transition={{ duration: 0.7 }}
       >
         <div className="relative inline-block">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight bg-gradient-to-r from-silver via-gray-200 to-cyan-200 text-transparent bg-clip-text drop-shadow-2xl mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight bg-gradient-to-r from-cyan-200 via-cyan-100 to-cyan-50 text-transparent bg-clip-text drop-shadow-2xl mb-6">
             Legal Glossary
           </h1>
           <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent rounded-full" />
@@ -531,7 +531,7 @@ const Glossary = () => {
 
                         {/* Content */}
                         <div className="relative z-10">
-                          <h2 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-silver to-gray-300 text-transparent bg-clip-text group-hover:from-cyan-200 group-hover:to-silver transition-all duration-500 mb-3 pr-16">
+                          <h2 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-200 to-silver  text-transparent bg-clip-text  transition-all duration-500 mb-3 pr-16">
                             {item.term}
                           </h2>
                           <p className="text-gray-300 leading-relaxed group-hover:text-gray-200 transition-colors duration-300 text-sm sm:text-[15px] line-clamp-3">
