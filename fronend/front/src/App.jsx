@@ -77,6 +77,7 @@ export default function App() {
           {/* Always accessible */}
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="/law/:lawId" element={<LawDetail />} />
+          <Route path="/glossary" element={<Glossary />} />
 
           {isOnline ? (
             <>
@@ -92,7 +93,6 @@ export default function App() {
               <Route path="/law/:lawId" element={<LawDetail />} />
               <Route path="/comments" element={<CommentList />} />
               <Route path="/about" element={<About />} />
-              <Route path="/glossary" element={<Glossary />} />
 
               {/* Extra Pages */}
               <Route path="/comment" element={<Comment />} />
