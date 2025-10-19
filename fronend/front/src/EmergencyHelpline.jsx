@@ -12,7 +12,8 @@ import {
   IoWarning,
   IoChevronDown,
   IoChevronUp,
-  IoStar
+  IoStar,
+  IoTimeOutline
 } from "react-icons/io5";
 import { 
   FaAmbulance, 
@@ -202,6 +203,17 @@ const EmergencyHelpline = () => {
     }
   };
 
+  // Get priority color
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "Critical": return "text-red-400";
+      case "High": return "text-orange-400";
+      case "Medium": return "text-yellow-400";
+      case "Low": return "text-green-400";
+      default: return "text-gray-400";
+    }
+  };
+
   // Mobile-optimized animations
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -343,7 +355,7 @@ const EmergencyHelpline = () => {
                   transition: { duration: 0.2 }
                 }}
                 whileTap={{ scale: 0.98 }}
-                className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-lg border ${service.borderColor} hover:shadow-xl transition-all duration-300 group min-h-[140px] flex flex-col justify-between relative`}
+                className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-lg border ${service.borderColor} hover:shadow-xl transition-all duration-300 group min-h-[160px] flex flex-col justify-between relative`}
                 onClick={() => service.isWebsite ? handleWebsiteClick(service.website) : handleCallClick(service)}
               >
                 <div className="flex items-start justify-between mb-3">
@@ -377,6 +389,18 @@ const EmergencyHelpline = () => {
                   <p className="text-gray-300 text-xs sm:text-sm leading-relaxed line-clamp-2 mb-3">
                     {service.description}
                   </p>
+                </div>
+
+                {/* Response Time and Priority Info - YAHAN ADD KIYA HAI */}
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1 text-xs">
+                    <IoTimeOutline className="text-gray-400" />
+                    <span className="text-gray-300 font-medium">Response:</span>
+                    <span className="text-white font-semibold ml-1">{service.responseTime}</span>
+                  </div>
+                  <div className={`text-xs font-semibold px-2 py-1 rounded-full ${getPriorityColor(service.priority)} bg-black/20`}>
+                    {service.priority}
+                  </div>
                 </div>
 
                 {/* Contact Info */}
@@ -533,6 +557,17 @@ const EmergencyHelpline = () => {
                   
                   <div className="text-2xl sm:text-3xl font-black text-white mb-4 sm:mb-6">
                     {selectedService.number}
+                  </div>
+
+                  {/* Response time in modal bhi add kiya hai */}
+                  <div className="flex items-center justify-center gap-4 mb-4 sm:mb-6">
+                    <div className="flex items-center gap-2 text-sm text-gray-300">
+                      <IoTimeOutline className="text-base" />
+                      <span>Avg. Response: <strong className="text-white">{selectedService.responseTime}</strong></span>
+                    </div>
+                    <div className={`text-sm font-semibold px-2 py-1 rounded-full ${getPriorityColor(selectedService.priority)} bg-black/30`}>
+                      {selectedService.priority} Priority
+                    </div>
                   </div>
 
                   <p className="text-gray-400 text-xs sm:text-sm mb-6 sm:mb-8 leading-relaxed">
