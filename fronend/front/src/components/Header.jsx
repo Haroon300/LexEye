@@ -113,7 +113,7 @@ export default function Header() {
             Lex<span className="text-cyan-400 drop-shadow-lg">Eye</span>
           </h1>
           <motion.p 
-            className="text-cyan-400/80 text-[10px] font-medium tracking-wider hidden sm:block"
+            className="text-cyan-400/80 text-[10px] font-medium tracking-wider"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
