@@ -609,7 +609,7 @@ const printContent = `
   };
 
   return (
-    <div className="min-h-screen mt-[5%] text-white relative overflow-hidden">
+    <div className="min-h-screen pt-[5%] text-white relative overflow-hidden p-">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-64 h-64 md:w-96 md:h-96 bg-cyan-500/10 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20 animate-pulse-slow" />

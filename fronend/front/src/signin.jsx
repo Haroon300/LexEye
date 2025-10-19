@@ -126,7 +126,7 @@ const SignIn = () => {
         )}
       </AnimatePresence>
 
-      <main className="relative mt-[5%] min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 overflow-hidden">
+      <main className="relative pt-[5%] min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 overflow-hidden">
         {/* Enhanced Background Effects */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" />

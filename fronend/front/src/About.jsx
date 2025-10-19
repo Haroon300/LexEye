@@ -72,7 +72,7 @@ const About = () => {
   };
 
   return (
-    <div className="min-h-screen mt-[5%] text-white relative overflow-hidden">
+    <div className="min-h-screen pt-[5%] text-white relative overflow-hidden">
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" />

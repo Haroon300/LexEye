@@ -238,7 +238,7 @@ const Glossary = () => {
   };
 
   return (
-    <div className="min-h-screen md:mt-[6%] mt-[10%] bg-gradient-to-b from-[#051c1f] via-[#08292e] to-black text-gray-100 relative overflow-hidden">
+    <div className="min-h-screen md:pt-[6%] pt-[10%] bg-gradient-to-b from-[#051c1f] via-[#08292e] to-black text-gray-100 relative overflow-hidden">
       {/* Enhanced background effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" />
