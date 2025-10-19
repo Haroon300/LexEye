@@ -11,7 +11,8 @@ import {
   IoPhonePortrait,
   IoWarning,
   IoChevronDown,
-  IoChevronUp
+  IoChevronUp,
+  IoStar
 } from "react-icons/io5";
 import { 
   FaAmbulance, 
@@ -27,6 +28,7 @@ const EmergencyHelpline = () => {
   const [showInstructions, setShowInstructions] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
 
+  // Emergency services data - declared first
   const emergencyServices = [
     {
       id: "police",
@@ -38,7 +40,9 @@ const EmergencyHelpline = () => {
       textColor: "text-blue-100",
       bgColor: "from-blue-500/20 to-blue-600/20",
       borderColor: "border-blue-400/30",
-      type: "emergency"
+      type: "emergency",
+      responseTime: "2-5 minutes",
+      priority: "High"
     },
     {
       id: "rescue",
@@ -50,7 +54,9 @@ const EmergencyHelpline = () => {
       textColor: "text-red-100",
       bgColor: "from-red-500/20 to-red-600/20",
       borderColor: "border-red-400/30",
-      type: "emergency"
+      type: "emergency",
+      responseTime: "3-7 minutes",
+      priority: "Critical"
     },
     {
       id: "motorway",
@@ -62,7 +68,9 @@ const EmergencyHelpline = () => {
       textColor: "text-green-100",
       bgColor: "from-green-500/20 to-green-600/20",
       borderColor: "border-green-400/30",
-      type: "emergency"
+      type: "emergency",
+      responseTime: "5-10 minutes",
+      priority: "High"
     },
     {
       id: "anf",
@@ -74,7 +82,9 @@ const EmergencyHelpline = () => {
       textColor: "text-purple-100",
       bgColor: "from-purple-500/20 to-purple-600/20",
       borderColor: "border-purple-400/30",
-      type: "reporting"
+      type: "reporting",
+      responseTime: "15-30 minutes",
+      priority: "Medium"
     },
     {
       id: "fia",
@@ -86,7 +96,9 @@ const EmergencyHelpline = () => {
       textColor: "text-orange-100",
       bgColor: "from-orange-500/20 to-orange-600/20",
       borderColor: "border-orange-400/30",
-      type: "reporting"
+      type: "reporting",
+      responseTime: "24-48 hours",
+      priority: "Medium"
     },
     {
       id: "national",
@@ -98,7 +110,9 @@ const EmergencyHelpline = () => {
       textColor: "text-yellow-100",
       bgColor: "from-yellow-500/20 to-yellow-600/20",
       borderColor: "border-yellow-400/30",
-      type: "emergency"
+      type: "emergency",
+      responseTime: "2-5 minutes",
+      priority: "High"
     },
     {
       id: "human-rights",
@@ -110,7 +124,9 @@ const EmergencyHelpline = () => {
       textColor: "text-teal-100",
       bgColor: "from-teal-500/20 to-teal-600/20",
       borderColor: "border-teal-400/30",
-      type: "support"
+      type: "support",
+      responseTime: "1-2 hours",
+      priority: "Low"
     },
     {
       id: "cyber-crime",
@@ -123,7 +139,9 @@ const EmergencyHelpline = () => {
       bgColor: "from-indigo-500/20 to-indigo-600/20",
       borderColor: "border-indigo-400/30",
       isWebsite: true,
-      type: "online"
+      type: "online",
+      responseTime: "24-72 hours",
+      priority: "Medium"
     },
     {
       id: "pta-spam",
@@ -135,7 +153,9 @@ const EmergencyHelpline = () => {
       textColor: "text-pink-100",
       bgColor: "from-pink-500/20 to-pink-600/20",
       borderColor: "border-pink-400/30",
-      type: "reporting"
+      type: "reporting",
+      responseTime: "2-3 days",
+      priority: "Low"
     },
     {
       id: "pta-scam",
@@ -147,8 +167,19 @@ const EmergencyHelpline = () => {
       textColor: "text-rose-100",
       bgColor: "from-rose-500/20 to-rose-600/20",
       borderColor: "border-rose-400/30",
-      type: "reporting"
+      type: "reporting",
+      responseTime: "2-3 days",
+      priority: "Low"
     }
+  ];
+
+  // Filter buttons - declared after emergencyServices
+  const filterButtons = [
+    { id: "all", label: "All Services", count: emergencyServices.length, icon: IoStar },
+    { id: "emergency", label: "Emergency", count: emergencyServices.filter(s => s.type === "emergency").length, icon: IoWarning },
+    { id: "reporting", label: "Reporting", count: emergencyServices.filter(s => s.type === "reporting").length, icon: FaUserShield },
+    { id: "support", label: "Support", count: emergencyServices.filter(s => s.type === "support").length, icon: IoPeople },
+    { id: "online", label: "Online", count: emergencyServices.filter(s => s.type === "online").length, icon: IoGlobe }
   ];
 
   const filteredServices = emergencyServices.filter(service => 
@@ -177,7 +208,7 @@ const EmergencyHelpline = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05 // Faster stagger for mobile
+        staggerChildren: 0.05
       }
     }
   };
@@ -188,7 +219,7 @@ const EmergencyHelpline = () => {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.3, // Shorter duration for mobile
+        duration: 0.3,
         ease: "easeOut"
       }
     }
@@ -200,7 +231,7 @@ const EmergencyHelpline = () => {
       opacity: 1, 
       scale: 1,
       y: 0,
-      transition: { duration: 0.2, ease: "easeOut" } // Faster for mobile
+      transition: { duration: 0.2, ease: "easeOut" }
     },
     exit: { 
       opacity: 0, 
@@ -209,14 +240,6 @@ const EmergencyHelpline = () => {
       transition: { duration: 0.15, ease: "easeIn" }
     }
   };
-
-  const filterButtons = [
-    { id: "all", label: "All", count: emergencyServices.length },
-    { id: "emergency", label: "Emergency", count: emergencyServices.filter(s => s.type === "emergency").length },
-    { id: "reporting", label: "Reporting", count: emergencyServices.filter(s => s.type === "reporting").length },
-    { id: "support", label: "Support", count: emergencyServices.filter(s => s.type === "support").length },
-    { id: "online", label: "Online", count: emergencyServices.filter(s => s.type === "online").length }
-  ];
 
   return (
     <div className="min-h-screen py-4 px-3 sm:px-4 relative overflow-hidden">
@@ -320,7 +343,7 @@ const EmergencyHelpline = () => {
                   transition: { duration: 0.2 }
                 }}
                 whileTap={{ scale: 0.98 }}
-                className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-lg border ${service.borderColor} hover:shadow-xl transition-all duration-300 group min-h-[140px] flex flex-col justify-between`}
+                className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-lg border ${service.borderColor} hover:shadow-xl transition-all duration-300 group min-h-[140px] flex flex-col justify-between relative`}
                 onClick={() => service.isWebsite ? handleWebsiteClick(service.website) : handleCallClick(service)}
               >
                 <div className="flex items-start justify-between mb-3">
@@ -365,8 +388,8 @@ const EmergencyHelpline = () => {
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <IoCall className={`text-sm ${service.textColor.replace('text-', 'text-').split('-')[0]}-300`} />
-                      <span className={`font-bold text-lg sm:text-xl ${service.textColor.replace('text-', 'text-').split('-')[0]}-300`}>
+                      <IoCall className={`text-sm ${service.textColor}`} />
+                      <span className={`font-bold text-lg sm:text-xl ${service.textColor}`}>
                         {service.number}
                       </span>
                     </div>

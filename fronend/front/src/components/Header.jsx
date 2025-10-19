@@ -93,7 +93,7 @@ export default function Header() {
     >
       {/* Logo */}
         <div className="flex items-center gap-3 relative group">
-          <div className="relative w-8 h-10 sm:w-12 sm:h-12">
+          <div className="relative w-10 h-10 sm:w-12 sm:h-12">
             <img
               src="/logo-2.png"
               className="w-full h-full"
