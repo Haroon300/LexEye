@@ -19,6 +19,7 @@ import Comment from "./components/Comment";
 import CommentList from "./components/Comment";
 import Glossary from "./Glossary";
 import About from "./About.jsx";
+import EmergencyHelpline from "./EmergencyHelpline";
 
 import { useEffect, useState } from "react";
 
@@ -77,7 +78,7 @@ export default function App() {
           {/* Always accessible */}
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="/law/:lawId" element={<LawDetail />} />
-          <Route path="/glossary" element={<Glossary />} />
+          <Route path="/helpline" element={<EmergencyHelpline />} />
 
           {isOnline ? (
             <>
@@ -85,6 +86,7 @@ export default function App() {
               <Route path="/" element={<Hero />} />
 
               {/* Core Pages */}
+              <Route path="/glossary" element={<Glossary />} />
               <Route path="/search" element={<Search />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />

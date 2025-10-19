@@ -196,9 +196,8 @@ const Footer = () => {
                 {[
                   { to: "/comment", label: "Feedback & Suggestions" },
                   { to: "/about", label: "About LexEye" },
-                  { to: "/faq", label: "FAQ & Help Center" },
-                  { to: "#", label: "Legal Resources" },
-                  { to: "#", label: "Community Forum" }
+                  { to: "/helpline", label: "Emergency Helpline" },
+                  { to: "/faq", label: "FAQ & Help Center" }
                 ].map((link, index) => (
                   <motion.li key={index} whileHover={{ x: 5 }}>
                     <Link
