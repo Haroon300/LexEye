@@ -17,6 +17,7 @@ import { useState, useEffect } from "react";
 export default function Header() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isHoveringLogo, setIsHoveringLogo] = useState(false);
   const [userName, setUserName] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ export default function Header() {
       transition: { duration: 0.3, ease: "easeOut" },
     },
   };
+  
 
   return (
     <motion.header
@@ -90,23 +92,37 @@ export default function Header() {
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       {/* Logo */}
-      <motion.div
-        className="flex items-center gap-3 "
-        whileHover={{ scale: 1.05 }}
-        onClick={() => navigate("/")}
-      >
-        <div className="relative">
-          <img
-            src="/logo-2.png"
-            className="w-12 h-12 rounded-2xl border border-cyan-400/30 shadow-md shadow-cyan-500/20"
-            alt="LexEye"
-          />
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10" />
+        <div className="flex items-center gap-3 relative group">
+          <div className="relative w-8 h-10 sm:w-12 sm:h-12">
+            <img
+              src="/logo-2.png"
+              className="w-full h-full"
+              alt="LexEye"
+            />
+            {/* Animated border */}
+            <motion.div
+              className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-cyan-400 to-blue-400 opacity-0 group-hover:opacity-100"
+              initial={false}
+              animate={{ opacity: isHoveringLogo ? 0.3 : 0 }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        
+        <div className="flex flex-col">
+          <h1 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-white via-cyan-100 to-white text-transparent bg-clip-text tracking-tight">
+            Lex<span className="text-cyan-400 drop-shadow-lg">Eye</span>
+          </h1>
+          <motion.p 
+            className="text-cyan-400/80 text-[10px] font-medium tracking-wider hidden sm:block"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            LEGAL INTELLIGENCE
+          </motion.p>
         </div>
-        <h1 className="text-3xl font-extrabold bg-white text-transparent bg-clip-text tracking-wide">
-          Lex<span className="text-cyan-400">Eye</span>
-        </h1>
-      </motion.div>
+      </div>
+      
 
       {/* Right Controls */}
       <div className="flex items-center gap-4">
