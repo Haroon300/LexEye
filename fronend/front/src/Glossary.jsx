@@ -238,7 +238,7 @@ const Glossary = () => {
   };
 
   return (
-    <div className="min-h-screen md:pt-[6%] pt-[10%] bg-gradient-to-b from-[#051c1f] via-[#08292e] to-black text-gray-100 relative overflow-hidden">
+    <div className="min-h-screen pt-[10%] bg-gradient-to-b from-[#051c1f] via-[#08292e] to-black text-gray-100 relative overflow-hidden">
       {/* Enhanced background effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" />
@@ -253,7 +253,7 @@ const Glossary = () => {
 
       {/* Back Button */}
       <motion.div 
-        className="absolute top-8 left-6 z-20"
+        className="absolute top-[7%] left-6 z-20"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
@@ -269,7 +269,7 @@ const Glossary = () => {
 
       {/* Desktop Category Sidebar Toggle */}
       <motion.div 
-        className="absolute top-8 right-6 z-20 hidden lg:block"
+        className="absolute top-[7%] right-6 z-20 hidden lg:block"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
