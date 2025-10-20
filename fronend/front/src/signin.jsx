@@ -261,16 +261,10 @@ const SignIn = () => {
                 variants={itemVariants}
                 className="flex items-center justify-between text-sm"
               >
-                <label className="flex items-center gap-2 text-gray-400 cursor-pointer">
+                <label className="flex items-center gap-2 text-gray-400">
                   <input type="checkbox" className="rounded bg-white/5 border-white/10 text-cyan-400 focus:ring-cyan-400" />
                   Remember me
                 </label>
-                <Link 
-                  to="/forgot-password" 
-                  className="text-cyan-400 hover:text-cyan-300 transition-colors duration-200"
-                >
-                  Forgot password?
-                </Link>
               </motion.div>
 
               {/* Submit Button */}
