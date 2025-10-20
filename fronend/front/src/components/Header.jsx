@@ -92,19 +92,12 @@ export default function Header() {
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       {/* Logo */}
-        <div className="flex items-center gap-3 relative group">
-          <div className="relative w-10 h-10 sm:w-12 sm:h-12">
+      <div className="flex items-center gap-3 relative group">
+          <div className="relative w-14 h-14 sm:w-12 sm:h-12">
             <img
               src="/logo-2.png"
               className="w-full h-full"
               alt="LexEye"
-            />
-            {/* Animated border */}
-            <motion.div
-              className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-cyan-400 to-blue-400 opacity-0 group-hover:opacity-100"
-              initial={false}
-              animate={{ opacity: isHoveringLogo ? 0.3 : 0 }}
-              transition={{ duration: 0.3 }}
             />
           </div>
         

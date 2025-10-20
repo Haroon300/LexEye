@@ -95,7 +95,7 @@ const NotFound = () => {
           >
             <div className="relative inline-block">
               {/* Glow Effect */}
-              <div className="absolute inset-0 w-48 h-48 bg-purple-500/20 rounded-full blur-2xl -inset-8" />
+              <div className="absolute inset-0 w-48 h-48 bg-purple-500/20 rounded-full blur-2xl" />
               
               {/* Main 404 Container */}
               <motion.div

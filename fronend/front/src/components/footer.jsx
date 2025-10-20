@@ -92,22 +92,29 @@ const Footer = () => {
               className="lg:col-span-1"
               variants={itemVariants}
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="relative">
-                  <img 
-                    src="/logo-2.png" 
-                    alt="LexEye Logo" 
-                    className="w-14 h-14 rounded-xl shadow-2xl" 
-                  />
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 shadow-2xl shadow-cyan-500/20" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-extrabold bg-white text-transparent bg-clip-text tracking-wide">
-                    Lex<span className="text-cyan-400">Eye</span>
-                  </h2>
-                  <p className="text-cyan-400 text-sm font-medium">Legal Intelligence Platform</p>
-                </div>
-              </div>
+              <div className="flex items-center gap-3 relative group">
+                        <div className="relative w-14 h-14 sm:w-12 sm:h-12">
+                          <img
+                            src="/logo-2.png"
+                            className="w-full h-full"
+                            alt="LexEye"
+                          />
+                        </div>
+                      
+                      <div className="flex flex-col">
+                        <h1 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-white via-cyan-100 to-white text-transparent bg-clip-text tracking-tight">
+                          Lex<span className="text-cyan-400 drop-shadow-lg">Eye</span>
+                        </h1>
+                        <motion.p 
+                          className="text-cyan-400/80 text-[10px] font-medium tracking-wider"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.5 }}
+                        >
+                          LEGAL INTELLIGENCE
+                        </motion.p>
+                      </div>
+                    </div>
               <p className="text-gray-400 leading-relaxed mb-6 text-sm">
                 Your clarity engine for legal knowledge. Explore categories, search laws, 
                 and bookmark what matters most — all designed for modern legal research.
