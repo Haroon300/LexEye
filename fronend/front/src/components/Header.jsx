@@ -103,7 +103,7 @@ export default function Header() {
         
         <div className="flex flex-col">
           <h1 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-white via-cyan-100 to-white text-transparent bg-clip-text tracking-tight">
-            Lex<span className="text-cyan-500 drop-shadow-lg">Eye</span>
+            Lex<span className="text-cyan-400 drop-shadow-lg">Eye</span>
           </h1>
           <motion.p 
             className="text-cyan-400/80 text-[10px] font-medium tracking-wider"
