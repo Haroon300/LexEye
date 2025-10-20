@@ -254,9 +254,18 @@ export default function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mt-6 pt-4 border-t border-white/10 text-center"
+              className="mt-6 pt-2 border-t border-white/10 text-center"
             >
               <p className="text-gray-400 text-xs">
+                Click below in case of emergencies
+              </p>
+              <Link 
+                to="/helpline"
+                onClick={() => setIsPopupOpen(false)}
+              >
+                <h3 className="text-red-500 font-semibold mb-1">Emergency Helpline</h3>
+              </Link>
+              <p className="text-gray-400 text-xs pt-2 border-t border-white/10 text-center">
                 LexEye • Legal Intelligence Platform
               </p>
             </motion.div>
