@@ -373,27 +373,6 @@ const SignUp = () => {
                 )}
               </motion.div>
 
-              {/* Terms Agreement */}
-              <motion.div 
-                variants={itemVariants}
-                className="flex items-start gap-3 text-sm"
-              >
-                <input 
-                  type="checkbox" 
-                  className="mt-1 rounded bg-white/5 border-white/10 text-green-400 focus:ring-green-400" 
-                  required 
-                />
-                <label className="text-gray-400 leading-relaxed">
-                  I agree to the{" "}
-                  <Link to="/terms" className="text-green-400 hover:text-green-300">
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link to="/privacy" className="text-green-400 hover:text-green-300">
-                    Privacy Policy
-                  </Link>
-                </label>
-              </motion.div>
 
               {/* Submit Button */}
               <motion.div variants={itemVariants}>
