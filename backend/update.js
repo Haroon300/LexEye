@@ -15,7 +15,7 @@ await mongoose.connect(MONGO_URI);
 console.log("✅ Connected to MongoDB");
 
 // ✅ Read Excel file
-const workbook = xlsx.readFile("./narcotics lexeye.xlsx");
+const workbook = xlsx.readFile("./traffic law lexeye.xlsx");
 const sheet = workbook.Sheets["LexEye Law Template"] || workbook.Sheets[workbook.SheetNames[0]];
 const rows = xlsx.utils.sheet_to_json(sheet, { header: 1 });
 console.log(`📄 Loaded ${rows.length} rows from Excel`);
