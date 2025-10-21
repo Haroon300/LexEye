@@ -1,10 +1,34 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { IoBookmarkSharp, IoBookmarkOutline } from "react-icons/io5";
-import { TiArrowBack } from "react-icons/ti";
-import { FaBalanceScale, FaGavel, FaShieldAlt } from "react-icons/fa";
+import { 
+  IoBookmarkSharp, 
+  IoBookmarkOutline, 
+  IoShareOutline,
+  IoPrintOutline,
+  IoDocumentTextOutline,
+  IoArrowBack
+} from "react-icons/io5";
+import { 
+  FaBalanceScale,
+  FaMapMarkerAlt, 
+  FaCalendarAlt, 
+  FaList,
+  FaTag,
+  FaExclamationTriangle,
+  FaLightbulb,
+  FaLink,
+  FaPuzzlePiece,
+  FaBrain,
+  FaLeaf,
+  FaSkullCrossbones,
+  FaPhoneAlt
+} from "react-icons/fa";
+import { 
+  FiMenu, 
+  FiX 
+} from "react-icons/fi";
+import { GiLadder } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiPrinter, FiShare2, FiFileText, FiMenu, FiX } from "react-icons/fi";
 import axios from "axios";
 import Loader from "./Loader";
 import {
@@ -84,7 +108,7 @@ const LawDetail = () => {
   const handleShare = async () => {
     if (!law) return;
     const shareData = {
-      title: `${law.section || "Law Section"} - LexEye`,
+      title: `${law.lawTitle || law.section || "Law Section"} - LexEye`,
       text: `${law.legalConcept || "Legal information"} - ${law.description?.substring(0, 100)}...`,
       url: window.location.href,
     };
@@ -108,465 +132,278 @@ const LawDetail = () => {
     }
   };
 
-  // Enhanced Print functionality with Step-by-Step Guide
+  // Check if law has enhanced fields
+  const isEnhancedLaw = (lawData) => {
+    return lawData && (
+      lawData.lawTitle ||
+      lawData.sectionOverview ||
+      lawData.jurisdiction || 
+      lawData.lastUpdated ||
+      lawData.stepByStepGuide
+    );
+  };
+
+  // Helper function to safely render related laws
+  const renderRelatedLaw = (lawItem) => {
+    if (typeof lawItem === 'string') {
+      return lawItem;
+    } else if (typeof lawItem === 'object' && lawItem !== null) {
+      return lawItem.section || lawItem.legalConcept || lawItem.lawTitle || JSON.stringify(lawItem);
+    }
+    return String(lawItem);
+  };
+
+  // Fix step-by-step guide formatting
+  const formatStepByStepGuide = (guide) => {
+    if (!guide) return [];
+    
+    let steps = [];
+    
+    // Method 1: Split by numbered list pattern (1., 2., etc.)
+    const numberedPattern = /\d+\.\s+/g;
+    if (numberedPattern.test(guide)) {
+      steps = guide.split(/\d+\.\s+/).filter(step => step.trim().length > 0);
+    } 
+    // Method 2: Split by <br> tags
+    else if (guide.includes('<br>')) {
+      steps = guide.split('<br>').filter(step => step.trim().length > 0);
+    }
+    // Method 3: Split by new lines
+    else if (guide.includes('\n')) {
+      steps = guide.split('\n').filter(step => step.trim().length > 0);
+    }
+    // Method 4: Manual parsing for continuous text with numbers
+    else {
+      const stepMatches = guide.match(/\d+\..*?(?=\d+\.|$)/g);
+      if (stepMatches) {
+        steps = stepMatches.map(step => step.replace(/^\d+\.\s*/, '').trim());
+      } else {
+        steps = guide.split(/\.\s+(?=[A-Z])/).filter(step => step.trim().length > 0);
+      }
+    }
+    
+    return steps.map(step => step.trim()).filter(step => step.length > 0);
+  };
+
+  // Enhanced Print functionality
   const handlePrint = () => {
     if (!law) return;
     
     setIsPrinting(true);
 
-    const stepByStepContent = law.stepByStepGuide ? `
-  <div class="section">
-    <div class="section-header">
-      <div class="section-icon" style="background: #fffbeb; color: #d97706; border: 1px solid #fbbf24;">📋</div>
-      <h2 class="section-title">Step-by-Step Guide</h2>
-    </div>
-    <div class="section-content guide">
-      <div class="steps-container">
-        ${law.stepByStepGuide.split('<br>').map((step, index) => `
-          <div class="step-item">
-            <div class="step-number">${index + 1}</div>
-            <div class="step-content">
-              <div class="step-text">${step}</div>
+    // Format steps for print
+    const steps = formatStepByStepGuide(law.stepByStepGuide);
+    const stepByStepContent = steps.length > 0 ? `
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">🪜</div>
+          <h2 class="section-title">Step-by-Step Legal Help Guide</h2>
+        </div>
+        <div class="section-content guide">
+          <div class="steps-container">
+            ${steps.map((step, index) => `
+              <div class="step-item">
+                <div class="step-number">${index + 1}️⃣</div>
+                <div class="step-content">
+                  <div class="step-text">${step}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    ` : '';
+
+    // Rest of the print content...
+    const printContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${law.lawTitle || law.section || "Law Section"} - LexEye</title>
+          <meta charset="UTF-8">
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+            
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            
+            body {
+              font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              color: #1a202c;
+              line-height: 1.6;
+              background: #ffffff;
+              padding: 20mm;
+              max-width: 210mm;
+              margin: 0 auto;
+            }
+            
+            .print-header {
+              border-bottom: 3px solid #0e7490;
+              padding-bottom: 20px;
+              margin-bottom: 30px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            }
+            
+            .logo {
+              font-size: 20px;
+              font-weight: 700;
+              color: #0e7490;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            }
+            
+            .main-title {
+              font-size: 28px;
+              font-weight: 800;
+              color: #0f766e;
+              margin: 25px 0 10px 0;
+              line-height: 1.3;
+              padding-bottom: 15px;
+              border-bottom: 2px solid #e2e8f0;
+            }
+            
+            .section {
+              margin-bottom: 30px;
+              page-break-inside: avoid;
+            }
+            
+            .section-header {
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              margin-bottom: 20px;
+              padding-bottom: 10px;
+              border-bottom: 2px solid #e2e8f0;
+            }
+            
+            .section-icon {
+              font-size: 24px;
+              width: 40px;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 8px;
+              background: #f8fafc;
+              border: 2px solid #e2e8f0;
+            }
+            
+            .section-title {
+              font-size: 20px;
+              font-weight: 700;
+              color: #0f766e;
+              margin: 0;
+            }
+            
+            .section-content {
+              font-size: 14px;
+              color: #374151;
+              line-height: 1.7;
+            }
+            
+            .steps-container {
+              display: flex;
+              flex-direction: column;
+              gap: 15px;
+            }
+            
+            .step-item {
+              display: flex;
+              align-items: flex-start;
+              gap: 15px;
+              padding: 15px;
+              background: #f8fafc;
+              border-radius: 8px;
+              border-left: 4px solid #f59e0b;
+            }
+            
+            .step-number {
+              font-size: 16px;
+              font-weight: 700;
+              flex-shrink: 0;
+            }
+            
+            .step-text {
+              color: #374151;
+              line-height: 1.6;
+            }
+            
+            .footer {
+              margin-top: 40px;
+              padding-top: 20px;
+              border-top: 3px solid #e2e8f0;
+              text-align: center;
+              color: #64748b;
+              font-size: 12px;
+            }
+            
+            @media print {
+              @page {
+                margin: 15mm;
+                size: A4;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="print-header">
+            <div class="logo">
+              <img src="/logo-2.png" alt="LexEye Logo" style="width: 25px; height: 25px;" />
+              LexEye - Legal Intelligence Platform
+            </div>
+            <div class="metadata">
+              <div><strong>Printed:</strong> ${new Date().toLocaleDateString()}</div>
             </div>
           </div>
-        `).join('')}
-      </div>
-    </div>
-  </div>
-` : '';
+          
+          <h1 class="main-title">${law.section || "Legal Section"}</h1>
+          ${law.legalConcept ? `<div class="subtitle"><strong>${law.legalConcept}</strong></div>` : ''}
+          
+          <div class="section">
+            <div class="section-header">
+              <div class="section-icon">🧠</div>
+              <h2 class="section-title">Simple Explanation</h2>
+            </div>
+            <div class="section-content">
+              ${law.description || "No description available."}
+            </div>
+          </div>
 
-const printContent = `
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <title>${law.section || "Law Section"} - LexEye</title>
-      <meta charset="UTF-8">
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        
-        body {
-          font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          color: #1a202c;
-          line-height: 1.6;
-          background: #ffffff;
-          padding: 15mm;
-          max-width: 210mm;
-          margin: 0 auto;
-          min-height: 297mm;
-          position: relative;
-        }
-        
-        .print-header {
-          border-bottom: 2px solid #0e7490;
-          padding-bottom: 15px;
-          margin-bottom: 25px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-        
-        .logo {
-          font-size: 18px;
-          font-weight: 700;
-          color: #0e7490;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        
-        .logo-image {
-          width: 25px !important;
-          height: 25px !important;
-        }
-        
-        .metadata {
-          text-align: right;
-          font-size: 10px;
-          color: #64748b;
-          line-height: 1.4;
-        }
-        
-        .main-title {
-          font-size: 26px;
-          font-weight: 800;
-          color: #0f766e;
-          margin: 20px 0 8px 0;
-          line-height: 1.3;
-          padding-bottom: 12px;
-          border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .subtitle {
-          font-size: 15px;
-          color: #475569;
-          font-weight: 500;
-          margin-bottom: 20px;
-          font-style: italic;
-          background: #f8fafc;
-          padding: 12px 16px;
-          border-radius: 6px;
-          border-left: 3px solid #0ea5e9;
-        }
-        
-        .section {
-          margin-bottom: 25px;
-          page-break-inside: avoid;
-        }
-        
-        .section-header {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 15px;
-          padding-bottom: 8px;
-          border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .section-icon {
-          width: 28px;
-          height: 28px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 6px;
-          font-weight: 600;
-          font-size: 12px;
-          border: 1px solid;
-        }
-        
-        .section-title {
-          font-size: 18px;
-          font-weight: 700;
-          color: #0f766e;
-          margin: 0;
-        }
-        
-        .section-content {
-          font-size: 13px;
-          color: #374151;
-          text-align: justify;
-          line-height: 1.6;
-        }
-        
-        .legal-concept {
-          background: #f8fafc;
-          border-left: 4px solid #0ea5e9;
-          padding: 18px;
-          margin: 15px 0;
-          border-radius: 0 8px 8px 0;
-        }
-        
-        .consequence {
-          background: #fef2f2;
-          border-left: 4px solid #ef4444;
-          padding: 18px;
-          margin: 15px 0;
-          border-radius: 0 8px 8px 0;
-        }
-        
-        .prevention {
-          background: #f0fdf4;
-          border-left: 4px solid #22c55e;
-          padding: 18px;
-          margin: 15px 0;
-          border-radius: 0 8px 8px 0;
-        }
-        
-        .guide {
-          background: #fffbeb;
-          border-left: 4px solid #f59e0b;
-          padding: 18px;
-          margin: 15px 0;
-          border-radius: 0 8px 8px 0;
-        }
-        
-        .steps-container {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        
-        .step-item {
-          display: flex;
-          align-items: flex-start;
-          gap: 12px;
-          padding: 0;
-          background: transparent;
-        }
-        
-        .step-number {
-          width: 26px;
-          height: 26px;
-          background: #f59e0b;
-          color: white;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 700;
-          font-size: 12px;
-          flex-shrink: 0;
-        }
-        
-        .step-content {
-          flex: 1;
-          padding: 0;
-        }
-        
-        .step-text {
-          color: #374151;
-          line-height: 1.5;
-          font-size: 13px;
-          padding: 4px 0;
-        }
-        
-        .footer {
-          margin-top: 30px;
-          padding-top: 15px;
-          border-top: 2px solid #e2e8f0;
-          text-align: center;
-          color: #64748b;
-          font-size: 10px;
-          background: #f8fafc;
-          padding: 15px;
-          border-radius: 6px;
-          position: absolute;
-          bottom: 20mm;
-          left: 25mm;
-          right: 25mm;
-        }
-        
-        .disclaimer {
-          background: #fffbeb;
-          border: 1px solid #f59e0b;
-          padding: 15px;
-          border-radius: 6px;
-          margin: 20px 0;
-          font-size: 11px;
-          color: #92400e;
-        }
-        
-        .disclaimer strong {
-          color: #b45309;
-        }
-        
-        @media print {
-          @page {
-            margin: 20mm;
-            size: A4;
-          }
-          
-          body {
-            padding: 20mm;
-            font-size: 12px;
-            max-width: none;
-            min-height: 257mm; /* 297mm - 20mm top - 20mm bottom */
-          }
-          
-          .print-header {
-            padding-bottom: 12px;
-            margin-bottom: 20px;
-          }
-          
-          .main-title {
-            font-size: 22px;
-            margin: 15px 0 6px 0;
-            padding-bottom: 10px;
-          }
-          
-          .subtitle {
-            font-size: 13px;
-            margin-bottom: 15px;
-            padding: 10px 12px;
-          }
-          
-          .section {
-            margin-bottom: 20px;
-          }
-          
-          .section-header {
-            margin-bottom: 12px;
-            padding-bottom: 6px;
-          }
-          
-          .section-title {
-            font-size: 16px;
-          }
-          
-          .section-content {
-            font-size: 11px;
-            line-height: 1.5;
-          }
-          
-          .legal-concept,
-          .consequence,
-          .prevention,
-          .guide {
-            padding: 15px;
-            margin: 12px 0;
-          }
-          
-          .logo-image {
-            width: 18px !important;
-            height: 18px !important;
-          }
-          
-          .step-number {
-            width: 22px;
-            height: 22px;
-            font-size: 10px;
-          }
-          
-          .step-text {
-            font-size: 11px;
-            padding: 3px 0;
-          }
-          
-          .steps-container {
-            gap: 10px;
-          }
-          
-          .footer {
-            margin-top: 25px;
-            padding: 12px;
-            font-size: 9px;
-            bottom: 20mm;
-            left: 20mm;
-            right: 20mm;
-          }
-          
-          .disclaimer {
-            padding: 12px;
-            font-size: 10px;
-            margin: 15px 0;
-          }
-        }
-        
-        @media (max-width: 600px) {
-          body {
-            padding: 15mm;
-          }
-          
-          .print-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 8px;
-          }
-          
-          .metadata {
-            text-align: left;
-          }
-          
-          .main-title {
-            font-size: 20px;
-          }
-          
-          .section-title {
-            font-size: 16px;
-          }
-          
-          .step-item {
-            gap: 10px;
-          }
-          
-          .footer {
-            left: 15mm;
-            right: 15mm;
-          }
-        }
-        
-        /* Ensure proper page breaks */
-        .section,
-        .steps-container {
-          page-break-inside: avoid;
-        }
-        
-        .step-item {
-          page-break-inside: avoid;
-          page-break-after: auto;
-        }
-        
-        /* Add page numbers */
-        @media print {
-          .page-number:after {
-            content: counter(page);
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="print-header">
-        <div class="logo">
-          <img src="/logo-2.png" alt="LexEye Logo" class="logo-image" style="width: 22px; height: 22px;" />
-          LexEye - Legal Intelligence Platform
-        </div>
-        <div class="metadata">
-          <div><strong>Printed:</strong> ${new Date().toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          })}</div>
-          ${law?._id ? `<div><strong>ID:</strong> ${law._id.slice(-8)}</div>` : ''}
-          <div><strong>Page:</strong> <span class="page-number"></span></div>
-        </div>
-      </div>
-      
-      <h1 class="main-title">${law.section || "Legal Section"}</h1>
-      ${law.legalConcept ? `<div class="subtitle">${law.legalConcept}</div>` : ''}
-      
-      <div class="disclaimer">
-        <strong>📋 Important Notice:</strong> This document contains informational guidance only. 
-        For specific legal advice, always consult a licensed legal professional.
-      </div>
+          <div class="section">
+            <div class="section-header">
+              <div class="section-icon">⚖️</div>
+              <h2 class="section-title">Legal Punishment</h2>
+            </div>
+            <div class="section-content">
+              ${law.legalConsequence || "No legal consequence available."}
+            </div>
+          </div>
 
-      <div class="section">
-        <div class="section-header">
-          <div class="section-icon" style="background: #dbeafe; color: #1d4ed8; border-color: #3b82f6;">⚖️</div>
-          <h2 class="section-title">Legal Description</h2>
-        </div>
-        <div class="section-content legal-concept">
-          ${law.description || "No description available."}
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <div class="section-icon" style="background: #fee2e2; color: #dc2626; border-color: #ef4444;">⚠️</div>
-          <h2 class="section-title">Legal Consequence</h2>
-        </div>
-        <div class="section-content consequence">
-          ${law.legalConsequence || "No legal consequence available."}
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <div class="section-icon" style="background: #dcfce7; color: #16a34a; border-color: #22c55e;">🛡️</div>
-          <h2 class="section-title">Prevention Solutions</h2>
-        </div>
-        <div class="section-content prevention">
-          ${law.preventionSolutions || "No prevention solutions available."}
-        </div>
-      </div>
-      
-      ${stepByStepContent}
-      
-      <div class="footer">
-        <p><strong>Generated by LexEye - Your Legal Intelligence Platform</strong></p>
-        <p>${window.location.href}</p>
-        <p>© ${new Date().getFullYear()} LexEye - Team Mavericks</p>
-      </div>
-    </body>
-  </html>
-`;
+          <div class="section">
+            <div class="section-header">
+              <div class="section-icon">🌿</div>
+              <h2 class="section-title">Prevention & Awareness Solutions</h2>
+            </div>
+            <div class="section-content">
+              ${law.preventionSolutions || "No prevention solutions available."}
+            </div>
+          </div>
+          
+          ${stepByStepContent}
+          
+          <div class="footer">
+            <p><strong>Generated by LexEye - Your Legal Intelligence Platform</strong></p>
+            <p>© ${new Date().getFullYear()} LexEye - Team Mavericks</p>
+          </div>
+        </body>
+      </html>
+    `;
 
     const printWindow = window.open("", "_blank");
     printWindow.document.write(printContent);
@@ -608,8 +445,11 @@ const printContent = `
     visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeOut" } },
   };
 
+  // Format steps for display
+  const steps = formatStepByStepGuide(law?.stepByStepGuide);
+
   return (
-    <div className="min-h-screen pt-[5%] text-white relative overflow-hidden p-">
+    <div className="min-h-screen pt-16 md:pt-20">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-64 h-64 md:w-96 md:h-96 bg-cyan-500/10 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20 animate-pulse-slow" />
@@ -618,7 +458,7 @@ const printContent = `
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 container mx-auto px-3 sm:px-4 lg:px-6 py-4 md:py-6 lg:py-8 pt-16 md:pt-20">
+      <div className="relative z-10 container mx-auto px-3 sm:px-4 lg:px-6 py-4 md:py-6 lg:py-8">
         {/* Back Button */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }} 
@@ -630,320 +470,360 @@ const printContent = `
             onClick={() => navigate(-1)}
             className="group flex items-center gap-2 md:gap-3 bg-white/10 backdrop-blur-xl border border-white/20 text-white font-semibold hover:bg-white/20 rounded-xl md:rounded-2xl px-3 md:px-6 py-2 md:py-4 shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-cyan-500/20 text-sm md:text-base"
           >
-            <TiArrowBack className="text-lg md:text-xl group-hover:-translate-x-1 transition-transform duration-300" />
+            <IoArrowBack className="text-lg md:text-xl group-hover:-translate-x-1 transition-transform duration-300" />
             Back to Previous
           </button>
         </motion.div>
 
-        {/* Header Section */}
+        {/* Law Header */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5 }}
-          className="mb-6 md:mb-8"
+          className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl mb-6 md:mb-8"
         >
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-3 md:gap-6">
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-4 md:gap-6">
             <div className="flex-1">
-              <div className="inline-flex items-center gap-2 bg-cyan-500/20 border border-cyan-400/30 rounded-full px-3 md:px-4 py-1.5 md:py-2 mb-3 md:mb-4">
-                <FaBalanceScale className="text-cyan-400 text-xs md:text-sm" />
-                <span className="text-cyan-300 text-xs md:text-sm font-medium">Legal Section</span>
+              {/* Law Title and Section */}
+              <div className="flex flex-wrap items-center gap-2 mb-3 md:mb-4">
+                <div className="inline-flex items-center gap-2 bg-cyan-500/20 border border-cyan-400/30 rounded-full px-3 md:px-4 py-1.5 md:py-2">
+                  <FaBalanceScale className="text-cyan-400 text-xs md:text-sm" />
+                  <span className="text-cyan-300 text-xs md:text-sm font-medium">LAW TITLE</span>
+                </div>
+                {isEnhancedLaw(law) && (
+                  <div className="inline-flex items-center gap-2 bg-purple-500/20 border border-purple-400/30 rounded-full px-3 md:px-4 py-1.5 md:py-2">
+                    <FaList className="text-purple-400 text-xs md:text-sm" />
+                    <span className="text-purple-300 text-xs md:text-sm font-medium">Enhanced Law</span>
+                  </div>
+                )}
               </div>
+
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black bg-gradient-to-r from-cyan-200 via-cyan-100 to-cyan-50 text-transparent bg-clip-text leading-tight mb-2 md:mb-4">
-                {law?.section || "Unknown Section"}
+                {law?.lawTitle || "Law Title"}
               </h1>
-              <p className="text-sm md:text-base lg:text-lg text-gray-300 leading-relaxed max-w-3xl">
-                {law?.legalConcept || "No legal concept available"}
-              </p>
+              
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-cyan-100 mb-2 md:mb-3">
+                {law?.section || "Section Title"}
+              </h2>
+              
+              {law?.legalConcept && (
+                <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-3 md:mb-4 italic">
+                  {law.legalConcept}
+                </p>
+              )}
+
+              {/* Metadata */}
+              <div className="flex flex-wrap items-center gap-3 md:gap-4 text-sm md:text-base text-gray-400 mb-4 md:mb-6">
+                {law?.category && (
+                  <div className="flex items-center gap-2 bg-green-500/20 border border-green-400/30 rounded-full px-3 md:px-4 py-1.5 md:py-2">
+                    <FaTag className="text-green-400 text-xs md:text-sm" />
+                    <span className="text-green-300 text-xs md:text-sm font-medium">{law.category}</span>
+                  </div>
+                )}
+                {law?.jurisdiction && (
+                  <div className="flex items-center gap-2">
+                    <FaMapMarkerAlt className="text-cyan-400 text-sm" />
+                    <span>Jurisdiction: {law.jurisdiction}</span>
+                  </div>
+                )}
+                {law?.lastUpdated && (
+                  <div className="flex items-center gap-2">
+                    <FaCalendarAlt className="text-green-400 text-sm" />
+                    <span>Last Updated: {law.lastUpdated}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Bookmark Button */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={toggleBookmark}
+                className={`group relative flex items-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-4 rounded-xl md:rounded-2xl font-semibold backdrop-blur-xl border-2 transition-all duration-300 ${
+                  isBookmarked
+                    ? "bg-yellow-500/20 border-yellow-400 text-yellow-100 shadow-xl shadow-yellow-500/20"
+                    : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:border-yellow-400/30 hover:text-white"
+                }`}
+              >
+                <AnimatePresence mode="wait">
+                  {isBookmarked ? (
+                    <motion.div key="bookmarked" initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }} exit={{ scale: 0, rotate: 180 }} transition={{ duration: 0.3 }}>
+                      <IoBookmarkSharp className="text-lg md:text-2xl" />
+                    </motion.div>
+                  ) : (
+                    <motion.div key="unbookmarked" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} transition={{ duration: 0.3 }}>
+                      <IoBookmarkOutline className="text-lg md:text-2xl" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <span className="text-sm md:text-base">{isBookmarked ? "Bookmarked" : "Bookmark"}</span>
+              </motion.button>
             </div>
 
-            {/* Action Buttons - Desktop */}
-            {!isMobile && (
-              <div className="flex flex-col sm:flex-row gap-2 md:gap-3">
-                {/* Bookmark Button */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={toggleBookmark}
-                  className={`group relative flex items-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-4 rounded-xl md:rounded-2xl font-semibold backdrop-blur-xl border-2 transition-all duration-300 ${
-                    isBookmarked
-                      ? "bg-yellow-500/20 border-yellow-400 text-yellow-100 shadow-xl shadow-yellow-500/20"
-                      : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:border-yellow-400/30 hover:text-white"
-                  }`}
-                >
-                  <AnimatePresence mode="wait">
-                    {isBookmarked ? (
-                      <motion.div key="bookmarked" initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }} exit={{ scale: 0, rotate: 180 }} transition={{ duration: 0.3 }}>
-                        <IoBookmarkSharp className="text-lg md:text-2xl" />
-                      </motion.div>
-                    ) : (
-                      <motion.div key="unbookmarked" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} transition={{ duration: 0.3 }}>
-                        <IoBookmarkOutline className="text-lg md:text-2xl" />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  <span className="text-sm md:text-base">{isBookmarked ? "Bookmarked" : "Bookmark"}</span>
-                </motion.button>
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-2 md:gap-3 w-full lg:w-auto">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleShare}
+                className="flex items-center justify-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-4 bg-green-500/20 hover:bg-green-500/30 border border-green-400/30 text-green-300 rounded-xl md:rounded-2xl font-semibold backdrop-blur-xl transition-all duration-300"
+              >
+                <IoShareOutline className="text-lg md:text-2xl" />
+                <span className="text-sm md:text-base">Share Law</span>
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
 
-                {/* Print Button */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handlePrint}
-                  disabled={isPrinting}
-                  className="group relative flex items-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-4 rounded-xl md:rounded-2xl font-semibold backdrop-blur-xl border-2 bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:border-cyan-400/30 hover:text-white transition-all duration-300 disabled:opacity-50"
-                >
-                  {isPrinting ? (
-                    <>
-                      <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span className="text-sm md:text-base">Printing...</span>
-                    </>
-                  ) : (
-                    <>
-                      <FiPrinter className="text-lg md:text-2xl" />
-                      <span className="text-sm md:text-base">Print</span>
-                    </>
-                  )}
-                </motion.button>
-              </div>
+        {/* Mobile Menu Button */}
+        {isMobile && (
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            className="fixed bottom-6 right-6 z-50 p-4 bg-cyan-500/20 backdrop-blur-xl border border-cyan-400/30 text-cyan-300 rounded-full shadow-xl"
+          >
+            {showMobileMenu ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
+          </motion.button>
+        )}
+
+        {/* Law Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-4 md:space-y-6">
+            {/* Section Overview */}
+            {law?.sectionOverview && (
+              <motion.section 
+                variants={sectionVariants}
+                initial="hidden"
+                animate="visible"
+                className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+              >
+                <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                  <div className="p-1.5 md:p-2 bg-purple-500/20 rounded-lg">
+                    <FaPuzzlePiece className="text-purple-400 text-sm md:text-lg" />
+                  </div>
+                  <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-purple-200 to-pink-200 text-transparent bg-clip-text">
+                    Section Overview
+                  </h2>
+                </div>
+                <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
+                  {law.sectionOverview}
+                </p>
+              </motion.section>
             )}
 
-            {/* Mobile Menu Button */}
-            {isMobile && (
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="p-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl text-white"
+            {/* Simple Explanation */}
+            <motion.section 
+              variants={sectionVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+            >
+              <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                <div className="p-1.5 md:p-2 bg-blue-500/20 rounded-lg">
+                  <FaBrain className="text-blue-400 text-sm md:text-lg" />
+                </div>
+                <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-200 to-cyan-200 text-transparent bg-clip-text">
+                  Simple Explanation
+                </h2>
+              </div>
+              <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
+                {law?.description || "No description available."}
+              </p>
+            </motion.section>
+
+            {/* Legal Punishment */}
+            <motion.section 
+              variants={sectionVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-white/5 backdrop-blur-2xl border border-red-400/20 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+            >
+              <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                <div className="p-1.5 md:p-2 bg-red-500/20 rounded-lg">
+                  <FaSkullCrossbones className="text-red-400 text-sm md:text-lg" />
+                </div>
+                <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-red-200 to-orange-200 text-transparent bg-clip-text">
+                  Legal Punishment
+                </h2>
+              </div>
+              <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg font-semibold">
+                {law?.legalConsequence || "No legal consequence available."}
+              </p>
+            </motion.section>
+
+            {/* Step-by-Step Guide */}
+            {steps.length > 0 && (
+              <motion.section 
+                variants={sectionVariants}
+                initial="hidden"
+                animate="visible"
+                className="bg-white/5 backdrop-blur-2xl border border-yellow-400/20 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
               >
-                {showMobileMenu ? <FiX className="text-lg" /> : <FiMenu className="text-lg" />}
-              </motion.button>
+                <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                  <div className="p-1.5 md:p-2 bg-yellow-500/20 rounded-lg">
+                    <GiLadder className="text-yellow-400 text-sm md:text-lg"/>
+                  </div>
+                  <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-yellow-200 to-amber-200 text-transparent bg-clip-text">
+                    Step-by-Step Legal Help Guide
+                  </h2>
+                </div>
+                <div className="space-y-3 md:space-y-4">
+                  {steps.map((step, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-start gap-3 md:gap-4 p-3 md:p-4 bg-white/5 rounded-xl border border-white/10"
+                    >
+                      <div className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 bg-cyan-500/20 border border-cyan-400/30 rounded-full flex items-center justify-center">
+                        <span className="text-cyan-300 font-bold text-xs md:text-sm">{index + 1}</span>
+                      </div>
+                      <p className="text-gray-300 leading-relaxed text-sm md:text-base flex-1">
+                        {step}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.section>
+            )}
+
+            {/* Prevention & Awareness */}
+            <motion.section 
+              variants={sectionVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-white/5 backdrop-blur-2xl border border-green-400/20 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+            >
+              <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                <div className="p-1.5 md:p-2 bg-green-500/20 rounded-lg">
+                  <FaLeaf className="text-green-400 text-sm md:text-lg" />
+                </div>
+                <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-green-200 to-emerald-200 text-transparent bg-clip-text">
+                  Prevention & Awareness Solutions
+                </h2>
+              </div>
+              <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
+                {law?.preventionSolutions || "No prevention solutions available."}
+              </p>
+            </motion.section>
+
+            {/* Related Laws */}
+            {law?.relatedLaws && law.relatedLaws.length > 0 && (
+              <motion.section 
+                variants={sectionVariants}
+                initial="hidden"
+                animate="visible"
+                className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+              >
+                <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                  <div className="p-1.5 md:p-2 bg-indigo-500/20 rounded-lg">
+                    <FaLink className="text-indigo-400 text-sm md:text-lg" />
+                  </div>
+                  <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-indigo-200 to-purple-200 text-transparent bg-clip-text">
+                    Related Laws ({law.relatedLaws.length})
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
+                  {law.relatedLaws.slice(0, 6).map((relatedLaw, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="p-2 md:p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300"
+                    >
+                      <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
+                        {renderRelatedLaw(relatedLaw)}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.section>
             )}
           </div>
 
-          {/* Mobile Action Menu */}
+          {/* Sidebar - Hidden on mobile when menu is closed */}
           <AnimatePresence>
-            {isMobile && showMobileMenu && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mt-3 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-xl p-3 overflow-hidden"
+            {(!isMobile || showMobileMenu) && (
+              <motion.div 
+                variants={sectionVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                className="space-y-4 md:space-y-6"
               >
-                <div className="grid grid-cols-2 gap-2">
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    onClick={toggleBookmark}
-                    className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium border transition-all duration-300 ${
-                      isBookmarked
-                        ? "bg-yellow-500/20 border-yellow-400 text-yellow-100"
-                        : "bg-white/5 border-white/10 text-gray-300"
-                    }`}
-                  >
-                    {isBookmarked ? <IoBookmarkSharp className="text-base" /> : <IoBookmarkOutline className="text-base" />}
-                    <span className="text-xs">{isBookmarked ? "Bookmarked" : "Bookmark"}</span>
-                  </motion.button>
+                {/* Quick Actions */}
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6">
+                  <h3 className="text-sm md:text-lg font-semibold text-gray-300 mb-3 md:mb-4">Quick Actions</h3>
+                  <div className="space-y-2 md:space-y-3">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handlePrint}
+                      disabled={isPrinting}
+                      className="w-full flex items-center justify-center gap-2 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/30 text-cyan-300 rounded-lg md:rounded-xl py-2 md:py-3 px-3 transition-all duration-300 disabled:opacity-50 text-xs md:text-sm font-medium"
+                    >
+                      {isPrinting ? (
+                        <>
+                          <div className="w-3 h-3 md:w-4 md:h-4 border-2 border-cyan-300 border-t-transparent rounded-full animate-spin" />
+                          Printing...
+                        </>
+                      ) : (
+                        <>
+                          <IoPrintOutline className="text-sm md:text-lg" />
+                          Print Document
+                        </>
+                      )}
+                    </motion.button>
 
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handlePrint}
-                    disabled={isPrinting}
-                    className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium bg-white/5 border border-white/10 text-gray-300 disabled:opacity-50"
-                  >
-                    {isPrinting ? (
-                      <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <FiPrinter className="text-base" />
-                    )}
-                    <span className="text-xs">{isPrinting ? "Printing..." : "Print"}</span>
-                  </motion.button>
-
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleExportPDF}
-                    className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium bg-purple-500/20 border border-purple-400/30 text-purple-300 col-span-2"
-                  >
-                    <FiFileText className="text-base" />
-                    <span className="text-xs">Export as PDF</span>
-                  </motion.button>
-
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleShare}
-                    className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium bg-green-500/20 border border-green-400/30 text-green-300 col-span-2"
-                  >
-                    <FiShare2 className="text-base" />
-                    <span className="text-xs">Share Section</span>
-                  </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handleExportPDF}
+                      className="w-full flex items-center justify-center gap-2 bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/30 text-purple-300 rounded-lg md:rounded-xl py-2 md:py-3 px-3 transition-all duration-300 text-xs md:text-sm font-medium"
+                    >
+                      <IoDocumentTextOutline className="text-sm md:text-lg" />
+                      Export as PDF
+                    </motion.button>
+                  </div>
                 </div>
+
+                {/* Emergency Help */}
+                <div className="bg-red-500/10 backdrop-blur-xl border border-red-400/20 rounded-xl md:rounded-2xl p-4 md:p-6">
+                  <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
+                    <FaExclamationTriangle className="text-red-400 text-sm md:text-lg" />
+                    <h3 className="text-sm md:text-lg font-semibold text-red-300">Emergency Help</h3>
+                  </div>
+                  <p className="text-red-200/80 text-xs md:text-sm leading-relaxed mb-2 md:mb-3">
+                    If you're in immediate danger, contact emergency services immediately.
+                  </p>
+                  <Link
+                    to="/helpline"
+                    className="inline-block bg-red-500/20 hover:bg-red-500/30 border border-red-400/30 text-red-300 rounded-lg md:rounded-xl py-2 px-3 text-xs md:text-sm font-medium transition-all duration-300"
+                  >
+                    Go to Helpline
+                  </Link>
+                </div>
+
+                {/* Legal Tip */}
+                <div className="bg-yellow-500/10 backdrop-blur-xl border border-yellow-400/20 rounded-xl md:rounded-2xl p-4 md:p-6">
+                  <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
+                    <FaLightbulb className="text-yellow-400 text-sm md:text-lg" />
+                    <h3 className="text-sm md:text-lg font-semibold text-yellow-300">Legal Tip</h3>
+                  </div>
+                  <p className="text-yellow-200/80 text-xs md:text-sm leading-relaxed">
+                    Always consult with a qualified legal professional for specific advice related to your situation.
+                    Printed documents are for informational purposes only.
+                  </p>
+                </div>
+
+                
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
-
-        {/* Law Details */}
-        <AnimatePresence mode="wait">
-          {law && (
-            <motion.div 
-              variants={cardVariants} 
-              initial="hidden" 
-              animate="visible" 
-              className="grid gap-4 md:gap-6 lg:gap-8 lg:grid-cols-3"
-              ref={printRef}
-            >
-              {/* Main Content Card */}
-              <motion.section 
-                variants={sectionVariants} 
-                className="lg:col-span-2 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
-              >
-                <div className="mb-4 md:mb-6 lg:mb-8">
-                  <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
-                    <div className="p-1.5 md:p-2 bg-cyan-500/20 rounded-lg">
-                      <FaGavel className="text-cyan-400 text-sm md:text-lg" />
-                    </div>
-                    <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-cyan-200 to-cyan-100 text-transparent bg-clip-text">
-                      Legal Description
-                    </h2>
-                  </div>
-                  <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
-                    {law?.description || "No description available."}
-                  </p>
-                </div>
-
-                <div className="mb-4 md:mb-6 lg:mb-8">
-                  <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
-                    <div className="p-1.5 md:p-2 bg-red-500/20 rounded-lg">
-                      <FaBalanceScale className="text-red-400 text-sm md:text-lg" />
-                    </div>
-                    <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-red-200 to-orange-200 text-transparent bg-clip-text">
-                      Legal Consequence
-                    </h2>
-                  </div>
-                  <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
-                    {law?.legalConsequence || "No legal consequence available."}
-                  </p>
-                </div>
-
-                <div className="mb-4 md:mb-6 lg:mb-8">
-                  <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
-                    <div className="p-1.5 md:p-2 bg-green-500/20 rounded-lg">
-                      <FaShieldAlt className="text-green-400 text-sm md:text-lg" />
-                    </div>
-                    <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-green-200 to-emerald-200 text-transparent bg-clip-text">
-                      Prevention Solutions
-                    </h2>
-                  </div>
-                  <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
-                    {law?.preventionSolutions || "No prevention solutions available."}
-                  </p>
-                </div>
-
-                {/* Step-by-Step Guide Section */}
-                {law?.stepByStepGuide && (
-                  <div className="mb-4 md:mb-6 lg:mb-8">
-                    <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
-                      <div className="p-1.5 md:p-2 bg-yellow-500/20 rounded-lg">
-                        <FaShieldAlt className="text-yellow-400 text-sm md:text-lg" />
-                      </div>
-                      <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-yellow-200 to-amber-200 text-transparent bg-clip-text">
-                        Step-by-Step Guide
-                      </h2>
-                    </div>
-                    <div className="space-y-3 md:space-y-4">
-                      {law.stepByStepGuide.split('<br>').map((step, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className="flex items-start gap-3 md:gap-4 p-3 md:p-4 bg-white/5 rounded-xl border border-white/10"
-                        >
-                          <div className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 bg-cyan-500/20 border border-cyan-400/30 rounded-full flex items-center justify-center">
-                            <span className="text-cyan-300 font-bold text-xs md:text-sm">{index + 1}</span>
-                          </div>
-                          <p className="text-gray-300 leading-relaxed text-sm md:text-base flex-1">
-                            {step}
-                          </p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </motion.section>
-
-              {/* Sidebar - Hidden on mobile if menu is shown */}
-              {(!isMobile) && (
-                <motion.div 
-                  variants={sectionVariants} 
-                  transition={{ delay: 0.2 }} 
-                  className="space-y-3 md:space-y-6"
-                >
-                  {/* Document Actions Card */}
-                  <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-6">
-                    <h3 className="text-sm md:text-lg font-semibold text-gray-300 mb-2 md:mb-3">Document Actions</h3>
-                    <div className="space-y-2 md:space-y-3">
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={handlePrint}
-                        disabled={isPrinting}
-                        className="w-full flex items-center justify-center gap-2 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/30 text-cyan-300 rounded-lg md:rounded-xl py-2 md:py-3 px-3 transition-all duration-300 disabled:opacity-50 text-xs md:text-sm font-medium"
-                      >
-                        {isPrinting ? (
-                          <>
-                            <div className="w-3 h-3 md:w-4 md:h-4 border-2 border-cyan-300 border-t-transparent rounded-full animate-spin" />
-                            Printing...
-                          </>
-                        ) : (
-                          <>
-                            <FiPrinter className="text-sm md:text-lg" />
-                            Print Document
-                          </>
-                        )}
-                      </motion.button>
-
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={handleExportPDF}
-                        className="w-full flex items-center justify-center gap-2 bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/30 text-purple-300 rounded-lg md:rounded-xl py-2 md:py-3 px-3 transition-all duration-300 text-xs md:text-sm font-medium"
-                      >
-                        <FiFileText className="text-sm md:text-lg" />
-                        Export as PDF
-                      </motion.button>
-
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={handleShare}
-                        className="w-full flex items-center justify-center gap-2 bg-green-500/20 hover:bg-green-500/30 border border-green-400/30 text-green-300 rounded-lg md:rounded-xl py-2 md:py-3 px-3 transition-all duration-300 text-xs md:text-sm font-medium"
-                      >
-                        <FiShare2 className="text-sm md:text-lg" />
-                        Share Section
-                      </motion.button>
-                    </div>
-                  </div>
-
-                  {/* Legal Tip Card */}
-                  <div className="bg-yellow-500/10 backdrop-blur-xl border border-yellow-400/20 rounded-xl md:rounded-2xl p-3 md:p-6">
-                    <h3 className="text-sm md:text-lg font-semibold text-yellow-300 mb-2 md:mb-3">💡 Legal Tip</h3>
-                    <p className="text-yellow-200/80 text-xs md:text-sm leading-relaxed">
-                      Always consult with a qualified legal professional for specific advice related to your situation.
-                      Printed documents are for informational purposes only.
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-              
-              {/* Legal Tip Card for Mobile */}
-              <div className="bg-yellow-500/10 md:hidden backdrop-blur-xl border border-yellow-400/20 rounded-xl md:rounded-2xl p-3 md:p-6">
-                <h3 className="text-sm md:text-lg font-semibold text-yellow-300 mb-2 md:mb-3">💡 Legal Tip</h3>
-                <p className="text-yellow-200/80 text-xs md:text-sm leading-relaxed">
-                  Always consult with a qualified legal professional for specific advice related to your situation.
-                  Printed documents are for informational purposes only.
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        </div>
       </div>
     </div>
   );
