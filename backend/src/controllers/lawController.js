@@ -79,73 +79,115 @@ export const getLawById = asyncWrapper(async (req, res) => {
 });
 
 // ✅ Search
+
 export const searchLaws = asyncWrapper(async (req, res) => {
-  const { query } = req.body;
-  if (!query) {
+  const { query, page = 1, limit = 10 } = req.body; // default page=1, limit=10
+
+  if (!query || !query.trim()) {
     return res.status(400).json({ error: "Keyword is required" });
   }
 
-  
-    // --- Break sentence into words ---
-    const words = query.split(" ").filter((w) => w.length > 2);
+  const skip = (page - 1) * limit;
 
-    // --- Atlas Search ---
-    let results = await Law.aggregate([
-      {
-        $search: {
-          index: "default",
-          compound: {
-            should: words.map((word) => ({
-              text: {
-                query: word,
-                path: [
-                  "section",
-                  "legalConcept",
-                  "description",
-                  "legalConsequence",
-                  "preventionSolutions",
-                  "category",
-                  "stepByStepGuide",
-                ],
-                fuzzy: {
-                  maxEdits: 2,
-                  prefixLength: 1,
-                },
+  // --- Break the input into words ---
+  const words = query.split(" ").filter((w) => w.length > 2);
+
+  // --- MongoDB Atlas Search ---
+  let results = await Law.aggregate([
+    {
+      $search: {
+        index: "default",
+        compound: {
+          should: words.map((word) => ({
+            text: {
+              query: word,
+              path: [
+                "lawTitle",
+                "section",
+                "category",
+                "sabCategory",
+                "jurisdiction",
+                "sectionOverview",
+                "legalConcept",
+                "description",
+                "legalConsequence",
+                "preventionSolutions",
+                "stepByStepGuide",
+              ],
+              fuzzy: {
+                maxEdits: 2,
+                prefixLength: 1,
               },
-            })),
-          },
+            },
+          })),
         },
       },
-      {
-        $addFields: { score: { $meta: "searchScore" } },
+    },
+    {
+      $addFields: { score: { $meta: "searchScore" } },
+    },
+    { $sort: { score: -1 } },
+    {
+      $facet: {
+        data: [
+          { $skip: skip },
+          { $limit: parseInt(limit) },
+          {
+            $lookup: {
+              from: "laws",
+              localField: "relatedLaws",
+              foreignField: "_id",
+              as: "relatedLaws",
+            },
+          },
+        ],
+        totalCount: [{ $count: "count" }],
       },
-      { $sort: { score: -1 } },
-      { $limit: 20 },
-    ]);
+    },
+  ]);
 
-    // --- Fallback Fuse.js ---
-    if (!results.length) {
-      const allLaws = await Law.find().lean();
-      const fuse = new Fuse(allLaws, {
-        keys: ["section","legalConcept","description","legalConsequence","preventionSolutions","category","stepByStepGuide"],
-        threshold: 0.5,   // higher = more flexible
-        distance: 200,    // allow matches across long sentences
-        includeScore: true,
-      });
+  let data = results[0]?.data || [];
+  let totalCount = results[0]?.totalCount?.[0]?.count || 0;
 
+  // --- Fallback: Fuse.js if no Atlas Search results ---
+  if (!data.length) {
+    const allLaws = await Law.find().populate("relatedLaws").lean();
 
-      results = fuse.search(query)
-        .sort((a, b) => a.score - b.score)
-        .slice(0, 20)
-        .map((r) => ({ ...r.item, score: 1 - r.score }));
-    }
-
-    return res.json({
-      success: true,
-      count: results.length,
-      results,
+    const fuse = new Fuse(allLaws, {
+      keys: [
+        "lawTitle",
+        "section",
+        "category",
+        "sabCategory",
+        "jurisdiction",
+        "sectionOverview",
+        "legalConcept",
+        "description",
+        "legalConsequence",
+        "preventionSolutions",
+        "stepByStepGuide",
+      ],
+      threshold: 0.4,
+      distance: 200,
+      includeScore: true,
     });
-  
+
+    const allResults = fuse.search(query)
+      .sort((a, b) => a.score - b.score)
+      .map((r) => ({ ...r.item, score: 1 - r.score }));
+
+    totalCount = allResults.length;
+    data = allResults.slice(skip, skip + parseInt(limit));
+  }
+
+  return res.json({
+    success: true,
+    count: data.length,
+    totalCount,
+    currentPage: parseInt(page),
+    totalPages: Math.ceil(totalCount / limit),
+    results: data,
+  });
 });
 
 

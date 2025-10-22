@@ -13,7 +13,9 @@ import {
   FiBook, 
   FiAlertCircle,
   FiArrowRight,
-  FiFilter
+  FiFilter,
+  FiChevronLeft,
+  FiChevronRight
 } from "react-icons/fi";
 
 const LawList = () => {
@@ -25,36 +27,51 @@ const LawList = () => {
     results: [],
     loading: false,
     error: "",
+    totalCount: 0,
+    currentPage: 1,
+    totalPages: 1
   });
 
   const [sortBy, setSortBy] = useState("relevance");
 
-  useEffect(() => {
+  const fetchLaws = async (page = 1) => {
     if (!query) return;
 
-    const fetchLaws = async () => {
-      setState({ results: [], loading: true, error: "" });
-      try {
-        const res = await axios.post(
-          "https://lex-eye-backend.vercel.app/api/laws/search",
-          { query }
-        );
-        setState({
-          results: res.data.results || [],
-          loading: false,
-          error: "",
-        });
-      } catch (err) {
-        setState({
-          results: [],
-          loading: false,
-          error: err.response?.data?.error || "Failed to fetch laws. Please try again.",
-        });
-      }
-    };
+    setState(prev => ({ ...prev, loading: true, error: "" }));
+    try {
+      const res = await axios.post(
+        "https://lex-eye-backend.vercel.app/api/laws/search",
+        { query, page, limit: 9 } // 9 items per page for 3-column grid
+      );
+      setState({
+        results: res.data.results || [],
+        loading: false,
+        error: "",
+        totalCount: res.data.totalCount || 0,
+        currentPage: res.data.currentPage || 1,
+        totalPages: res.data.totalPages || 1
+      });
+    } catch (err) {
+      setState(prev => ({
+        ...prev,
+        results: [],
+        loading: false,
+        error: err.response?.data?.error || "Failed to fetch laws. Please try again.",
+      }));
+    }
+  };
 
-    fetchLaws();
+  useEffect(() => {
+    fetchLaws(1);
   }, [query]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= state.totalPages) {
+      fetchLaws(newPage);
+      // Scroll to top when page changes
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const sortedResults = [...state.results].sort((a, b) => {
     switch (sortBy) {
@@ -86,6 +103,84 @@ const LawList = () => {
         ease: "easeOut"
       }
     }
+  };
+
+  // Pagination component
+  const Pagination = () => {
+    if (state.totalPages <= 1) return null;
+
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, state.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(state.totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex justify-center items-center gap-2 mt-12"
+      >
+        {/* Previous Button */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => handlePageChange(state.currentPage - 1)}
+          disabled={state.currentPage === 1}
+          className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all duration-300 ${
+            state.currentPage === 1
+              ? "bg-white/5 border-white/10 text-gray-500 cursor-not-allowed"
+              : "bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/30"
+          }`}
+        >
+          <FiChevronLeft className="text-lg" />
+          Previous
+        </motion.button>
+
+        {/* Page Numbers */}
+        <div className="flex gap-2 mx-4">
+          {pages.map(page => (
+            <motion.button
+              key={page}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handlePageChange(page)}
+              className={`px-4 py-3 rounded-xl border transition-all duration-300 ${
+                page === state.currentPage
+                  ? "bg-cyan-500/30 border-cyan-400/50 text-cyan-300 font-semibold"
+                  : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+              }`}
+            >
+              {page}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Next Button */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => handlePageChange(state.currentPage + 1)}
+          disabled={state.currentPage === state.totalPages}
+          className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all duration-300 ${
+            state.currentPage === state.totalPages
+              ? "bg-white/5 border-white/10 text-gray-500 cursor-not-allowed"
+              : "bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/30"
+          }`}
+        >
+          Next
+          <FiChevronRight className="text-lg" />
+        </motion.button>
+      </motion.div>
+    );
   };
 
   return (
@@ -132,6 +227,11 @@ const LawList = () => {
                   <FiSearch className="text-cyan-400" />
                   Showing results for: <span className="text-cyan-300 font-semibold">"{query}"</span>
                 </p>
+                {state.totalCount > 0 && (
+                  <p className="text-gray-400 text-sm mt-1">
+                    Page {state.currentPage} of {state.totalPages} • {state.totalCount} total results
+                  </p>
+                )}
               </div>
             </div>
 
@@ -144,7 +244,7 @@ const LawList = () => {
                 className="flex items-center gap-4"
               >
                 <div className="bg-cyan-500/20 border border-cyan-400/30 rounded-full px-4 py-2 text-cyan-300 text-sm">
-                  {state.results.length} {state.results.length === 1 ? 'result' : 'results'}
+                  {state.results.length} of {state.totalCount} results
                 </div>
                 
                 <select
@@ -205,7 +305,7 @@ const LawList = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => window.location.reload()}
+                    onClick={() => fetchLaws(1)}
                     className="px-6 py-3 bg-white/10 border border-white/20 text-gray-300 rounded-xl hover:bg-white/20 transition-all duration-300"
                   >
                     Try Again
@@ -266,75 +366,80 @@ const LawList = () => {
                 </motion.div>
               ) : (
                 // Results Grid
-                <motion.div
-                  variants={containerVariants}
-                  className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-                >
-                  <AnimatePresence>
-                    {sortedResults.map((law, index) => (
-                      <motion.div
-                        key={law._id}
-                        variants={itemVariants}
-                        layout
-                        whileHover={{ 
-                          y: -8,
-                          transition: { duration: 0.3 }
-                        }}
-                        className="group relative bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 overflow-hidden"
-                      >
-                        {/* Background Effect */}
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500" />
-                        
-                        {/* Content */}
-                        <div className="relative z-10">
-                          {/* Icon and Title */}
-                          <div className="flex items-start gap-3 mb-4">
-                            <div className="p-2 bg-cyan-500/20 rounded-xl border border-cyan-400/30 flex-shrink-0">
-                              <TiDocument className="text-cyan-400 text-xl" />
+                <>
+                  <motion.div
+                    variants={containerVariants}
+                    className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+                  >
+                    <AnimatePresence>
+                      {sortedResults.map((law, index) => (
+                        <motion.div
+                          key={law._id}
+                          variants={itemVariants}
+                          layout
+                          whileHover={{ 
+                            y: -8,
+                            transition: { duration: 0.3 }
+                          }}
+                          className="group relative bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 overflow-hidden"
+                        >
+                          {/* Background Effect */}
+                          <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500" />
+                          
+                          {/* Content */}
+                          <div className="relative z-10">
+                            {/* Icon and Title */}
+                            <div className="flex items-start gap-3 mb-4">
+                              <div className="p-2 bg-cyan-500/20 rounded-xl border border-cyan-400/30 flex-shrink-0">
+                                <TiDocument className="text-cyan-400 text-xl" />
+                              </div>
+                              <h2 className="text-xl font-bold text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300 line-clamp-2">
+                                {law.section || law.legalConcept || "Unnamed Law"}
+                              </h2>
                             </div>
-                            <h2 className="text-xl font-bold text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300 line-clamp-2">
-                              {law.section || law.legalConcept || "Unnamed Law"}
-                            </h2>
+
+                            {/* Description */}
+                            <p className="text-gray-300 text-sm leading-relaxed mb-6 line-clamp-3">
+                              {law.description || "No description available."}
+                            </p>
+
+                            {/* Legal Concept (if different from section) */}
+                            {law.legalConcept && law.legalConcept !== law.section && (
+                              <div className="mb-4">
+                                <span className="text-xs text-cyan-400 font-medium bg-cyan-500/10 border border-cyan-400/20 rounded-full px-3 py-1">
+                                  {law.legalConcept}
+                                </span>
+                              </div>
+                            )}
+
+                            {/* Action */}
+                            <div className="flex justify-between items-center pt-4 border-t border-white/10">
+                              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Link
+                                  to={`/law/${law._id}`}
+                                  className="flex items-center gap-2 px-4 py-2 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 rounded-xl hover:bg-cyan-500/30 transition-all duration-300 group"
+                                >
+                                  View Details
+                                  <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                                </Link>
+                              </motion.div>
+                              
+                              <div className="text-gray-400 text-xs">
+                                Legal Section
+                              </div>
+                            </div>
                           </div>
 
-                          {/* Description */}
-                          <p className="text-gray-300 text-sm leading-relaxed mb-6 line-clamp-3">
-                            {law.description || "No description available."}
-                          </p>
+                          {/* Hover Line */}
+                          <div className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 group-hover:w-full transition-all duration-500" />
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </motion.div>
 
-                          {/* Legal Concept (if different from section) */}
-                          {law.legalConcept && law.legalConcept !== law.section && (
-                            <div className="mb-4">
-                              <span className="text-xs text-cyan-400 font-medium bg-cyan-500/10 border border-cyan-400/20 rounded-full px-3 py-1">
-                                {law.legalConcept}
-                              </span>
-                            </div>
-                          )}
-
-                          {/* Action */}
-                          <div className="flex justify-between items-center pt-4 border-t border-white/10">
-                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                              <Link
-                                to={`/law/${law._id}`}
-                                className="flex items-center gap-2 px-4 py-2 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 rounded-xl hover:bg-cyan-500/30 transition-all duration-300 group"
-                              >
-                                View Details
-                                <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
-                              </Link>
-                            </motion.div>
-                            
-                            <div className="text-gray-400 text-xs">
-                              Legal Section
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Hover Line */}
-                        <div className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 group-hover:w-full transition-all duration-500" />
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </motion.div>
+                  {/* Pagination */}
+                  <Pagination />
+                </>
               )}
             </motion.div>
           )}
