@@ -38,6 +38,43 @@ import {
   processPendingSyncs,
 } from "../utils/bookmarkUtils";
 
+// Custom motion components to prevent prop forwarding issues
+const MotionSection = ({ variants, initial, animate, children, className, ...props }) => (
+  <motion.div
+    variants={variants}
+    initial={initial}
+    animate={animate}
+    className={className}
+    {...props}
+  >
+    {children}
+  </motion.div>
+);
+
+const MotionDiv = ({ variants, initial, animate, exit, children, className, ...props }) => (
+  <motion.div
+    variants={variants}
+    initial={initial}
+    animate={animate}
+    exit={exit}
+    className={className}
+    {...props}
+  >
+    {children}
+  </motion.div>
+);
+
+const MotionButton = ({ whileHover, whileTap, children, className, ...props }) => (
+  <motion.button
+    whileHover={whileHover}
+    whileTap={whileTap}
+    className={className}
+    {...props}
+  >
+    {children}
+  </motion.button>
+);
+
 const LawDetail = () => {
   const { lawId } = useParams();
   const navigate = useNavigate();
@@ -460,7 +497,7 @@ const LawDetail = () => {
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-3 sm:px-4 lg:px-6 py-4 md:py-6 lg:py-8">
         {/* Back Button */}
-        <motion.div 
+        <MotionDiv 
           initial={{ opacity: 0, x: -20 }} 
           animate={{ opacity: 1, x: 0 }} 
           transition={{ duration: 0.4 }}
@@ -473,10 +510,10 @@ const LawDetail = () => {
             <IoArrowBack className="text-lg md:text-xl group-hover:-translate-x-1 transition-transform duration-300" />
             Back to Previous
           </button>
-        </motion.div>
+        </MotionDiv>
 
         {/* Law Header */}
-        <motion.div 
+        <MotionDiv 
           initial={{ opacity: 0, y: -20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5 }}
@@ -535,7 +572,7 @@ const LawDetail = () => {
               </div>
 
               {/* Bookmark Button */}
-              <motion.button
+              <MotionButton
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={toggleBookmark}
@@ -557,12 +594,12 @@ const LawDetail = () => {
                   )}
                 </AnimatePresence>
                 <span className="text-sm md:text-base">{isBookmarked ? "Bookmarked" : "Bookmark"}</span>
-              </motion.button>
+              </MotionButton>
             </div>
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row lg:flex-col gap-2 md:gap-3 w-full lg:w-auto">
-              <motion.button
+              <MotionButton
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleShare}
@@ -570,20 +607,20 @@ const LawDetail = () => {
               >
                 <IoShareOutline className="text-lg md:text-2xl" />
                 <span className="text-sm md:text-base">Share Law</span>
-              </motion.button>
+              </MotionButton>
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Mobile Menu Button */}
         {isMobile && (
-          <motion.button
+          <MotionButton
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowMobileMenu(!showMobileMenu)}
             className="fixed bottom-6 right-6 z-50 p-4 bg-cyan-500/20 backdrop-blur-xl border border-cyan-400/30 text-cyan-300 rounded-full shadow-xl"
           >
             {showMobileMenu ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
-          </motion.button>
+          </MotionButton>
         )}
 
         {/* Law Content Grid */}
@@ -592,7 +629,7 @@ const LawDetail = () => {
           <div className="lg:col-span-2 space-y-4 md:space-y-6">
             {/* Section Overview */}
             {law?.sectionOverview && (
-              <motion.section 
+              <MotionSection 
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
@@ -609,11 +646,11 @@ const LawDetail = () => {
                 <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
                   {law.sectionOverview}
                 </p>
-              </motion.section>
+              </MotionSection>
             )}
 
             {/* Simple Explanation */}
-            <motion.section 
+            <MotionSection 
               variants={sectionVariants}
               initial="hidden"
               animate="visible"
@@ -630,10 +667,10 @@ const LawDetail = () => {
               <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
                 {law?.description || "No description available."}
               </p>
-            </motion.section>
+            </MotionSection>
 
             {/* Legal Punishment */}
-            <motion.section 
+            <MotionSection 
               variants={sectionVariants}
               initial="hidden"
               animate="visible"
@@ -650,11 +687,11 @@ const LawDetail = () => {
               <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg font-semibold">
                 {law?.legalConsequence || "No legal consequence available."}
               </p>
-            </motion.section>
+            </MotionSection>
 
             {/* Step-by-Step Guide */}
             {steps.length > 0 && (
-              <motion.section 
+              <MotionSection 
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
@@ -670,7 +707,7 @@ const LawDetail = () => {
                 </div>
                 <div className="space-y-3 md:space-y-4">
                   {steps.map((step, index) => (
-                    <motion.div
+                    <MotionDiv
                       key={index}
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -683,14 +720,14 @@ const LawDetail = () => {
                       <p className="text-gray-300 leading-relaxed text-sm md:text-base flex-1">
                         {step}
                       </p>
-                    </motion.div>
+                    </MotionDiv>
                   ))}
                 </div>
-              </motion.section>
+              </MotionSection>
             )}
 
             {/* Prevention & Awareness */}
-            <motion.section 
+            <MotionSection 
               variants={sectionVariants}
               initial="hidden"
               animate="visible"
@@ -707,11 +744,11 @@ const LawDetail = () => {
               <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
                 {law?.preventionSolutions || "No prevention solutions available."}
               </p>
-            </motion.section>
+            </MotionSection>
 
             {/* Related Laws */}
             {law?.relatedLaws && law.relatedLaws.length > 0 && (
-              <motion.section 
+              <MotionSection 
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
@@ -727,7 +764,7 @@ const LawDetail = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                   {law.relatedLaws.slice(0, 6).map((relatedLaw, index) => (
-                    <motion.div
+                    <MotionDiv
                       key={index}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -737,17 +774,17 @@ const LawDetail = () => {
                       <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
                         {renderRelatedLaw(relatedLaw)}
                       </p>
-                    </motion.div>
+                    </MotionDiv>
                   ))}
                 </div>
-              </motion.section>
+              </MotionSection>
             )}
           </div>
 
           {/* Sidebar - Hidden on mobile when menu is closed */}
           <AnimatePresence>
             {(!isMobile || showMobileMenu) && (
-              <motion.div 
+              <MotionDiv 
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
@@ -758,7 +795,7 @@ const LawDetail = () => {
                 <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6">
                   <h3 className="text-sm md:text-lg font-semibold text-gray-300 mb-3 md:mb-4">Quick Actions</h3>
                   <div className="space-y-2 md:space-y-3">
-                    <motion.button
+                    <MotionButton
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handlePrint}
@@ -776,9 +813,9 @@ const LawDetail = () => {
                           Print Document
                         </>
                       )}
-                    </motion.button>
+                    </MotionButton>
 
-                    <motion.button
+                    <MotionButton
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleExportPDF}
@@ -786,7 +823,7 @@ const LawDetail = () => {
                     >
                       <IoDocumentTextOutline className="text-sm md:text-lg" />
                       Export as PDF
-                    </motion.button>
+                    </MotionButton>
                   </div>
                 </div>
 
@@ -820,7 +857,7 @@ const LawDetail = () => {
                 </div>
 
                 
-              </motion.div>
+              </MotionDiv>
             )}
           </AnimatePresence>
         </div>

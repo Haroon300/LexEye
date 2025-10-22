@@ -1,3 +1,4 @@
+// Law model mein yeh change karen:
 import mongoose from "mongoose";
 
 const lawSchema = new mongoose.Schema(
@@ -14,7 +15,7 @@ const lawSchema = new mongoose.Schema(
     legalConsequence: { type: String, required: true, trim: true },
     preventionSolutions: { type: String, required: true, trim: true },
     stepByStepGuide: { type: String, default: "" },
-    relatedLaws: [{ type: mongoose.Schema.Types.ObjectId, ref: "Law" }],
+    relatedLaws: [{ type: String }],
   },
   { timestamps: true }
 );
