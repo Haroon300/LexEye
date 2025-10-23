@@ -78,8 +78,10 @@ const LawDetail = () => {
   const { lawId } = useParams();
   const navigate = useNavigate();
   const [law, setLaw] = useState(null);
+  const [relatedLawsData, setRelatedLawsData] = useState([]);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [relatedLawsLoading, setRelatedLawsLoading] = useState(false);
   const [isPrinting, setIsPrinting] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -105,7 +107,13 @@ const LawDetail = () => {
           `https://lex-eye-backend.vercel.app/api/laws/${lawId}`
         );
         setLaw(data);
-      } catch {
+        
+        // Fetch related laws data if available
+        if (data.relatedLaws && data.relatedLaws.length > 0) {
+          await fetchRelatedLaws(data.relatedLaws);
+        }
+      } catch (error) {
+        console.error("Error fetching law:", error);
         const local = loadLocalBookmarks();
         const found = local.find((l) => l._id === lawId);
         setLaw(found || null);
@@ -115,6 +123,91 @@ const LawDetail = () => {
     };
     fetchLaw();
   }, [lawId]);
+
+  // Search laws by title/section to find related laws
+  const fetchRelatedLaws = async (relatedLawTitles) => {
+    if (!relatedLawTitles || relatedLawTitles.length === 0) return;
+    
+    setRelatedLawsLoading(true);
+    try {
+      const searchPromises = relatedLawTitles.map(async (lawTitle) => {
+        try {
+          // Clean the law title - remove extra text and get main section/name
+          const cleanTitle = cleanLawTitle(lawTitle);
+          
+          if (!cleanTitle || cleanTitle.trim().length === 0) return null;
+
+          // Search for laws matching this title
+          const { data } = await axios.post(
+            "https://lex-eye-backend.vercel.app/api/laws/search",
+            { 
+              query: cleanTitle,
+              limit: 5 // Get top 5 matches
+            }
+          );
+
+          if (data.results && data.results.length > 0) {
+            // Return the best match (first result)
+            return data.results[0];
+          }
+          
+          return null;
+        } catch (error) {
+          console.warn(`Could not search for law "${lawTitle}":`, error);
+          return null;
+        }
+      });
+
+      const relatedLaws = await Promise.all(searchPromises);
+      // Filter out null values and duplicates
+      const validLaws = relatedLaws.filter(law => 
+        law !== null && law._id !== lawId // Exclude current law
+      );
+      
+      // Remove duplicates based on _id
+      const uniqueLaws = validLaws.filter((law, index, self) => 
+        index === self.findIndex(l => l._id === law._id)
+      );
+      
+      setRelatedLawsData(uniqueLaws);
+    } catch (error) {
+      console.error("Error fetching related laws:", error);
+    } finally {
+      setRelatedLawsLoading(false);
+    }
+  };
+
+  // Helper function to clean law titles for search
+  const cleanLawTitle = (title) => {
+    if (!title) return '';
+    
+    // Remove content in parentheses and extra descriptions
+    let clean = title
+      .replace(/\([^)]*\)/g, '') // Remove parentheses content
+      .replace(/Anti-Rape.*$/, '') // Remove specific ordinance names
+      .replace(/Child Protection.*$/, '')
+      .replace(/Women Protection.*$/, '')
+      .replace(/Punishment for.*$/, '')
+      .replace(/Investigation and Trial.*$/, '')
+      .replace(/Ordinance.*$/, '')
+      .replace(/\d{4}/g, '') // Remove years
+      .replace(/[.,]/g, '') // Remove dots and commas
+      .trim();
+    
+    // Extract PPC section numbers if present
+    const ppcMatch = title.match(/PPC Section (\d+)/i) || title.match(/Section (\d+)/i);
+    if (ppcMatch) {
+      return `PPC Section ${ppcMatch[1]}`;
+    }
+    
+    // Return the first few words if it's too long
+    const words = clean.split(' ');
+    if (words.length > 4) {
+      return words.slice(0, 4).join(' ');
+    }
+    
+    return clean;
+  };
 
   // Check bookmarks + sync when online
   useEffect(() => {
@@ -166,6 +259,17 @@ const LawDetail = () => {
     } catch (err) {
       console.error("Share failed:", err);
     }
+  };
+
+  // Handle related law click
+  const handleRelatedLawClick = (relatedLawId) => {
+    if (!relatedLawId) return;
+    
+    // Navigate to the related law detail page
+    navigate(`/law/${relatedLawId}`);
+    
+    // Refresh the page to load new law data
+    window.location.reload();
   };
 
   // Check if law has enhanced fields
@@ -816,7 +920,7 @@ const LawDetail = () => {
             </MotionSection>
 
             {/* Related Laws */}
-            {law?.relatedLaws && law.relatedLaws.length > 0 && (
+            {(law?.relatedLaws && law.relatedLaws.length > 0) && (
               <MotionSection 
                 variants={sectionVariants}
                 initial="hidden"
@@ -828,24 +932,66 @@ const LawDetail = () => {
                     <FaLink className="text-indigo-400 text-sm md:text-lg" />
                   </div>
                   <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-indigo-200 to-purple-200 text-transparent bg-clip-text">
-                    Related Laws ({law.relatedLaws.length})
+                    Related Laws ({relatedLawsData.length || law.relatedLaws.length})
                   </h2>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
-                  {law.relatedLaws.slice(0, 6).map((relatedLaw, index) => (
-                    <MotionDiv
-                      key={index}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="p-2 md:p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300"
-                    >
-                      <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
-                        {renderRelatedLaw(relatedLaw)}
-                      </p>
-                    </MotionDiv>
-                  ))}
-                </div>
+                
+                {relatedLawsLoading ? (
+                  <div className="flex justify-center py-4">
+                    <div className="w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
+                    {relatedLawsData.length > 0 ? (
+                      relatedLawsData.map((relatedLaw, index) => (
+                        <MotionDiv
+                          key={relatedLaw._id || index}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => handleRelatedLawClick(relatedLaw._id)}
+                          className="p-3 md:p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 hover:border-cyan-400/30 transition-all duration-300 group"
+                        >
+                          <div className="flex items-start gap-2">
+                            <div className="flex-shrink-0 mt-1">
+                              <FaLink className="text-cyan-400 text-xs group-hover:scale-110 transition-transform duration-300" />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="text-cyan-300 font-semibold text-sm md:text-base group-hover:text-cyan-200 transition-colors duration-300 mb-1">
+                                {relatedLaw.section || relatedLaw.lawTitle || "Related Law"}
+                              </h4>
+                              {relatedLaw.legalConcept && (
+                                <p className="text-gray-400 text-xs md:text-sm leading-relaxed line-clamp-2">
+                                  {relatedLaw.legalConcept}
+                                </p>
+                              )}
+                              <div className="mt-2 text-xs text-cyan-400 font-medium">
+                                Click to view details →
+                              </div>
+                            </div>
+                          </div>
+                        </MotionDiv>
+                      ))
+                    ) : (
+                      // Fallback: show original related laws as non-clickable
+                      law.relatedLaws.slice(0, 6).map((relatedLaw, index) => (
+                        <MotionDiv
+                          key={index}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          className="p-3 md:p-4 bg-white/5 rounded-lg border border-white/10"
+                        >
+                          <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
+                            {renderRelatedLaw(relatedLaw)}
+                          </p>
+                        </MotionDiv>
+                      ))
+                    )}
+                  </div>
+                )}
               </MotionSection>
             )}
           </div>
