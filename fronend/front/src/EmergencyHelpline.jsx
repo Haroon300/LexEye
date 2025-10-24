@@ -24,6 +24,17 @@ import {
 } from "react-icons/fa";
 import { GiPoliceBadge } from "react-icons/gi";
 
+/* Color Constants matching LexEye palette */
+const COLORS = {
+  navy: {
+    1: '#0D1B2A',
+    2: '#1D2D44',
+    3: '#3E5C76',
+    4: '#748CAB',
+    5: '#F0EBD8'
+  }
+};
+
 const EmergencyHelpline = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [showCallModal, setShowCallModal] = useState(false);
@@ -121,10 +132,7 @@ const EmergencyHelpline = () => {
         ? "For immediate police assistance and emergency response"
         : "فوری پولیس مدد اور ایمرجنسی ردعمل کے لیے",
       icon: GiPoliceBadge,
-      color: "from-blue-600 to-blue-700",
-      textColor: "text-blue-100",
-      bgColor: "from-blue-600/20 to-blue-700/20",
-      borderColor: "border-blue-500/30",
+      color: COLORS.navy[3],
       type: "emergency",
       responseTime: language === "en" ? "2-5 minutes" : "2-5 منٹ",
       priority: language === "en" ? "High" : "اعلیٰ"
@@ -137,10 +145,7 @@ const EmergencyHelpline = () => {
         ? "Emergency medical services and rescue operations"
         : "ایمرجنسی طبی خدمات اور بچاؤ کے آپریشنز",
       icon: FaAmbulance,
-      color: "from-red-600 to-red-700",
-      textColor: "text-red-100",
-      bgColor: "from-red-600/20 to-red-700/20",
-      borderColor: "border-red-500/30",
+      color: COLORS.navy[4],
       type: "emergency",
       responseTime: language === "en" ? "3-7 minutes" : "3-7 منٹ",
       priority: language === "en" ? "Critical" : "انتہائی"
@@ -153,10 +158,7 @@ const EmergencyHelpline = () => {
         ? "Highway and motorway emergency services"
         : "ہائی وے اور موٹروے ایمرجنسی خدمات",
       icon: IoCar,
-      color: "from-green-600 to-green-700",
-      textColor: "text-green-100",
-      bgColor: "from-green-600/20 to-green-700/20",
-      borderColor: "border-green-500/30",
+      color: COLORS.navy[3],
       type: "emergency",
       responseTime: language === "en" ? "5-10 minutes" : "5-10 منٹ",
       priority: language === "en" ? "High" : "اعلیٰ"
@@ -169,10 +171,7 @@ const EmergencyHelpline = () => {
         ? "Report drug-related crimes and get help"
         : "منشیات سے متعلق جرائم کی رپورٹ کریں اور مدد حاصل کریں",
       icon: FaShieldAlt,
-      color: "from-purple-600 to-purple-700",
-      textColor: "text-purple-100",
-      bgColor: "from-purple-600/20 to-purple-700/20",
-      borderColor: "border-purple-500/30",
+      color: COLORS.navy[4],
       type: "reporting",
       responseTime: language === "en" ? "15-30 minutes" : "15-30 منٹ",
       priority: language === "en" ? "Medium" : "درمیانہ"
@@ -185,10 +184,7 @@ const EmergencyHelpline = () => {
         ? "Financial crimes and human trafficking reports"
         : "مالی جرائم اور انسانی اسمگلنگ کی رپورٹس",
       icon: FaUserShield,
-      color: "from-orange-600 to-orange-700",
-      textColor: "text-orange-100",
-      bgColor: "from-orange-600/20 to-orange-700/20",
-      borderColor: "border-orange-500/30",
+      color: COLORS.navy[3],
       type: "reporting",
       responseTime: language === "en" ? "24-48 hours" : "24-48 گھنٹے",
       priority: language === "en" ? "Medium" : "درمیانہ"
@@ -201,10 +197,7 @@ const EmergencyHelpline = () => {
         ? "General emergency helpline for all services"
         : "تمام خدمات کے لیے جنرل ایمرجنسی ہیلپ لائن",
       icon: IoWarning,
-      color: "from-yellow-600 to-yellow-700",
-      textColor: "text-yellow-100",
-      bgColor: "from-yellow-600/20 to-yellow-700/20",
-      borderColor: "border-yellow-500/30",
+      color: COLORS.navy[4],
       type: "emergency",
       responseTime: language === "en" ? "2-5 minutes" : "2-5 منٹ",
       priority: language === "en" ? "High" : "اعلیٰ"
@@ -217,10 +210,7 @@ const EmergencyHelpline = () => {
         ? "Ministry of Human Rights helpline"
         : "انسانی حقوق کی وزارت کی ہیلپ لائن",
       icon: IoPeople,
-      color: "from-teal-600 to-teal-700",
-      textColor: "text-teal-100",
-      bgColor: "from-teal-600/20 to-teal-700/20",
-      borderColor: "border-teal-500/30",
+      color: COLORS.navy[3],
       type: "support",
       responseTime: language === "en" ? "1-2 hours" : "1-2 گھنٹے",
       priority: language === "en" ? "Low" : "کم"
@@ -233,11 +223,7 @@ const EmergencyHelpline = () => {
         ? "Online complaint portal for cyber crimes"
         : "سائبر جرائم کے لیے آن لائن شکایت پورٹل",
       icon: IoGlobe,
-      color: "from-indigo-600 to-indigo-700",
-      textColor: "text-indigo-100",
-      bgColor: "from-indigo-600/20 to-indigo-700/20",
-      borderColor: "border-indigo-500/30",
-      isWebsite: true,
+      color: COLORS.navy[4],
       type: "online",
       responseTime: language === "en" ? "24-72 hours" : "24-72 گھنٹے",
       priority: language === "en" ? "Medium" : "درمیانہ"
@@ -250,10 +236,7 @@ const EmergencyHelpline = () => {
         ? "Report spam calls and messages"
         : "اسپام کالز اور میسجز کی رپورٹ کریں",
       icon: IoPhonePortrait,
-      color: "from-pink-600 to-pink-700",
-      textColor: "text-pink-100",
-      bgColor: "from-pink-600/20 to-pink-700/20",
-      borderColor: "border-pink-500/30",
+      color: COLORS.navy[3],
       type: "reporting",
       responseTime: language === "en" ? "2-3 days" : "2-3 دن",
       priority: language === "en" ? "Low" : "کم"
@@ -266,10 +249,7 @@ const EmergencyHelpline = () => {
         ? "Report scam calls and fraudulent activities"
         : "دھوکہ دہی کی کالز اور فراڈ کی سرگرمیوں کی رپورٹ کریں",
       icon: FaExclamationTriangle,
-      color: "from-rose-600 to-rose-700",
-      textColor: "text-rose-100",
-      bgColor: "from-rose-600/20 to-rose-700/20",
-      borderColor: "border-rose-500/30",
+      color: COLORS.navy[4],
       type: "reporting",
       responseTime: language === "en" ? "2-3 days" : "2-3 دن",
       priority: language === "en" ? "Low" : "کم"
@@ -364,18 +344,18 @@ const EmergencyHelpline = () => {
   };
 
   return (
-    <div className="min-h-screen py-4 px-3 sm:px-4 relative overflow-hidden bg-gradient-to-br from-[#0D1B2A] via-[#1D2D44] to-[#3E5C76]">
+    <div className="min-h-screen py-4 px-3 sm:px-4 relative overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
       {/* Enhanced Background with LexEye Theme */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-80 h-80 bg-[#748CAB]/10 rounded-full blur-3xl -top-32 -left-32" />
-        <div className="absolute w-72 h-72 bg-[#3E5C76]/10 rounded-full blur-3xl top-1/2 -right-40" />
-        <div className="absolute w-64 h-64 bg-[#1D2D44]/10 rounded-full blur-3xl bottom-20 left-1/4" />
+        <div className="absolute w-80 h-80 rounded-full blur-3xl -top-32 -left-32" style={{ backgroundColor: `${COLORS.navy[3]}10` }} />
+        <div className="absolute w-72 h-72 rounded-full blur-3xl top-1/2 -right-40" style={{ backgroundColor: `${COLORS.navy[4]}10` }} />
+        <div className="absolute w-64 h-64 rounded-full blur-3xl bottom-20 left-1/4" style={{ backgroundColor: `${COLORS.navy[2]}10` }} />
         
         {/* Grid overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
       </div>
 
-      <div className="max-w-4xl mt-[5%] mx-auto relative z-10">
+      <div className="max-w-4xl md:pt-[6%] pt-[23%] mx-auto relative z-10">
         {/* Language Toggle */}
         <motion.div 
           className="flex justify-end mb-4"
@@ -385,7 +365,12 @@ const EmergencyHelpline = () => {
         >
           <button
             onClick={() => setLanguage(language === "en" ? "ur" : "en")}
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl text-white/80 hover:text-white hover:bg-white/20 transition-all duration-300 border border-white/10"
+            className="flex items-center gap-2 px-4 py-2 backdrop-blur-md rounded-xl transition-all duration-300 border text-sm"
+            style={{
+              backgroundColor: `${COLORS.navy[2]}80`,
+              borderColor: `${COLORS.navy[4]}30`,
+              color: COLORS.navy[5]
+            }}
           >
             <IoLanguage className="text-lg" />
             <span className="font-medium">{language === "en" ? "اردو" : "English"}</span>
@@ -399,13 +384,13 @@ const EmergencyHelpline = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl mb-4 shadow-2xl">
-            <IoAlertCircle className="text-3xl sm:text-4xl text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl mb-4 shadow-2xl" style={{ backgroundColor: COLORS.navy[3] }}>
+            <IoAlertCircle className="text-3xl sm:text-4xl" style={{ color: COLORS.navy[5] }} />
           </div>
-          <h1 className={`text-2xl sm:text-4xl font-black text-[#F0EBD8] mb-2 sm:mb-3 leading-tight ${language === "ur" ? "font-urdu" : ""}`}>
-            {t.title} <span className="text-red-400">🚨</span>
+          <h1 className={`text-2xl sm:text-4xl font-black mb-2 sm:mb-3 leading-tight ${language === "ur" ? "font-urdu" : ""}`} style={{ color: COLORS.navy[5] }}>
+            {t.title} <span>🚨</span>
           </h1>
-          <p className="text-[#F0EBD8]/80 text-sm sm:text-base max-w-md mx-auto px-2 leading-relaxed">
+          <p className="text-sm sm:text-base max-w-md mx-auto px-2 leading-relaxed" style={{ color: `${COLORS.navy[5]}80` }}>
             {t.subtitle}
           </p>
         </motion.div>
@@ -419,14 +404,22 @@ const EmergencyHelpline = () => {
         >
           <button 
             onClick={() => handleCallClick(emergencyServices.find(s => s.id === 'rescue'))}
-            className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 py-3 sm:py-4 text-sm sm:text-base"
+            className="flex-1 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 py-3 sm:py-4 text-sm sm:text-base"
+            style={{
+              backgroundColor: COLORS.navy[3],
+              color: COLORS.navy[5]
+            }}
           >
             <FaAmbulance className="text-lg sm:text-xl" />
             <span>{t.quickActions.ambulance}</span>
           </button>
           <button 
             onClick={() => handleCallClick(emergencyServices.find(s => s.id === 'police'))}
-            className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 py-3 sm:py-4 text-sm sm:text-base"
+            className="flex-1 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 py-3 sm:py-4 text-sm sm:text-base"
+            style={{
+              backgroundColor: COLORS.navy[4],
+              color: COLORS.navy[5]
+            }}
           >
             <GiPoliceBadge className="text-lg sm:text-xl" />
             <span>{t.quickActions.police}</span>
@@ -447,14 +440,22 @@ const EmergencyHelpline = () => {
                 onClick={() => setActiveFilter(filter.id)}
                 className={`flex-shrink-0 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
                   activeFilter === filter.id
-                    ? "bg-[#F0EBD8] text-[#0D1B2A] shadow-lg"
-                    : "bg-white/10 text-[#F0EBD8]/80 hover:bg-white/20"
+                    ? "shadow-lg"
+                    : "text-opacity-80 hover:text-opacity-100"
                 }`}
+                style={{
+                  backgroundColor: activeFilter === filter.id ? COLORS.navy[5] : `${COLORS.navy[2]}80`,
+                  color: activeFilter === filter.id ? COLORS.navy[1] : COLORS.navy[5],
+                  borderColor: `${COLORS.navy[4]}30`
+                }}
               >
                 {filter.label}
                 <span className={`ml-1 px-1.5 py-0.5 rounded-full text-xs ${
-                  activeFilter === filter.id ? "bg-[#0D1B2A]/20" : "bg-white/20"
-                }`}>
+                  activeFilter === filter.id ? "bg-opacity-20" : "bg-opacity-20"
+                }`} style={{
+                  backgroundColor: activeFilter === filter.id ? COLORS.navy[1] : COLORS.navy[5],
+                  color: activeFilter === filter.id ? COLORS.navy[5] : COLORS.navy[1]
+                }}>
                   {filter.count}
                 </span>
               </button>
@@ -481,15 +482,26 @@ const EmergencyHelpline = () => {
                   transition: { duration: 0.2 }
                 }}
                 whileTap={{ scale: 0.98 }}
-                className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-lg border ${service.borderColor} hover:shadow-xl transition-all duration-300 group min-h-[160px] flex flex-col justify-between relative`}
+                className="backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-lg border transition-all duration-300 group min-h-[160px] flex flex-col justify-between relative"
+                style={{
+                  backgroundColor: `${COLORS.navy[2]}40`,
+                  borderColor: `${COLORS.navy[4]}20`,
+                  color: COLORS.navy[5]
+                }}
                 onClick={() => service.isWebsite ? handleWebsiteClick(service.website) : handleCallClick(service)}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className={`inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br ${service.color} group-active:scale-95 transition-transform duration-200 shadow-lg`}>
-                    <IconComponent className={`text-xl sm:text-2xl ${service.textColor}`} />
+                  <div className={`inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl group-active:scale-95 transition-transform duration-200 shadow-lg`}
+                    style={{ backgroundColor: service.color }}>
+                    <IconComponent className="text-xl sm:text-2xl" style={{ color: COLORS.navy[5] }} />
                   </div>
 
-                  <div className={`px-2 py-1 rounded-full bg-gradient-to-r ${service.bgColor} border ${service.borderColor} text-xs font-semibold ${service.textColor} flex items-center gap-1`}>
+                  <div className="px-2 py-1 rounded-full border text-xs font-semibold flex items-center gap-1"
+                    style={{
+                      backgroundColor: `${service.color}20`,
+                      borderColor: `${service.color}30`,
+                      color: COLORS.navy[5]
+                    }}>
                     {service.isWebsite ? (
                       <>
                         <IoGlobe className="text-xs" />
@@ -505,33 +517,36 @@ const EmergencyHelpline = () => {
                 </div>
 
                 <div className="flex-1">
-                  <h3 className={`text-base sm:text-lg font-bold text-[#F0EBD8] mb-2 line-clamp-2 leading-tight ${language === "ur" ? "font-urdu text-right" : ""}`}>
+                  <h3 className={`text-base sm:text-lg font-bold mb-2 line-clamp-2 leading-tight ${language === "ur" ? "font-urdu text-right" : ""}`}
+                    style={{ color: COLORS.navy[5] }}>
                     {service.name}
                   </h3>
                   
-                  <p className={`text-[#F0EBD8]/80 text-xs sm:text-sm leading-relaxed line-clamp-2 mb-3 ${language === "ur" ? "text-right" : ""}`}>
+                  <p className={`text-xs sm:text-sm leading-relaxed line-clamp-2 mb-3 ${language === "ur" ? "text-right" : ""}`}
+                    style={{ color: `${COLORS.navy[5]}80` }}>
                     {service.description}
                   </p>
                 </div>
 
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1 text-xs">
-                    <IoTimeOutline className="text-[#F0EBD8]/60" />
-                    <span className="text-[#F0EBD8]/80 font-medium">
+                    <IoTimeOutline style={{ color: `${COLORS.navy[5]}60` }} />
+                    <span className="font-medium" style={{ color: `${COLORS.navy[5]}80` }}>
                       {language === "en" ? "Response:" : "جواب:"}
                     </span>
-                    <span className="text-[#F0EBD8] font-semibold ml-1">
+                    <span className="font-semibold ml-1" style={{ color: COLORS.navy[5] }}>
                       {service.responseTime}
                     </span>
                   </div>
-                  <div className={`text-xs font-semibold px-2 py-1 rounded-full ${getPriorityColor(service.priority)} bg-black/20`}>
+                  <div className={`text-xs font-semibold px-2 py-1 rounded-full ${getPriorityColor(service.priority)}`}
+                    style={{ backgroundColor: `${COLORS.navy[1]}80` }}>
                     {service.priority}
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-white/10">
+                <div className="flex items-center justify-between pt-2 border-t" style={{ borderColor: `${COLORS.navy[4]}20` }}>
                   {service.isWebsite ? (
-                    <div className="flex items-center gap-2 text-indigo-300">
+                    <div className="flex items-center gap-2" style={{ color: COLORS.navy[4] }}>
                       <IoGlobe className="text-sm" />
                       <span className="font-semibold text-sm">
                         {language === "en" ? "Website" : "ویب سائٹ"}
@@ -539,15 +554,16 @@ const EmergencyHelpline = () => {
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <IoCall className={`text-sm ${service.textColor}`} />
-                      <span className={`font-bold text-lg sm:text-xl ${service.textColor}`}>
+                      <IoCall className="text-sm" style={{ color: service.color }} />
+                      <span className="font-bold text-lg sm:text-xl" style={{ color: service.color }}>
                         {service.number}
                       </span>
                     </div>
                   )}
                 </div>
 
-                <div className={`absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r ${service.color} group-hover:w-full transition-all duration-300 rounded-full`} />
+                <div className="absolute bottom-0 left-0 w-0 h-1 group-hover:w-full transition-all duration-300 rounded-full"
+                  style={{ backgroundColor: service.color }} />
               </motion.div>
             );
           })}
@@ -558,29 +574,34 @@ const EmergencyHelpline = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-white/20 mb-6"
+          className="backdrop-blur-md rounded-2xl p-4 sm:p-6 border mb-6"
+          style={{
+            backgroundColor: `${COLORS.navy[2]}40`,
+            borderColor: `${COLORS.navy[4]}20`
+          }}
         >
           <button
             onClick={() => setShowInstructions(!showInstructions)}
             className="flex items-center justify-between w-full text-left"
           >
             <div className="flex items-center gap-3">
-              <div className="flex-shrink-0 w-10 h-10 bg-red-600/20 rounded-xl flex items-center justify-center">
-                <IoShieldCheckmark className="text-xl text-red-400" />
+              <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: `${COLORS.navy[3]}20` }}>
+                <IoShieldCheckmark className="text-xl" style={{ color: COLORS.navy[4] }} />
               </div>
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-[#F0EBD8]">
+                <h3 className="text-lg sm:text-xl font-bold" style={{ color: COLORS.navy[5] }}>
                   {t.guidelines.title}
                 </h3>
-                <p className="text-[#F0EBD8]/80 text-sm">
+                <p className="text-sm" style={{ color: `${COLORS.navy[5]}80` }}>
                   {t.guidelines.subtitle}
                 </p>
               </div>
             </div>
             {showInstructions ? (
-              <IoChevronUp className="text-xl text-[#F0EBD8]/60" />
+              <IoChevronUp className="text-xl" style={{ color: `${COLORS.navy[5]}60` }} />
             ) : (
-              <IoChevronDown className="text-xl text-[#F0EBD8]/60" />
+              <IoChevronDown className="text-xl" style={{ color: `${COLORS.navy[5]}60` }} />
             )}
           </button>
 
@@ -593,14 +614,15 @@ const EmergencyHelpline = () => {
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <div className="grid sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-white/10">
+                <div className="grid sm:grid-cols-2 gap-4 mt-6 pt-6 border-t" style={{ borderColor: `${COLORS.navy[4]}20` }}>
                   <div className="space-y-3">
                     {t.guidelines.points.slice(0, 3).map((point, index) => (
                       <div key={index} className="flex items-start gap-3">
-                        <div className="w-6 h-6 bg-green-600/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-green-400 text-sm font-bold">{index + 1}</span>
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                          style={{ backgroundColor: `${COLORS.navy[3]}20` }}>
+                          <span className="text-sm font-bold" style={{ color: COLORS.navy[4] }}>{index + 1}</span>
                         </div>
-                        <p className="text-[#F0EBD8] text-sm leading-relaxed flex-1">
+                        <p className="text-sm leading-relaxed flex-1" style={{ color: COLORS.navy[5] }}>
                           {point}
                         </p>
                       </div>
@@ -609,10 +631,11 @@ const EmergencyHelpline = () => {
                   <div className="space-y-3">
                     {t.guidelines.points.slice(3, 6).map((point, index) => (
                       <div key={index + 3} className="flex items-start gap-3">
-                        <div className="w-6 h-6 bg-green-600/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-green-400 text-sm font-bold">{index + 4}</span>
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                          style={{ backgroundColor: `${COLORS.navy[3]}20` }}>
+                          <span className="text-sm font-bold" style={{ color: COLORS.navy[4] }}>{index + 4}</span>
                         </div>
-                        <p className="text-[#F0EBD8] text-sm leading-relaxed flex-1">
+                        <p className="text-sm leading-relaxed flex-1" style={{ color: COLORS.navy[5] }}>
                           {point}
                         </p>
                       </div>
@@ -631,11 +654,12 @@ const EmergencyHelpline = () => {
           transition={{ duration: 0.4, delay: 0.5 }}
           className="text-center"
         >
-          <p className="text-[#F0EBD8]/80 text-sm">
+          <p className="text-sm" style={{ color: `${COLORS.navy[5]}80` }}>
             {t.footer}{" "}
             <button
               onClick={() => handleCallClick(emergencyServices.find(s => s.id === 'rescue'))}
-              className="text-red-400 font-bold underline hover:text-red-300 transition-colors"
+              className="font-bold underline transition-colors"
+              style={{ color: COLORS.navy[4] }}
             >
               1122
             </button>{" "}
@@ -648,14 +672,19 @@ const EmergencyHelpline = () => {
       <AnimatePresence>
         {showCallModal && selectedService && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 sm:p-4 backdrop-blur-sm"
+            style={{ backgroundColor: `${COLORS.navy[1]}E6` }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowCallModal(false)}
           >
             <motion.div
-              className="bg-[#1D2D44] rounded-2xl sm:rounded-3xl max-w-md w-full shadow-2xl border border-white/10"
+              className="rounded-2xl sm:rounded-3xl max-w-md w-full shadow-2xl border"
+              style={{
+                backgroundColor: COLORS.navy[2],
+                borderColor: `${COLORS.navy[4]}30`
+              }}
               variants={modalVariants}
               initial="hidden"
               animate="visible"
@@ -664,46 +693,57 @@ const EmergencyHelpline = () => {
             >
               <div className="p-6 sm:p-8">
                 <div className="text-center">
-                  <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br ${selectedService.color} mb-4 mx-auto`}>
-                    {React.createElement(selectedService.icon, { className: `text-2xl sm:text-3xl ${selectedService.textColor}` })}
+                  <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl mb-4 mx-auto`}
+                    style={{ backgroundColor: selectedService.color }}>
+                    {React.createElement(selectedService.icon, { className: "text-2xl sm:text-3xl", style: { color: COLORS.navy[5] } })}
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#F0EBD8] mb-2">
+                  <h3 className="text-xl sm:text-2xl font-bold mb-2" style={{ color: COLORS.navy[5] }}>
                     {t.modal.call} {selectedService.name}?
                   </h3>
                   
-                  <p className="text-[#F0EBD8]/80 text-sm mb-2">
+                  <p className="text-sm mb-2" style={{ color: `${COLORS.navy[5]}80` }}>
                     {t.modal.aboutToCall}
                   </p>
                   
-                  <div className="text-2xl sm:text-3xl font-black text-[#F0EBD8] mb-4 sm:mb-6">
+                  <div className="text-2xl sm:text-3xl font-black mb-4 sm:mb-6" style={{ color: COLORS.navy[5] }}>
                     {selectedService.number}
                   </div>
 
                   <div className="flex items-center justify-center gap-4 mb-4 sm:mb-6">
-                    <div className="flex items-center gap-2 text-sm text-[#F0EBD8]/80">
+                    <div className="flex items-center gap-2 text-sm" style={{ color: `${COLORS.navy[5]}80` }}>
                       <IoTimeOutline className="text-base" />
-                      <span>{t.modal.avgResponse} <strong className="text-[#F0EBD8]">{selectedService.responseTime}</strong></span>
+                      <span>{t.modal.avgResponse} <strong style={{ color: COLORS.navy[5] }}>{selectedService.responseTime}</strong></span>
                     </div>
-                    <div className={`text-sm font-semibold px-2 py-1 rounded-full ${getPriorityColor(selectedService.priority)} bg-black/30`}>
+                    <div className={`text-sm font-semibold px-2 py-1 rounded-full ${getPriorityColor(selectedService.priority)}`}
+                      style={{ backgroundColor: `${COLORS.navy[1]}80` }}>
                       {selectedService.priority} {t.modal.priority}
                     </div>
                   </div>
 
-                  <p className="text-[#F0EBD8]/60 text-xs sm:text-sm mb-6 sm:mb-8 leading-relaxed">
+                  <p className="text-xs sm:text-sm mb-6 sm:mb-8 leading-relaxed" style={{ color: `${COLORS.navy[5]}60` }}>
                     {selectedService.description}
                   </p>
 
                   <div className="flex gap-3 sm:gap-4">
                     <button
                       onClick={() => setShowCallModal(false)}
-                      className="flex-1 px-4 sm:px-6 py-3 bg-white/10 text-[#F0EBD8] rounded-xl font-semibold hover:bg-white/20 transition-colors duration-300 border border-white/20 text-sm sm:text-base"
+                      className="flex-1 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-colors duration-300 border text-sm sm:text-base"
+                      style={{
+                        backgroundColor: `${COLORS.navy[3]}20`,
+                        borderColor: `${COLORS.navy[4]}30`,
+                        color: COLORS.navy[5]
+                      }}
                     >
                       {t.modal.cancel}
                     </button>
                     <button
                       onClick={initiateCall}
-                      className="flex-1 px-4 sm:px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base"
+                      className="flex-1 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base"
+                      style={{
+                        backgroundColor: COLORS.navy[4],
+                        color: COLORS.navy[5]
+                      }}
                     >
                       <IoCall className="text-lg sm:text-xl" />
                       {t.modal.callNow}
