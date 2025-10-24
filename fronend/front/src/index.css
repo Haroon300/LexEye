@@ -5,11 +5,11 @@
 @layer base {
   :root {
     /* LexEye Color Palette */
-    --navy-1: #0D1B2A;
-    --navy-2: #1D2D44;
-    --navy-3: #3E5C76;
-    --navy-4: #748CAB;
-    --navy-5: #F0EBD8;
+    --navy-1: #000000;
+    --navy-2: #66666e;
+    --navy-3: #9999a1;
+    --navy-4: #e6e6e9;
+    --navy-5: #f4f4f6;
   }
 
   html {

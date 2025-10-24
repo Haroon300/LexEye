@@ -165,20 +165,20 @@ const SignIn = () => {
         >
           <motion.div
             variants={itemVariants}
-            className="bg-gradient-to-br from-[#1D2D44]/80 to-[#0D1B2A]/80 backdrop-blur-2xl border border-[#748CAB]/20 rounded-3xl p-8 shadow-2xl shadow-[#748CAB]/10"
+            className="bg-gradient-to-br from-[#000000]/80 to-[#66666e]/80 backdrop-blur-2xl border border-[#748CAB]/20 rounded-3xl p-8 shadow-2xl shadow-[#748CAB]/10"
           >
             {/* Header */}
             <motion.div
               variants={itemVariants}
               className="text-center mb-8"
             >
-              <div className="inline-flex p-4 bg-[#748CAB]/20 rounded-2xl border border-[#748CAB]/30 mb-4">
-                <FiLogIn className="text-3xl text-[#748CAB]" />
+              <div className="inline-flex p-4 bg-[#66666e]/20 rounded-2xl border border-[#000]/30 mb-4">
+                <FiLogIn className="text-3xl text-[#e6e6e9]" />
               </div>
-              <h1 className="text-3xl font-black bg-gradient-to-r from-[#F0EBD8] to-[#F0EBD8] text-transparent bg-clip-text mb-2">
+              <h1 className="text-3xl font-black bg-gradient-to-r from-[#fff] to-[#fffffe] text-transparent bg-clip-text mb-2">
                 Welcome Back
               </h1>
-              <p className="text-[#F0EBD8]/60 text-sm">
+              <p className="text-[#F4f4f6]/60 text-sm">
                 Sign in to access your legal resources and bookmarks
               </p>
             </motion.div>
@@ -204,18 +204,18 @@ const SignIn = () => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Email Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-[#F0EBD8] text-sm font-medium mb-3">
+                <label className="block text-[#fff] text-sm font-medium mb-3">
                   Email Address
                 </label>
                 <div className="relative">
-                  <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40 text-lg" />
+                  <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#fff] text-lg" />
                   <input
                     type="email"
                     name="email"
                     placeholder="Enter your email"
                     value={data.email}
                     onChange={(e) => setData({ ...data, email: e.target.value })}
-                    className={`w-full pl-12 pr-4 py-4 bg-[#0D1B2A]/50 backdrop-blur-xl border rounded-2xl text-[#F0EBD8] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
+                    className={`w-full pl-12 pr-4 py-4 bg-[#000]/50 backdrop-blur-xl border rounded-2xl text-[#fff] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
                       errors.email 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
                         : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
@@ -236,19 +236,19 @@ const SignIn = () => {
 
               {/* Password Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-[#F0EBD8] text-sm font-medium mb-3">
+                <label className="block text-[#fff] text-sm font-medium mb-3">
                   Password
                 </label>
                 <div className="relative">
-                  <FiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40 text-lg" />
+                  <FiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#fff] text-lg" />
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="Enter your password"
                     value={data.password}
                     onChange={(e) => setData({ ...data, password: e.target.value })}
-                    className={`w-full pl-12 pr-12 py-4 bg-[#0D1B2A]/50 backdrop-blur-xl border rounded-2xl text-[#F0EBD8] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
-                      errors.password 
+                    className={`w-full pl-12 pr-4 py-4 bg-[#000]/50 backdrop-blur-xl border rounded-2xl text-[#fff] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
+                      errors.email 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
                         : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
                     }`}

@@ -18,11 +18,11 @@ import logo from '/logo-2.png';
 /* Color Constants matching your palette */
 const COLORS = {
   navy: {
-    1: '#0D1B2A',
-    2: '#1D2D44',
-    3: '#3E5C76',
-    4: '#748CAB',
-    5: '#F0EBD8'
+    1: '#000000',
+    2: '#66666e',
+    3: '#9999a1',
+    4: '#e6e6e9',
+    5: '#f4f4f6'
   }
 };
 
