@@ -1,6 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+/* Color Constants matching your palette */
+const COLORS = {
+  navy: {
+    1: '#0D1B2A',
+    2: '#1D2D44',
+    3: '#3E5C76',
+    4: '#748CAB',
+    5: '#F0EBD8'
+  }
+};
+
 export default function CustomCursor() {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
@@ -45,7 +56,7 @@ export default function CustomCursor() {
         // Determine element type for different cursor styles
         if (target.closest("a")) {
           setElementType("link");
-        } else if (target.closest("button")) {
+        } else if (target.closest("button, [role='button']")) {
           setElementType("button");
         } else if (target.closest("input, textarea, select")) {
           setElementType("input");
@@ -58,14 +69,24 @@ export default function CustomCursor() {
       }
     };
 
-    window.addEventListener("mousemove", move, { passive: true });
+    // Throttled event listeners for better performance
+    let lastMoveTime = 0;
+    const throttledMove = (e) => {
+      const now = Date.now();
+      if (now - lastMoveTime > 16) { // ~60fps
+        move(e);
+        lastMoveTime = now;
+      }
+    };
+
+    window.addEventListener("mousemove", throttledMove, { passive: true });
     window.addEventListener("mouseleave", leave, { passive: true });
     window.addEventListener("mouseenter", move, { passive: true });
     window.addEventListener("mousedown", down, { passive: true });
     window.addEventListener("mouseup", up, { passive: true });
     window.addEventListener("mouseover", checkHover, { passive: true });
 
-    // Smooth animation loop
+    // Smooth animation loop with performance optimization
     const loop = () => {
       // Smooth follow for ring with different speeds based on state
       const smoothness = hovering ? 0.2 : 0.15;
@@ -85,7 +106,7 @@ export default function CustomCursor() {
 
     return () => {
       cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mousemove", throttledMove);
       window.removeEventListener("mouseleave", leave);
       window.removeEventListener("mouseenter", move);
       window.removeEventListener("mousedown", down);
@@ -101,6 +122,24 @@ export default function CustomCursor() {
     if (elementType === "button") return "👆";
     if (elementType === "input") return "✏️";
     return null;
+  };
+
+  const getRingColor = () => {
+    switch (elementType) {
+      case "link": return COLORS.navy[4];
+      case "button": return COLORS.navy[4];
+      case "input": return COLORS.navy[4];
+      default: return COLORS.navy[4];
+    }
+  };
+
+  const getRingBackground = () => {
+    switch (elementType) {
+      case "link": return `${COLORS.navy[4]}15`;
+      case "button": return `${COLORS.navy[4]}15`;
+      case "input": return `${COLORS.navy[4]}15`;
+      default: return `${COLORS.navy[4]}10`;
+    }
   };
 
   return (
@@ -121,12 +160,17 @@ export default function CustomCursor() {
           y: { duration: 0 }
         }}
       >
-        <div className={[
-          "size-2 rounded-full bg-white",
-          "transition-all duration-150 ease-out",
-          hovering ? "scale-150 bg-cyan-400" : "bg-white",
-          pressed ? "scale-75 bg-cyan-300" : "",
-        ].join(" ")} />
+        <div 
+          className={[
+            "size-2 rounded-full transition-all duration-150 ease-out",
+            hovering ? "scale-150" : "",
+            pressed ? "scale-75" : "",
+          ].join(" ")}
+          style={{
+            backgroundColor: hovering ? COLORS.navy[4] : COLORS.navy[5],
+            boxShadow: hovering ? `0 0 10px ${COLORS.navy[4]}` : "none"
+          }}
+        />
       </motion.div>
 
       {/* Outer Ring */}
@@ -145,20 +189,20 @@ export default function CustomCursor() {
           y: { duration: 0 }
         }}
       >
-        <div className={[
-          "size-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-2",
-          "backdrop-blur-sm transition-all duration-300 ease-out",
-          "shadow-[0_0_20px_rgba(34,211,238,0.3)]",
-          hovering 
-            ? "scale-150 border-cyan-400/80 bg-cyan-400/10 shadow-[0_0_30px_rgba(34,211,238,0.5)]" 
-            : "scale-100 border-cyan-200/60",
-          pressed 
-            ? "scale-90 border-cyan-300 bg-cyan-400/20 shadow-[0_0_40px_rgba(34,211,238,0.6)]" 
-            : "",
-          elementType === "link" ? "border-blue-400/80 bg-blue-400/10" : "",
-          elementType === "button" ? "border-green-400/80 bg-green-400/10" : "",
-          elementType === "input" ? "border-purple-400/80 bg-purple-400/10" : "",
-        ].join(" ")} />
+        <div 
+          className={[
+            "size-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 backdrop-blur-sm transition-all duration-300 ease-out",
+            hovering ? "scale-150" : "scale-100",
+            pressed ? "scale-90" : "",
+          ].join(" ")}
+          style={{
+            borderColor: hovering ? `${getRingColor()}CC` : `${COLORS.navy[4]}99`,
+            backgroundColor: getRingBackground(),
+            boxShadow: hovering 
+              ? `0 0 30px ${getRingColor()}40` 
+              : `0 0 20px ${COLORS.navy[4]}20`
+          }}
+        />
       </motion.div>
 
       {/* Interactive Element Indicator */}
@@ -182,20 +226,18 @@ export default function CustomCursor() {
               y: { duration: 0 }
             }}
           >
-            <div className={[
-              "size-16 -translate-x-1/2 -translate-y-1/2 rounded-full border",
-              "flex items-center justify-center text-lg",
-              "backdrop-blur-md transition-all duration-300",
-              "shadow-[0_0_40px_rgba(34,211,238,0.4)]",
-              elementType === "link" 
-                ? "border-blue-400/30 bg-blue-500/20 text-blue-300" 
-                : elementType === "button" 
-                ? "border-green-400/30 bg-green-500/20 text-green-300"
-                : elementType === "input"
-                ? "border-purple-400/30 bg-purple-500/20 text-purple-300"
-                : "border-cyan-400/30 bg-cyan-500/20 text-cyan-300",
-              pressed ? "scale-90" : "",
-            ].join(" ")}>
+            <div 
+              className={[
+                "size-16 -translate-x-1/2 -translate-y-1/2 rounded-full border flex items-center justify-center text-lg backdrop-blur-md transition-all duration-300",
+                pressed ? "scale-90" : "",
+              ].join(" ")}
+              style={{
+                borderColor: `${getRingColor()}30`,
+                backgroundColor: `${getRingColor()}15`,
+                color: getRingColor(),
+                boxShadow: `0 0 40px ${getRingColor()}20`
+              }}
+            >
               {getCursorContent()}
             </div>
           </motion.div>
@@ -217,36 +259,47 @@ export default function CustomCursor() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className={[
-              "size-20 -translate-x-1/2 -translate-y-1/2 rounded-full border-2",
-              elementType === "link" ? "border-blue-400" 
-                : elementType === "button" ? "border-green-400"
-                : elementType === "input" ? "border-purple-400"
-                : "border-cyan-400",
-            ].join(" ")} />
+            <div 
+              className="size-20 -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
+              style={{
+                borderColor: getRingColor()
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Trail Effect (Optional - can be disabled for performance)} */}
-      {[...Array(3)].map((_, index) => (
+      {/* Subtle Trail Effect (Performance Optimized) */}
+      {[...Array(2)].map((_, index) => (
         <motion.div
           key={index}
           className="pointer-events-none fixed left-0 top-0 z-[9995] hidden md:block"
           animate={{
-            x: pos.current.x - (index + 1) * 2,
-            y: pos.current.y - (index + 1) * 2,
-            opacity: 1 - (index + 1) * 0.3
+            x: pos.current.x - (index + 1) * 3,
+            y: pos.current.y - (index + 1) * 3,
+            opacity: 1 - (index + 1) * 0.5
           }}
           transition={{
-            x: { duration: 0.1, delay: index * 0.05 },
-            y: { duration: 0.1, delay: index * 0.05 },
-            opacity: { duration: 0.1, delay: index * 0.05 }
+            x: { duration: 0.2, delay: index * 0.1 },
+            y: { duration: 0.2, delay: index * 0.1 },
+            opacity: { duration: 0.2, delay: index * 0.1 }
           }}
         >
-          <div className="size-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/30" />
+          <div 
+            className="size-1 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              backgroundColor: `${COLORS.navy[4]}30`
+            }}
+          />
         </motion.div>
       ))}
+
+      {/* Performance monitor (development only) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed bottom-4 right-4 z-[10000] bg-black/80 text-white text-xs p-2 rounded hidden">
+          Cursor: {elementType} | Hover: {hovering.toString()} | Hidden: {hidden.toString()}
+        </div>
+      )}
     </>
   );
 }

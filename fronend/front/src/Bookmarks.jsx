@@ -12,9 +12,21 @@ import {
   FiTrash2, 
   FiBookmark,
   FiAlertCircle,
-  FiFilter
+  FiFilter,
+  FiArrowRight
 } from "react-icons/fi";
 import { loadLocalBookmarks, removeBookmark } from "./utils/bookmarkUtils";
+
+/* Color Constants matching your palette */
+const COLORS = {
+  navy: {
+    1: '#0D1B2A',
+    2: '#1D2D44',
+    3: '#3E5C76',
+    4: '#748CAB',
+    5: '#F0EBD8'
+  }
+};
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);
@@ -32,7 +44,8 @@ const Bookmarks = () => {
   useEffect(() => {
     const filtered = bookmarks.filter(bookmark =>
       bookmark.section?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      bookmark.legalConcept?.toLowerCase().includes(searchTerm.toLowerCase())
+      bookmark.legalConcept?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      bookmark.description?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredBookmarks(filtered);
   }, [searchTerm, bookmarks]);
@@ -88,16 +101,25 @@ const Bookmarks = () => {
   };
 
   return (
-    <div className="min-h-screen pt-[5%] text-white relative overflow-hidden">
+    <div className="min-h-screen pt-[5%] relative overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" />
-        <div className="absolute w-80 h-80 bg-blue-400/10 rounded-full blur-3xl top-1/3 -right-20 animate-pulse-slower" />
-        <div className="absolute w-72 h-72 bg-teal-400/10 rounded-full blur-3xl bottom-20 left-1/4 animate-pulse-slow" />
+        <div 
+          className="absolute w-96 h-96 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow"
+          style={{ backgroundColor: `${COLORS.navy[3]}10` }}
+        />
+        <div 
+          className="absolute w-80 h-80 rounded-full blur-3xl top-1/3 -right-20 animate-pulse-slower"
+          style={{ backgroundColor: `${COLORS.navy[4]}10` }}
+        />
+        <div 
+          className="absolute w-72 h-72 rounded-full blur-3xl bottom-20 left-1/4 animate-pulse-slow"
+          style={{ backgroundColor: `${COLORS.navy[2]}20` }}
+        />
         
         {/* Grid Pattern */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:80px_80px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(240,235,216,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(240,235,216,0.1)_1px,transparent_1px)] bg-[size:80px_80px]" />
         </div>
       </div>
 
@@ -113,14 +135,20 @@ const Bookmarks = () => {
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-3 bg-cyan-500/20 rounded-2xl border border-cyan-400/30">
-                  <RiBookmarkFill className="text-3xl text-cyan-400" />
+                <div 
+                  className="p-3 rounded-2xl border backdrop-blur-xl"
+                  style={{
+                    backgroundColor: `${COLORS.navy[4]}20`,
+                    borderColor: `${COLORS.navy[4]}30`
+                  }}
+                >
+                  <RiBookmarkFill className="text-3xl" style={{ color: COLORS.navy[4] }} />
                 </div>
                 <div>
-                  <h1 className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-cyan-200 via-gray-200 to-silver text-transparent bg-clip-text">
+                  <h1 className="text-4xl sm:text-5xl font-black" style={{ color: COLORS.navy[5] }}>
                     My Bookmarks
                   </h1>
-                  <p className="text-gray-400 mt-2">
+                  <p className="mt-2" style={{ color: COLORS.navy[4] }}>
                     Your saved legal sections and concepts
                   </p>
                 </div>
@@ -132,7 +160,12 @@ const Bookmarks = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={clearAllBookmarks}
-                className="flex items-center gap-2 px-6 py-3 bg-red-500/20 border border-red-400/30 text-red-300 rounded-xl hover:bg-red-500/30 transition-all duration-300"
+                className="flex items-center gap-2 px-6 py-3 border rounded-xl transition-all duration-300 backdrop-blur-xl"
+                style={{
+                  backgroundColor: `${COLORS.navy[3]}20`,
+                  borderColor: `${COLORS.navy[3]}30`,
+                  color: COLORS.navy[3]
+                }}
               >
                 <FiTrash2 className="text-lg" />
                 Clear All
@@ -146,13 +179,27 @@ const Bookmarks = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="flex items-center gap-4 text-sm text-gray-400"
+              className="flex items-center gap-4 text-sm"
             >
-              <span className="bg-cyan-500/20 border border-cyan-400/30 rounded-full px-3 py-1 text-cyan-300">
+              <span 
+                className="rounded-full px-3 py-1 border"
+                style={{
+                  backgroundColor: `${COLORS.navy[4]}20`,
+                  borderColor: `${COLORS.navy[4]}30`,
+                  color: COLORS.navy[4]
+                }}
+              >
                 {bookmarks.length} {bookmarks.length === 1 ? 'bookmark' : 'bookmarks'}
               </span>
               {searchTerm && (
-                <span className="bg-white/10 border border-white/10 rounded-full px-3 py-1">
+                <span 
+                  className="rounded-full px-3 py-1 border"
+                  style={{
+                    backgroundColor: `${COLORS.navy[2]}80`,
+                    borderColor: `${COLORS.navy[4]}20`,
+                    color: COLORS.navy[5]
+                  }}
+                >
                   {filteredBookmarks.length} results for "{searchTerm}"
                 </span>
               )}
@@ -160,18 +207,28 @@ const Bookmarks = () => {
 
             {/* Search Bar */}
             <div className="relative w-full sm:w-80">
-              <RiSearchLine className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
+              <RiSearchLine 
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-lg"
+                style={{ color: COLORS.navy[4] }}
+              />
               <input
                 type="text"
                 placeholder="Search bookmarks..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all duration-300"
+                className="w-full pl-12 pr-4 py-3 backdrop-blur-xl border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-4 transition-all duration-300"
+                style={{
+                  backgroundColor: `${COLORS.navy[2]}80`,
+                  borderColor: `${COLORS.navy[4]}30`,
+                  color: COLORS.navy[5],
+                  boxShadow: searchTerm ? `0 0 0 4px ${COLORS.navy[4]}20` : 'none'
+                }}
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm("")}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 transition-colors"
+                  style={{ color: COLORS.navy[4] }}
                 >
                   ✕
                 </button>
@@ -200,29 +257,72 @@ const Bookmarks = () => {
                       exit="exit"
                       layout
                       whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                      className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 overflow-hidden"
+                      className="group relative backdrop-blur-xl border rounded-2xl p-6 shadow-2xl transition-all duration-300 overflow-hidden"
+                      style={{
+                        backgroundColor: `${COLORS.navy[2]}40`,
+                        borderColor: `${COLORS.navy[4]}20`
+                      }}
                     >
                       {/* Background Effect */}
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full -translate-y-12 translate-x-12 group-hover:scale-150 transition-transform duration-500" />
+                      <div 
+                        className="absolute top-0 right-0 w-24 h-24 rounded-full -translate-y-12 translate-x-12 group-hover:scale-150 transition-transform duration-500"
+                        style={{ backgroundColor: `${COLORS.navy[4]}10` }}
+                      />
                       
                       {/* Content */}
                       <div className="relative z-10">
-                        <h2 className="text-xl font-bold text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300 mb-3 line-clamp-2">
+                        <h2 className="text-xl font-bold transition-colors duration-300 mb-3 line-clamp-2" style={{ color: COLORS.navy[4] }}>
                           {law.section || "Unnamed Section"}
                         </h2>
-                        <p className="text-gray-300 text-sm leading-relaxed mb-4 line-clamp-3">
-                          {law.legalConcept || "No description available."}
+                        <p className="text-sm leading-relaxed mb-4 line-clamp-3" style={{ color: COLORS.navy[5] }}>
+                          {law.legalConcept || law.description || "No description available."}
                         </p>
 
+                        {/* Metadata */}
+                        {(law.category || law.sabCategory) && (
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {law.category && (
+                              <span 
+                                className="text-xs rounded-full px-2 py-1 border"
+                                style={{
+                                  backgroundColor: `${COLORS.navy[4]}20`,
+                                  borderColor: `${COLORS.navy[4]}30`,
+                                  color: COLORS.navy[4]
+                                }}
+                              >
+                                {law.category}
+                              </span>
+                            )}
+                            {law.sabCategory && (
+                              <span 
+                                className="text-xs rounded-full px-2 py-1 border"
+                                style={{
+                                  backgroundColor: `${COLORS.navy[3]}20`,
+                                  borderColor: `${COLORS.navy[3]}30`,
+                                  color: COLORS.navy[3]
+                                }}
+                              >
+                                {law.sabCategory}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
                         {/* Actions */}
-                        <div className="flex justify-between items-center pt-4 border-t border-white/10">
+                        <div className="flex justify-between items-center pt-4 border-t" style={{ borderColor: `${COLORS.navy[4]}20` }}>
                           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <Link
                               to={`/law/${law._id}`}
-                              className="flex items-center gap-2 px-4 py-2 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 rounded-xl hover:bg-cyan-500/30 transition-all duration-300"
+                              className="flex items-center gap-2 px-4 py-2 border rounded-xl transition-all duration-300 group"
+                              style={{
+                                backgroundColor: `${COLORS.navy[4]}20`,
+                                borderColor: `${COLORS.navy[4]}30`,
+                                color: COLORS.navy[4]
+                              }}
                             >
                               <FiEye className="text-lg" />
                               View Details
+                              <FiArrowRight className="text-sm group-hover:translate-x-1 transition-transform" />
                             </Link>
                           </motion.div>
 
@@ -231,11 +331,22 @@ const Bookmarks = () => {
                             whileTap={{ scale: 0.95 }}
                             onClick={() => handleRemove(law._id)}
                             disabled={isDeleting === law._id}
-                            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 border border-red-400/30 text-red-300 rounded-xl hover:bg-red-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                            className="flex items-center gap-2 px-4 py-2 border rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            style={{
+                              backgroundColor: `${COLORS.navy[3]}20`,
+                              borderColor: `${COLORS.navy[3]}30`,
+                              color: COLORS.navy[3]
+                            }}
                           >
                             {isDeleting === law._id ? (
                               <>
-                                <div className="w-4 h-4 border-2 border-red-300 border-t-transparent rounded-full animate-spin" />
+                                <div 
+                                  className="w-4 h-4 border-2 rounded-full animate-spin"
+                                  style={{
+                                    borderColor: `${COLORS.navy[3]}30`,
+                                    borderTopColor: COLORS.navy[3]
+                                  }}
+                                />
                                 Removing...
                               </>
                             ) : (
@@ -249,7 +360,10 @@ const Bookmarks = () => {
                       </div>
 
                       {/* Hover Line */}
-                      <div className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 group-hover:w-full transition-all duration-500" />
+                      <div 
+                        className="absolute bottom-0 left-0 w-0 h-1 group-hover:w-full transition-all duration-500 rounded-full"
+                        style={{ backgroundColor: COLORS.navy[4] }}
+                      />
                     </motion.div>
                   ))}
                 </AnimatePresence>
@@ -261,18 +375,29 @@ const Bookmarks = () => {
                 className="text-center py-20"
               >
                 <div className="max-w-md mx-auto">
-                  <div className="w-24 h-24 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center mx-auto mb-6">
-                    <RiSearchLine className="text-4xl text-gray-400" />
+                  <div 
+                    className="w-24 h-24 rounded-2xl border flex items-center justify-center mx-auto mb-6 backdrop-blur-xl"
+                    style={{
+                      backgroundColor: `${COLORS.navy[2]}80`,
+                      borderColor: `${COLORS.navy[4]}20`
+                    }}
+                  >
+                    <RiSearchLine className="text-4xl" style={{ color: COLORS.navy[4] }} />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-300 mb-3">
+                  <h3 className="text-2xl font-bold mb-3" style={{ color: COLORS.navy[5] }}>
                     No bookmarks found
                   </h3>
-                  <p className="text-gray-400 mb-6">
-                    No bookmarks match "<span className="text-cyan-400">{searchTerm}</span>". Try different keywords.
+                  <p className="mb-6" style={{ color: COLORS.navy[5] }}>
+                    No bookmarks match "<span style={{ color: COLORS.navy[4] }}>{searchTerm}</span>". Try different keywords.
                   </p>
                   <button
                     onClick={() => setSearchTerm("")}
-                    className="px-6 py-3 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 rounded-xl hover:bg-cyan-500/30 transition-all duration-300"
+                    className="px-6 py-3 border rounded-xl transition-all duration-300"
+                    style={{
+                      backgroundColor: `${COLORS.navy[4]}20`,
+                      borderColor: `${COLORS.navy[4]}30`,
+                      color: COLORS.navy[4]
+                    }}
                   >
                     Clear Search
                   </button>
@@ -287,18 +412,29 @@ const Bookmarks = () => {
               className="text-center py-20"
             >
               <div className="max-w-md mx-auto">
-                <div className="w-24 h-24 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center mx-auto mb-6">
-                  <RiBookmarkLine className="text-4xl text-gray-400" />
+                <div 
+                  className="w-24 h-24 rounded-2xl border flex items-center justify-center mx-auto mb-6 backdrop-blur-xl"
+                  style={{
+                    backgroundColor: `${COLORS.navy[2]}80`,
+                    borderColor: `${COLORS.navy[4]}20`
+                  }}
+                >
+                  <RiBookmarkLine className="text-4xl" style={{ color: COLORS.navy[4] }} />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-300 mb-3">
+                <h3 className="text-2xl font-bold mb-3" style={{ color: COLORS.navy[5] }}>
                   No bookmarks yet
                 </h3>
-                <p className="text-gray-400 mb-6">
+                <p className="mb-6" style={{ color: COLORS.navy[5] }}>
                   Start exploring legal sections and save your favorites for quick access later.
                 </p>
                 <Link
                   to="/"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 rounded-xl hover:bg-cyan-500/30 transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-6 py-3 border rounded-xl transition-all duration-300"
+                  style={{
+                    backgroundColor: `${COLORS.navy[4]}20`,
+                    borderColor: `${COLORS.navy[4]}30`,
+                    color: COLORS.navy[4]
+                  }}
                 >
                   <FiBookmark className="text-lg" />
                   Explore Laws

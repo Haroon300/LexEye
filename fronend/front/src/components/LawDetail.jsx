@@ -37,6 +37,17 @@ import {
   processPendingSyncs,
 } from "../utils/bookmarkUtils";
 
+/* Color Constants matching your palette */
+const COLORS = {
+  navy: {
+    1: '#0D1B2A',
+    2: '#1D2D44',
+    3: '#3E5C76',
+    4: '#748CAB',
+    5: '#F0EBD8'
+  }
+};
+
 // Custom motion components to prevent prop forwarding issues
 const MotionSection = ({ variants, initial, animate, children, className, ...props }) => (
   <motion.div
@@ -249,7 +260,8 @@ const LawDetail = () => {
         await navigator.clipboard.writeText(window.location.href);
         // Show success notification
         const notification = document.createElement('div');
-        notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+        notification.className = 'fixed top-4 right-4 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+        notification.style.backgroundColor = `${COLORS.navy[4]}E6`;
         notification.textContent = '🔗 Link copied to clipboard!';
         document.body.appendChild(notification);
         setTimeout(() => {
@@ -381,7 +393,7 @@ const LawDetail = () => {
             }
             
             .print-header {
-              border-bottom: 3px solid #0e7490;
+              border-bottom: 3px solid ${COLORS.navy[3]};
               padding-bottom: 20px;
               margin-bottom: 30px;
               display: flex;
@@ -392,7 +404,7 @@ const LawDetail = () => {
             .logo {
               font-size: 20px;
               font-weight: 700;
-              color: #0e7490;
+              color: ${COLORS.navy[3]};
               display: flex;
               align-items: center;
               gap: 10px;
@@ -401,7 +413,7 @@ const LawDetail = () => {
             .main-title {
               font-size: 28px;
               font-weight: 800;
-              color: #0f766e;
+              color: ${COLORS.navy[3]};
               margin: 25px 0 10px 0;
               line-height: 1.3;
               padding-bottom: 15px;
@@ -466,7 +478,7 @@ const LawDetail = () => {
             .section-title {
               font-size: 20px;
               font-weight: 700;
-              color: #0f766e;
+              color: ${COLORS.navy[3]};
               margin: 0;
             }
             
@@ -489,7 +501,7 @@ const LawDetail = () => {
               padding: 15px;
               background: #f8fafc;
               border-radius: 8px;
-              border-left: 4px solid #f59e0b;
+              border-left: 4px solid ${COLORS.navy[4]};
             }
             
             .step-number {
@@ -523,7 +535,6 @@ const LawDetail = () => {
         <body>
           <div class="print-header">
             <div class="logo">
-              <img src="/logo-2.png" alt="LexEye Logo" style="width: 25px; height: 25px;" />
               LexEye - Legal Intelligence Platform
             </div>
             <div class="metadata">
@@ -653,12 +664,21 @@ const LawDetail = () => {
   const steps = formatStepByStepGuide(law?.stepByStepGuide);
 
   return (
-    <div className="min-h-screen pt-16 md:pt-20">
+    <div className="min-h-screen pt-16 md:pt-20" style={{ backgroundColor: COLORS.navy[1] }}>
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-64 h-64 md:w-96 md:h-96 bg-cyan-500/10 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20 animate-pulse-slow" />
-        <div className="absolute w-60 h-60 md:w-80 md:h-80 bg-cyan-400/10 rounded-full blur-3xl top-1/4 -right-10 md:top-1/3 md:-right-20 animate-pulse-slower" />
-        <div className="absolute w-56 h-56 md:w-72 md:h-72 bg-cyan-300/10 rounded-full blur-3xl bottom-10 left-1/4 md:bottom-20 animate-pulse-slow" />
+        <div 
+          className="absolute w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20 animate-pulse-slow"
+          style={{ backgroundColor: `${COLORS.navy[3]}10` }}
+        />
+        <div 
+          className="absolute w-60 h-60 md:w-80 md:h-80 rounded-full blur-3xl top-1/4 -right-10 md:top-1/3 md:-right-20 animate-pulse-slower"
+          style={{ backgroundColor: `${COLORS.navy[4]}10` }}
+        />
+        <div 
+          className="absolute w-56 h-56 md:w-72 md:h-72 rounded-full blur-3xl bottom-10 left-1/4 md:bottom-20 animate-pulse-slow"
+          style={{ backgroundColor: `${COLORS.navy[2]}20` }}
+        />
       </div>
 
       {/* Main Content */}
@@ -672,7 +692,12 @@ const LawDetail = () => {
         >
           <button
             onClick={() => navigate(-1)}
-            className="group flex items-center gap-2 md:gap-3 bg-white/10 backdrop-blur-xl border border-white/20 text-white font-semibold hover:bg-white/20 rounded-xl md:rounded-2xl px-3 md:px-6 py-2 md:py-4 shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-cyan-500/20 text-sm md:text-base"
+            className="group flex items-center gap-2 md:gap-3 backdrop-blur-xl border font-semibold rounded-xl md:rounded-2xl px-3 md:px-6 py-2 md:py-4 shadow-xl transition-all duration-300 hover:scale-105 text-sm md:text-base"
+            style={{
+              backgroundColor: `${COLORS.navy[2]}80`,
+              borderColor: `${COLORS.navy[4]}30`,
+              color: COLORS.navy[5]
+            }}
           >
             <IoArrowBack className="text-lg md:text-xl group-hover:-translate-x-1 transition-transform duration-300" />
             Back to Previous
@@ -684,61 +709,77 @@ const LawDetail = () => {
           initial={{ opacity: 0, y: -20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5 }}
-          className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl mb-6 md:mb-8"
+          className="backdrop-blur-2xl border rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl mb-6 md:mb-8"
+          style={{
+            backgroundColor: `${COLORS.navy[2]}40`,
+            borderColor: `${COLORS.navy[4]}20`
+          }}
         >
           <div className="flex flex-col lg:flex-row justify-between items-start gap-4 md:gap-6">
             <div className="flex-1">
               {/* Law Title and Section */}
               <div className="flex flex-wrap items-center gap-2 mb-3 md:mb-4">
-                <div className="inline-flex items-center gap-2 bg-cyan-500/20 border border-cyan-400/30 rounded-full px-3 md:px-4 py-1.5 md:py-2">
-                  <FaBalanceScale className="text-cyan-400 text-xs md:text-sm" />
-                  <span className="text-cyan-300 text-xs md:text-sm font-medium">LAW</span>
+                <div className="inline-flex items-center gap-2 rounded-full px-3 md:px-4 py-1.5 md:py-2 border" style={{
+                  backgroundColor: `${COLORS.navy[4]}20`,
+                  borderColor: `${COLORS.navy[4]}30`
+                }}>
+                  <FaBalanceScale className="text-xs md:text-sm" style={{ color: COLORS.navy[4] }} />
+                  <span className="text-xs md:text-sm font-medium" style={{ color: COLORS.navy[4] }}>LAW</span>
                 </div>
                 {isEnhancedLaw(law) && (
-                  <div className="inline-flex items-center gap-2 bg-purple-500/20 border border-purple-400/30 rounded-full px-3 md:px-4 py-1.5 md:py-2">
-                    <FaList className="text-purple-400 text-xs md:text-sm" />
-                    <span className="text-purple-300 text-xs md:text-sm font-medium">Enhanced Law</span>
+                  <div className="inline-flex items-center gap-2 rounded-full px-3 md:px-4 py-1.5 md:py-2 border" style={{
+                    backgroundColor: `${COLORS.navy[3]}20`,
+                    borderColor: `${COLORS.navy[3]}30`
+                  }}>
+                    <FaList className="text-xs md:text-sm" style={{ color: COLORS.navy[3] }} />
+                    <span className="text-xs md:text-sm font-medium" style={{ color: COLORS.navy[3] }}>Enhanced Law</span>
                   </div>
                 )}
               </div>
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black bg-gradient-to-r from-cyan-200 via-cyan-100 to-cyan-50 text-transparent bg-clip-text leading-tight mb-2 md:mb-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight mb-2 md:mb-4" style={{ color: COLORS.navy[5] }}>
                 {law?.lawTitle || "Law Title"}
               </h1>
               
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-cyan-100 mb-2 md:mb-3">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 md:mb-3" style={{ color: COLORS.navy[4] }}>
                 {law?.section || "Section Title"}
               </h2>
               
               {law?.legalConcept && (
-                <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-3 md:mb-4 italic">
+                <p className="text-lg md:text-xl leading-relaxed mb-3 md:mb-4 italic" style={{ color: COLORS.navy[5] }}>
                   {law.legalConcept}
                 </p>
               )}
 
               {/* Metadata */}
-              <div className="flex flex-wrap items-center gap-3 md:gap-4 text-sm md:text-base text-gray-400 mb-4 md:mb-6">
+              <div className="flex flex-wrap items-center gap-3 md:gap-4 text-sm md:text-base mb-4 md:mb-6">
                 {law?.category && (
-                  <div className="flex items-center gap-2 bg-green-500/20 border border-green-400/30 rounded-full px-3 md:px-4 py-1.5 md:py-2">
-                    <FaTag className="text-green-400 text-xs md:text-sm" />
-                    <span className="text-green-300 text-xs md:text-sm font-medium">{law.category}</span>
+                  <div className="flex items-center gap-2 rounded-full px-3 md:px-4 py-1.5 md:py-2 border" style={{
+                    backgroundColor: `${COLORS.navy[4]}20`,
+                    borderColor: `${COLORS.navy[4]}30`
+                  }}>
+                    <FaTag className="text-xs md:text-sm" style={{ color: COLORS.navy[4] }} />
+                    <span className="text-xs md:text-sm font-medium" style={{ color: COLORS.navy[4] }}>{law.category}</span>
                   </div>
                 )}
                 {law?.sabCategory && (
-                  <div className="flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 rounded-full px-3 md:px-4 py-1.5 md:py-2">
-                    <FaTag className="text-blue-400 text-xs md:text-sm" />
-                    <span className="text-blue-300 text-xs md:text-sm font-medium">{law.sabCategory}</span>
+                  <div className="flex items-center gap-2 rounded-full px-3 md:px-4 py-1.5 md:py-2 border" style={{
+                    backgroundColor: `${COLORS.navy[3]}20`,
+                    borderColor: `${COLORS.navy[3]}30`
+                  }}>
+                    <FaTag className="text-xs md:text-sm" style={{ color: COLORS.navy[3] }} />
+                    <span className="text-xs md:text-sm font-medium" style={{ color: COLORS.navy[3] }}>{law.sabCategory}</span>
                   </div>
                 )}
                 {law?.jurisdiction && (
-                  <div className="flex items-center gap-2">
-                    <FaMapMarkerAlt className="text-cyan-400 text-sm" />
+                  <div className="flex items-center gap-2" style={{ color: COLORS.navy[5] }}>
+                    <FaMapMarkerAlt className="text-sm" style={{ color: COLORS.navy[4] }} />
                     <span>Jurisdiction: {law.jurisdiction}</span>
                   </div>
                 )}
                 {law?.lastUpdated && (
-                  <div className="flex items-center gap-2">
-                    <FaCalendarAlt className="text-green-400 text-sm" />
+                  <div className="flex items-center gap-2" style={{ color: COLORS.navy[5] }}>
+                    <FaCalendarAlt className="text-sm" style={{ color: COLORS.navy[4] }} />
                     <span>Last Updated: {law.lastUpdated}</span>
                   </div>
                 )}
@@ -751,9 +792,15 @@ const LawDetail = () => {
                 onClick={toggleBookmark}
                 className={`group relative flex items-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-4 rounded-xl md:rounded-2xl font-semibold backdrop-blur-xl border-2 transition-all duration-300 ${
                   isBookmarked
-                    ? "bg-yellow-500/20 border-yellow-400 text-yellow-100 shadow-xl shadow-yellow-500/20"
-                    : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:border-yellow-400/30 hover:text-white"
+                    ? "shadow-xl"
+                    : "hover:bg-white/10"
                 }`}
+                style={{
+                  backgroundColor: isBookmarked ? `${COLORS.navy[4]}20` : `${COLORS.navy[2]}80`,
+                  borderColor: isBookmarked ? `${COLORS.navy[4]}30` : `${COLORS.navy[4]}20`,
+                  color: isBookmarked ? COLORS.navy[4] : COLORS.navy[5],
+                  boxShadow: isBookmarked ? `0 8px 32px ${COLORS.navy[4]}20` : 'none'
+                }}
               >
                 <AnimatePresence mode="wait">
                   {isBookmarked ? (
@@ -776,7 +823,12 @@ const LawDetail = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleShare}
-                className="flex items-center justify-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-4 bg-green-500/20 hover:bg-green-500/30 border border-green-400/30 text-green-300 rounded-xl md:rounded-2xl font-semibold backdrop-blur-xl transition-all duration-300"
+                className="flex items-center justify-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-4 border rounded-xl md:rounded-2xl font-semibold backdrop-blur-xl transition-all duration-300"
+                style={{
+                  backgroundColor: `${COLORS.navy[4]}20`,
+                  borderColor: `${COLORS.navy[4]}30`,
+                  color: COLORS.navy[4]
+                }}
               >
                 <IoShareOutline className="text-lg md:text-2xl" />
                 <span className="text-sm md:text-base">Share Law</span>
@@ -790,7 +842,12 @@ const LawDetail = () => {
           <MotionButton
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="fixed bottom-6 right-6 z-50 p-4 bg-cyan-500/20 backdrop-blur-xl border border-cyan-400/30 text-cyan-300 rounded-full shadow-xl"
+            className="fixed bottom-6 right-6 z-50 p-4 backdrop-blur-xl border rounded-full shadow-xl"
+            style={{
+              backgroundColor: `${COLORS.navy[4]}20`,
+              borderColor: `${COLORS.navy[4]}30`,
+              color: COLORS.navy[4]
+            }}
           >
             {showMobileMenu ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
           </MotionButton>
@@ -806,17 +863,23 @@ const LawDetail = () => {
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
-                className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+                className="backdrop-blur-2xl border rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+                style={{
+                  backgroundColor: `${COLORS.navy[2]}40`,
+                  borderColor: `${COLORS.navy[4]}20`
+                }}
               >
                 <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-                  <div className="p-1.5 md:p-2 bg-purple-500/20 rounded-lg">
-                    <FaPuzzlePiece className="text-purple-400 text-sm md:text-lg" />
+                  <div className="p-1.5 md:p-2 rounded-lg" style={{
+                    backgroundColor: `${COLORS.navy[4]}20`
+                  }}>
+                    <FaPuzzlePiece className="text-sm md:text-lg" style={{ color: COLORS.navy[4] }} />
                   </div>
-                  <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-purple-200 to-pink-200 text-transparent bg-clip-text">
+                  <h2 className="text-base md:text-xl lg:text-2xl font-bold" style={{ color: COLORS.navy[5] }}>
                     Section Overview
                   </h2>
                 </div>
-                <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
+                <p className="leading-relaxed text-sm md:text-base lg:text-lg" style={{ color: COLORS.navy[5] }}>
                   {law.sectionOverview}
                 </p>
               </MotionSection>
@@ -827,17 +890,23 @@ const LawDetail = () => {
               variants={sectionVariants}
               initial="hidden"
               animate="visible"
-              className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+              className="backdrop-blur-2xl border rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+              style={{
+                backgroundColor: `${COLORS.navy[2]}40`,
+                borderColor: `${COLORS.navy[4]}20`
+              }}
             >
               <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-                <div className="p-1.5 md:p-2 bg-blue-500/20 rounded-lg">
-                  <FaBrain className="text-blue-400 text-sm md:text-lg" />
+                <div className="p-1.5 md:p-2 rounded-lg" style={{
+                  backgroundColor: `${COLORS.navy[4]}20`
+                }}>
+                  <FaBrain className="text-sm md:text-lg" style={{ color: COLORS.navy[4] }} />
                 </div>
-                <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-200 to-cyan-200 text-transparent bg-clip-text">
+                <h2 className="text-base md:text-xl lg:text-2xl font-bold" style={{ color: COLORS.navy[5] }}>
                   Simple Explanation
                 </h2>
               </div>
-              <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
+              <p className="leading-relaxed text-sm md:text-base lg:text-lg" style={{ color: COLORS.navy[5] }}>
                 {law?.description || "No description available."}
               </p>
             </MotionSection>
@@ -847,17 +916,23 @@ const LawDetail = () => {
               variants={sectionVariants}
               initial="hidden"
               animate="visible"
-              className="bg-white/5 backdrop-blur-2xl border border-red-400/20 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+              className="backdrop-blur-2xl border rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+              style={{
+                backgroundColor: `${COLORS.navy[2]}40`,
+                borderColor: `${COLORS.navy[3]}30`
+              }}
             >
               <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-                <div className="p-1.5 md:p-2 bg-red-500/20 rounded-lg">
-                  <FaSkullCrossbones className="text-red-400 text-sm md:text-lg" />
+                <div className="p-1.5 md:p-2 rounded-lg" style={{
+                  backgroundColor: `${COLORS.navy[3]}20`
+                }}>
+                  <FaSkullCrossbones className="text-sm md:text-lg" style={{ color: COLORS.navy[3] }} />
                 </div>
-                <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-red-200 to-orange-200 text-transparent bg-clip-text">
+                <h2 className="text-base md:text-xl lg:text-2xl font-bold" style={{ color: COLORS.navy[5] }}>
                   Legal Punishment
                 </h2>
               </div>
-              <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg font-semibold">
+              <p className="leading-relaxed text-sm md:text-base lg:text-lg font-semibold" style={{ color: COLORS.navy[5] }}>
                 {law?.legalConsequence || "No legal consequence available."}
               </p>
             </MotionSection>
@@ -868,13 +943,19 @@ const LawDetail = () => {
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
-                className="bg-white/5 backdrop-blur-2xl border border-yellow-400/20 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+                className="backdrop-blur-2xl border rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+                style={{
+                  backgroundColor: `${COLORS.navy[2]}40`,
+                  borderColor: `${COLORS.navy[4]}30`
+                }}
               >
                 <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-                  <div className="p-1.5 md:p-2 bg-yellow-500/20 rounded-lg">
-                    <GiLadder className="text-yellow-400 text-sm md:text-lg"/>
+                  <div className="p-1.5 md:p-2 rounded-lg" style={{
+                    backgroundColor: `${COLORS.navy[4]}20`
+                  }}>
+                    <GiLadder className="text-sm md:text-lg" style={{ color: COLORS.navy[4] }}/>
                   </div>
-                  <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-yellow-200 to-amber-200 text-transparent bg-clip-text">
+                  <h2 className="text-base md:text-xl lg:text-2xl font-bold" style={{ color: COLORS.navy[5] }}>
                     Step-by-Step Legal Help Guide
                   </h2>
                 </div>
@@ -885,12 +966,19 @@ const LawDetail = () => {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="flex items-start gap-3 md:gap-4 p-3 md:p-4 bg-white/5 rounded-xl border border-white/10"
+                      className="flex items-start gap-3 md:gap-4 p-3 md:p-4 rounded-xl border"
+                      style={{
+                        backgroundColor: `${COLORS.navy[2]}80`,
+                        borderColor: `${COLORS.navy[4]}20`
+                      }}
                     >
-                      <div className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 bg-cyan-500/20 border border-cyan-400/30 rounded-full flex items-center justify-center">
-                        <span className="text-cyan-300 font-bold text-xs md:text-sm">{index + 1}</span>
+                      <div className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center border" style={{
+                        backgroundColor: `${COLORS.navy[4]}20`,
+                        borderColor: `${COLORS.navy[4]}30`
+                      }}>
+                        <span className="font-bold text-xs md:text-sm" style={{ color: COLORS.navy[4] }}>{index + 1}</span>
                       </div>
-                      <p className="text-gray-300 leading-relaxed text-sm md:text-base flex-1">
+                      <p className="leading-relaxed text-sm md:text-base flex-1" style={{ color: COLORS.navy[5] }}>
                         {step}
                       </p>
                     </MotionDiv>
@@ -904,17 +992,23 @@ const LawDetail = () => {
               variants={sectionVariants}
               initial="hidden"
               animate="visible"
-              className="bg-white/5 backdrop-blur-2xl border border-green-400/20 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+              className="backdrop-blur-2xl border rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+              style={{
+                backgroundColor: `${COLORS.navy[2]}40`,
+                borderColor: `${COLORS.navy[4]}20`
+              }}
             >
               <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-                <div className="p-1.5 md:p-2 bg-green-500/20 rounded-lg">
-                  <FaLeaf className="text-green-400 text-sm md:text-lg" />
+                <div className="p-1.5 md:p-2 rounded-lg" style={{
+                  backgroundColor: `${COLORS.navy[4]}20`
+                }}>
+                  <FaLeaf className="text-sm md:text-lg" style={{ color: COLORS.navy[4] }} />
                 </div>
-                <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-green-200 to-emerald-200 text-transparent bg-clip-text">
+                <h2 className="text-base md:text-xl lg:text-2xl font-bold" style={{ color: COLORS.navy[5] }}>
                   Prevention & Awareness Solutions
                 </h2>
               </div>
-              <p className="text-gray-300 leading-relaxed text-sm md:text-base lg:text-lg">
+              <p className="leading-relaxed text-sm md:text-base lg:text-lg" style={{ color: COLORS.navy[5] }}>
                 {law?.preventionSolutions || "No prevention solutions available."}
               </p>
             </MotionSection>
@@ -925,20 +1019,29 @@ const LawDetail = () => {
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
-                className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+                className="backdrop-blur-2xl border rounded-xl md:rounded-3xl p-4 md:p-6 lg:p-8 shadow-xl"
+                style={{
+                  backgroundColor: `${COLORS.navy[2]}40`,
+                  borderColor: `${COLORS.navy[4]}20`
+                }}
               >
                 <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-                  <div className="p-1.5 md:p-2 bg-indigo-500/20 rounded-lg">
-                    <FaLink className="text-indigo-400 text-sm md:text-lg" />
+                  <div className="p-1.5 md:p-2 rounded-lg" style={{
+                    backgroundColor: `${COLORS.navy[4]}20`
+                  }}>
+                    <FaLink className="text-sm md:text-lg" style={{ color: COLORS.navy[4] }} />
                   </div>
-                  <h2 className="text-base md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-indigo-200 to-purple-200 text-transparent bg-clip-text">
+                  <h2 className="text-base md:text-xl lg:text-2xl font-bold" style={{ color: COLORS.navy[5] }}>
                     Related Laws ({relatedLawsData.length || law.relatedLaws.length})
                   </h2>
                 </div>
                 
                 {relatedLawsLoading ? (
                   <div className="flex justify-center py-4">
-                    <div className="w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-6 h-6 border-2 rounded-full animate-spin" style={{
+                      borderColor: `${COLORS.navy[4]}30`,
+                      borderTopColor: COLORS.navy[4]
+                    }}></div>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
@@ -952,22 +1055,26 @@ const LawDetail = () => {
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => handleRelatedLawClick(relatedLaw._id)}
-                          className="p-3 md:p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 hover:border-cyan-400/30 transition-all duration-300 group"
+                          className="p-3 md:p-4 rounded-lg border transition-all duration-300 group"
+                          style={{
+                            backgroundColor: `${COLORS.navy[2]}80`,
+                            borderColor: `${COLORS.navy[4]}20`
+                          }}
                         >
                           <div className="flex items-start gap-2">
                             <div className="flex-shrink-0 mt-1">
-                              <FaLink className="text-cyan-400 text-xs group-hover:scale-110 transition-transform duration-300" />
+                              <FaLink className="text-xs group-hover:scale-110 transition-transform duration-300" style={{ color: COLORS.navy[4] }} />
                             </div>
                             <div className="flex-1">
-                              <h4 className="text-cyan-300 font-semibold text-sm md:text-base group-hover:text-cyan-200 transition-colors duration-300 mb-1">
+                              <h4 className="font-semibold text-sm md:text-base group-hover:transition-colors duration-300 mb-1" style={{ color: COLORS.navy[4] }}>
                                 {relatedLaw.section || relatedLaw.lawTitle || "Related Law"}
                               </h4>
                               {relatedLaw.legalConcept && (
-                                <p className="text-gray-400 text-xs md:text-sm leading-relaxed line-clamp-2">
+                                <p className="text-xs md:text-sm leading-relaxed line-clamp-2" style={{ color: COLORS.navy[5] }}>
                                   {relatedLaw.legalConcept}
                                 </p>
                               )}
-                              <div className="mt-2 text-xs text-cyan-400 font-medium">
+                              <div className="mt-2 text-xs font-medium" style={{ color: COLORS.navy[4] }}>
                                 Click to view details →
                               </div>
                             </div>
@@ -982,9 +1089,13 @@ const LawDetail = () => {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.05 }}
-                          className="p-3 md:p-4 bg-white/5 rounded-lg border border-white/10"
+                          className="p-3 md:p-4 rounded-lg border"
+                          style={{
+                            backgroundColor: `${COLORS.navy[2]}80`,
+                            borderColor: `${COLORS.navy[4]}20`
+                          }}
                         >
-                          <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
+                          <p className="text-xs md:text-sm leading-relaxed" style={{ color: COLORS.navy[5] }}>
                             {renderRelatedLaw(relatedLaw)}
                           </p>
                         </MotionDiv>
@@ -1007,19 +1118,30 @@ const LawDetail = () => {
                 className="space-y-4 md:space-y-6"
               >
                 {/* Quick Actions */}
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6">
-                  <h3 className="text-sm md:text-lg font-semibold text-gray-300 mb-3 md:mb-4">Quick Actions</h3>
+                <div className="backdrop-blur-xl border rounded-xl md:rounded-2xl p-4 md:p-6" style={{
+                  backgroundColor: `${COLORS.navy[2]}40`,
+                  borderColor: `${COLORS.navy[4]}20`
+                }}>
+                  <h3 className="text-sm md:text-lg font-semibold mb-3 md:mb-4" style={{ color: COLORS.navy[5] }}>Quick Actions</h3>
                   <div className="space-y-2 md:space-y-3">
                     <MotionButton
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handlePrint}
                       disabled={isPrinting}
-                      className="w-full flex items-center justify-center gap-2 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/30 text-cyan-300 rounded-lg md:rounded-xl py-2 md:py-3 px-3 transition-all duration-300 disabled:opacity-50 text-xs md:text-sm font-medium"
+                      className="w-full flex items-center justify-center gap-2 border rounded-lg md:rounded-xl py-2 md:py-3 px-3 transition-all duration-300 disabled:opacity-50 text-xs md:text-sm font-medium"
+                      style={{
+                        backgroundColor: `${COLORS.navy[4]}20`,
+                        borderColor: `${COLORS.navy[4]}30`,
+                        color: COLORS.navy[4]
+                      }}
                     >
                       {isPrinting ? (
                         <>
-                          <div className="w-3 h-3 md:w-4 md:h-4 border-2 border-cyan-300 border-t-transparent rounded-full animate-spin" />
+                          <div className="w-3 h-3 md:w-4 md:h-4 border-2 rounded-full animate-spin" style={{
+                            borderColor: `${COLORS.navy[4]}30`,
+                            borderTopColor: COLORS.navy[4]
+                          }} />
                           Printing...
                         </>
                       ) : (
@@ -1034,7 +1156,12 @@ const LawDetail = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleExportPDF}
-                      className="w-full flex items-center justify-center gap-2 bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/30 text-purple-300 rounded-lg md:rounded-xl py-2 md:py-3 px-3 transition-all duration-300 text-xs md:text-sm font-medium"
+                      className="w-full flex items-center justify-center gap-2 border rounded-lg md:rounded-xl py-2 md:py-3 px-3 transition-all duration-300 text-xs md:text-sm font-medium"
+                      style={{
+                        backgroundColor: `${COLORS.navy[3]}20`,
+                        borderColor: `${COLORS.navy[3]}30`,
+                        color: COLORS.navy[3]
+                      }}
                     >
                       <IoDocumentTextOutline className="text-sm md:text-lg" />
                       Export as PDF
@@ -1043,29 +1170,40 @@ const LawDetail = () => {
                 </div>
 
                 {/* Emergency Help */}
-                <div className="bg-red-500/10 backdrop-blur-xl border border-red-400/20 rounded-xl md:rounded-2xl p-4 md:p-6">
+                <div className="backdrop-blur-xl border rounded-xl md:rounded-2xl p-4 md:p-6" style={{
+                  backgroundColor: `${COLORS.navy[3]}20`,
+                  borderColor: `${COLORS.navy[3]}30`
+                }}>
                   <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
-                    <FaExclamationTriangle className="text-red-400 text-sm md:text-lg" />
-                    <h3 className="text-sm md:text-lg font-semibold text-red-300">Emergency Help</h3>
+                    <FaExclamationTriangle className="text-sm md:text-lg" style={{ color: COLORS.navy[3] }} />
+                    <h3 className="text-sm md:text-lg font-semibold" style={{ color: COLORS.navy[3] }}>Emergency Help</h3>
                   </div>
-                  <p className="text-red-200/80 text-xs md:text-sm leading-relaxed mb-2 md:mb-3">
+                  <p className="text-xs md:text-sm leading-relaxed mb-2 md:mb-3" style={{ color: COLORS.navy[5] }}>
                     If you're in immediate danger, contact emergency services immediately.
                   </p>
                   <Link
                     to="/helpline"
-                    className="inline-block bg-red-500/20 hover:bg-red-500/30 border border-red-400/30 text-red-300 rounded-lg md:rounded-xl py-2 px-3 text-xs md:text-sm font-medium transition-all duration-300"
+                    className="inline-block border rounded-lg md:rounded-xl py-2 px-3 text-xs md:text-sm font-medium transition-all duration-300"
+                    style={{
+                      backgroundColor: `${COLORS.navy[3]}20`,
+                      borderColor: `${COLORS.navy[3]}30`,
+                      color: COLORS.navy[3]
+                    }}
                   >
                     Go to Helpline
                   </Link>
                 </div>
 
                 {/* Legal Tip */}
-                <div className="bg-yellow-500/10 backdrop-blur-xl border border-yellow-400/20 rounded-xl md:rounded-2xl p-4 md:p-6">
+                <div className="backdrop-blur-xl border rounded-xl md:rounded-2xl p-4 md:p-6" style={{
+                  backgroundColor: `${COLORS.navy[4]}20`,
+                  borderColor: `${COLORS.navy[4]}30`
+                }}>
                   <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
-                    <FaLightbulb className="text-yellow-400 text-sm md:text-lg" />
-                    <h3 className="text-sm md:text-lg font-semibold text-yellow-300">Legal Tip</h3>
+                    <FaLightbulb className="text-sm md:text-lg" style={{ color: COLORS.navy[4] }} />
+                    <h3 className="text-sm md:text-lg font-semibold" style={{ color: COLORS.navy[4] }}>Legal Tip</h3>
                   </div>
-                  <p className="text-yellow-200/80 text-xs md:text-sm leading-relaxed">
+                  <p className="text-xs md:text-sm leading-relaxed" style={{ color: COLORS.navy[5] }}>
                     Always consult with a qualified legal professional for specific advice related to your situation.
                     Printed documents are for informational purposes only.
                   </p>

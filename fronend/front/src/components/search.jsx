@@ -16,6 +16,17 @@ import {
 import { useNavigate } from "react-router-dom";
 import { debounce } from "lodash";
 
+/* Color Constants matching your palette */
+const COLORS = {
+  navy: {
+    1: '#0D1B2A',
+    2: '#1D2D44',
+    3: '#3E5C76',
+    4: '#748CAB',
+    5: '#F0EBD8'
+  }
+};
+
 const Search = () => {
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -172,16 +183,25 @@ const Search = () => {
   };
 
   return (
-    <div className="min-h-screen md:pt-[5%] pt-[25%] text-white relative overflow-hidden">
+    <div className="min-h-screen md:pt-[5%] pt-[25%] relative overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-64 h-64 md:w-96 md:h-96 bg-cyan-500/10 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20 animate-pulse-slow" />
-        <div className="absolute w-60 h-60 md:w-80 md:h-80 bg-cyan-400/10 rounded-full blur-3xl top-1/4 -right-10 md:top-1/3 md:-right-20 animate-pulse-slower" />
-        <div className="absolute w-56 h-56 md:w-72 md:h-72 bg-cyan-300/10 rounded-full blur-3xl bottom-10 left-1/4 md:bottom-20 animate-pulse-slow" />
+        <div 
+          className="absolute w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20 animate-pulse-slow"
+          style={{ backgroundColor: `${COLORS.navy[3]}10` }}
+        />
+        <div 
+          className="absolute w-60 h-60 md:w-80 md:h-80 rounded-full blur-3xl top-1/4 -right-10 md:top-1/3 md:-right-20 animate-pulse-slower"
+          style={{ backgroundColor: `${COLORS.navy[4]}10` }}
+        />
+        <div 
+          className="absolute w-56 h-56 md:w-72 md:h-72 rounded-full blur-3xl bottom-10 left-1/4 md:bottom-20 animate-pulse-slow"
+          style={{ backgroundColor: `${COLORS.navy[2]}20` }}
+        />
         
         {/* Grid Pattern */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.1)_1px,transparent_1px)] bg-[size:40px_40px] md:bg-[size:80px_80px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(116,140,171,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(116,140,171,0.1)_1px,transparent_1px)] bg-[size:40px_40px] md:bg-[size:80px_80px]" />
         </div>
       </div>
 
@@ -198,20 +218,26 @@ const Search = () => {
             variants={itemVariants}
             className="mb-8 md:mb-12 px-2"
           >
-            <div className="inline-flex items-center gap-2 bg-cyan-500/20 border border-cyan-400/30 rounded-full px-3 py-1.5 md:px-4 md:py-2 mb-4 md:mb-6">
-              <FiSearch className="text-cyan-400 text-sm md:text-base" />
-              <span className="text-cyan-300 text-xs md:text-sm font-medium">Legal Search Engine</span>
+            <div 
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 md:px-4 md:py-2 mb-4 md:mb-6 border"
+              style={{
+                backgroundColor: `${COLORS.navy[4]}20`,
+                borderColor: `${COLORS.navy[4]}30`
+              }}
+            >
+              <FiSearch className="text-sm md:text-base" style={{ color: COLORS.navy[4] }} />
+              <span className="text-xs md:text-sm font-medium" style={{ color: COLORS.navy[4] }}>Legal Search Engine</span>
             </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black bg-gradient-to-r from-cyan-200 via-cyan-100 to-cyan-50 text-transparent bg-clip-text mb-4 md:mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 md:mb-6 leading-tight" style={{ color: COLORS.navy[5] }}>
               Find Legal Answers
               <br />
-              <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold">
+              <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold" style={{ color: COLORS.navy[4] }}>
                 Made Simple
               </span>
             </h1>
             
-            <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed px-2">
+            <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed px-2" style={{ color: COLORS.navy[5] }}>
               Get instant access to simplified legal guides, step-by-step solutions, 
               and clear explanations for your everyday rights and issues.
             </p>
@@ -224,17 +250,28 @@ const Search = () => {
           >
             <div className="relative max-w-2xl mx-auto">
               {/* Main Search Container */}
-              <div className={`relative bg-white/10 backdrop-blur-xl border-2 rounded-xl md:rounded-2xl p-1.5 md:p-2 shadow-xl transition-all duration-300 ${
-                isFocused 
-                  ? 'border-cyan-400 shadow-cyan-500/20' 
-                  : 'border-white/10 hover:border-cyan-400/50'
-              } ${error ? 'border-red-400 shadow-red-500/20' : ''}`}>
+              <div 
+                className={`relative backdrop-blur-xl border-2 rounded-xl md:rounded-2xl p-1.5 md:p-2 shadow-xl transition-all duration-300 ${
+                  error ? 'border-red-400 shadow-red-500/20' : ''
+                }`}
+                style={{
+                  backgroundColor: `${COLORS.navy[2]}80`,
+                  borderColor: isFocused 
+                    ? `${COLORS.navy[4]}50` 
+                    : error 
+                    ? `${COLORS.navy[3]}50`
+                    : `${COLORS.navy[4]}20`
+                }}
+              >
                 <div className="flex items-center">
                   {/* Search Icon */}
                   <div className="pl-2 md:pl-4 pr-1 md:pr-3">
-                    <FiSearch className={`text-lg md:text-2xl transition-colors duration-300 ${
-                      isFocused ? 'text-cyan-400' : 'text-gray-400'
-                    } ${error ? 'text-red-400' : ''}`} />
+                    <FiSearch 
+                      className={`text-lg md:text-2xl transition-colors duration-300 ${
+                        error ? 'text-red-400' : 'text-gray-400'
+                      }`}
+                      style={isFocused && !error ? { color: COLORS.navy[4] } : {}}
+                    />
                   </div>
 
                   {/* Input Field */}
@@ -249,7 +286,8 @@ const Search = () => {
                     onKeyDown={handleKeyDown}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-                    className="w-full bg-transparent outline-none text-white placeholder-gray-400 text-sm md:text-lg py-3 md:py-4 px-1 md:px-2"
+                    className="w-full bg-transparent outline-none placeholder-gray-400 text-sm md:text-lg py-3 md:py-4 px-1 md:px-2"
+                    style={{ color: COLORS.navy[5] }}
                     enterKeyHint="search"
                     inputMode="search"
                     autoCapitalize="none"
@@ -264,10 +302,22 @@ const Search = () => {
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleSearch()}
                     disabled={!query.trim() || isSearching}
-                    className="ml-1 md:ml-2 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold rounded-lg md:rounded-xl px-3 md:px-6 py-2 md:py-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/25 flex items-center gap-1 md:gap-2 min-w-[70px] md:min-w-auto"
+                    className="ml-1 md:ml-2 font-semibold rounded-lg md:rounded-xl px-3 md:px-6 py-2 md:py-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:shadow-lg flex items-center gap-1 md:gap-2 min-w-[70px] md:min-w-auto border"
+                    style={{
+                      backgroundColor: COLORS.navy[4],
+                      borderColor: `${COLORS.navy[4]}50`,
+                      color: COLORS.navy[5],
+                      boxShadow: `0 4px 20px ${COLORS.navy[4]}25`
+                    }}
                   >
                     {isSearching ? (
-                      <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <div 
+                        className="w-4 h-4 md:w-5 md:h-5 border-2 rounded-full animate-spin"
+                        style={{
+                          borderColor: `${COLORS.navy[5]}30`,
+                          borderTopColor: COLORS.navy[5]
+                        }}
+                      />
                     ) : isMobile ? (
                       <FiSearch className="text-sm" />
                     ) : (
@@ -287,7 +337,8 @@ const Search = () => {
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -5 }}
-                    className="absolute top-full left-0 right-0 mt-1 md:mt-2 text-red-400 text-xs md:text-sm text-center"
+                    className="absolute top-full left-0 right-0 mt-1 md:mt-2 text-xs md:text-sm text-center"
+                    style={{ color: COLORS.navy[3] }}
                   >
                     {error}
                   </motion.div>
@@ -301,9 +352,10 @@ const Search = () => {
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 5 }}
-                    className="absolute top-full left-0 right-0 mt-1 md:mt-2 bg-gray-800/95 backdrop-blur-xl border border-cyan-400/20 rounded-lg md:rounded-2xl p-2 md:p-4 shadow-xl z-20"
+                    className="absolute top-full left-0 right-0 mt-1 md:mt-2 backdrop-blur-xl border rounded-lg md:rounded-2xl p-2 md:p-4 shadow-xl z-20"
                     style={{
-                      // Fixed height based on content to prevent scroll
+                      backgroundColor: `${COLORS.navy[2]}F0`,
+                      borderColor: `${COLORS.navy[4]}30`,
                       maxHeight: 'none',
                       overflow: 'visible'
                     }}
@@ -312,10 +364,11 @@ const Search = () => {
                     {recentSearches.length > 0 && query.length === 0 && (
                       <div className="mb-2 md:mb-3">
                         <div className="flex items-center justify-between mb-1 md:mb-2">
-                          <p className="text-cyan-300 text-xs md:text-sm font-medium">Recent Searches</p>
+                          <p className="text-xs md:text-sm font-medium" style={{ color: COLORS.navy[4] }}>Recent Searches</p>
                           <button
                             onClick={clearRecentSearches}
-                            className="text-gray-400 hover:text-cyan-300 transition-colors duration-200 p-1"
+                            className="transition-colors duration-200 p-1"
+                            style={{ color: COLORS.navy[4] }}
                             title="Clear recent searches"
                           >
                             <FiX className="text-xs" />
@@ -329,9 +382,14 @@ const Search = () => {
                                 setQuery(search);
                                 handleSearch(search);
                               }}
-                              className="w-full px-2 md:px-3 py-1.5 md:py-2 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/30 rounded-lg md:rounded-xl text-xs md:text-sm text-cyan-100 transition-all duration-200 flex items-center gap-1 md:gap-2 text-left"
+                              className="w-full px-2 md:px-3 py-1.5 md:py-2 border rounded-lg md:rounded-xl text-xs md:text-sm transition-all duration-200 flex items-center gap-1 md:gap-2 text-left"
+                              style={{
+                                backgroundColor: `${COLORS.navy[4]}20`,
+                                borderColor: `${COLORS.navy[4]}30`,
+                                color: COLORS.navy[5]
+                              }}
                             >
-                              <FiSearch className="text-xs flex-shrink-0" />
+                              <FiSearch className="text-xs flex-shrink-0" style={{ color: COLORS.navy[4] }} />
                               <span className="truncate flex-1">{search}</span>
                             </button>
                           ))}
@@ -342,7 +400,7 @@ const Search = () => {
                     {/* Suggestions */}
                     {suggestions.length > 0 && (
                       <div>
-                        <p className="text-cyan-300 text-xs md:text-sm mb-1 md:mb-2 font-medium text-left">Try searching for:</p>
+                        <p className="text-xs md:text-sm mb-1 md:mb-2 font-medium text-left" style={{ color: COLORS.navy[4] }}>Try searching for:</p>
                         <div className="space-y-1 md:space-y-2">
                           {suggestions.map((suggestion, index) => (
                             <button
@@ -351,7 +409,12 @@ const Search = () => {
                                 setQuery(suggestion);
                                 handleSearch(suggestion);
                               }}
-                              className="w-full px-2 md:px-3 py-1.5 md:py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg md:rounded-xl text-xs md:text-sm text-gray-300 hover:text-white transition-all duration-200 text-left"
+                              className="w-full px-2 md:px-3 py-1.5 md:py-2 border rounded-lg md:rounded-xl text-xs md:text-sm transition-all duration-200 text-left"
+                              style={{
+                                backgroundColor: `${COLORS.navy[2]}80`,
+                                borderColor: `${COLORS.navy[4]}20`,
+                                color: COLORS.navy[5]
+                              }}
                             >
                               {suggestion}
                             </button>
@@ -371,8 +434,8 @@ const Search = () => {
             className="mb-6 md:mb-8 px-2"
           >
             <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
-              <FiTrendingUp className="text-cyan-400 text-lg md:text-xl" />
-              <h2 className="text-lg md:text-2xl font-bold text-cyan-100">Popular Legal Topics</h2>
+              <FiTrendingUp className="text-lg md:text-xl" style={{ color: COLORS.navy[4] }} />
+              <h2 className="text-lg md:text-2xl font-bold" style={{ color: COLORS.navy[5] }}>Popular Legal Topics</h2>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3 max-w-6xl mx-auto">
@@ -387,17 +450,30 @@ const Search = () => {
                   }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleSearch(filter.tag)}
-                  className="group relative bg-cyan-500/10 backdrop-blur-lg border border-cyan-400/20 rounded-xl md:rounded-2xl p-2 md:p-3 text-center shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 overflow-hidden"
+                  className="group relative backdrop-blur-lg border rounded-xl md:rounded-2xl p-2 md:p-3 text-center shadow-lg transition-all duration-300 overflow-hidden"
+                  style={{
+                    backgroundColor: `${COLORS.navy[2]}40`,
+                    borderColor: `${COLORS.navy[4]}20`
+                  }}
                 >
                   {/* Background Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div 
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ backgroundColor: `${COLORS.navy[4]}10` }}
+                  />
                   
                   {/* Content */}
                   <div className="relative z-10">
-                    <div className="inline-flex p-1.5 md:p-3 rounded-lg md:rounded-2xl bg-cyan-500/20 border border-cyan-400/30 mb-1.5 md:mb-3 group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300">
+                    <div 
+                      className="inline-flex p-1.5 md:p-3 rounded-lg md:rounded-2xl border mb-1.5 md:mb-3 group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
+                      style={{
+                        backgroundColor: `${COLORS.navy[4]}20`,
+                        borderColor: `${COLORS.navy[4]}30`
+                      }}
+                    >
                       {filter.icon}
                     </div>
-                    <span className="text-cyan-100 group-hover:text-white font-medium text-xs md:text-sm transition-colors duration-300 line-clamp-2">
+                    <span className="font-medium text-xs md:text-sm transition-colors duration-300 line-clamp-2" style={{ color: COLORS.navy[5] }}>
                       {filter.tag}
                     </span>
                   </div>
@@ -431,13 +507,23 @@ const Search = () => {
               <motion.div
                 key={index}
                 whileHover={{ y: isMobile ? -2 : -5 }}
-                className="bg-cyan-500/5 backdrop-blur-lg border border-cyan-400/10 rounded-xl md:rounded-2xl p-4 md:p-6 text-center group hover:border-cyan-400/30 transition-all duration-300"
+                className="backdrop-blur-lg border rounded-xl md:rounded-2xl p-4 md:p-6 text-center group transition-all duration-300"
+                style={{
+                  backgroundColor: `${COLORS.navy[2]}40`,
+                  borderColor: `${COLORS.navy[4]}10`
+                }}
               >
-                <div className="inline-flex p-2 md:p-3 bg-cyan-500/20 rounded-xl md:rounded-2xl border border-cyan-400/30 mb-3 md:mb-4 group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300">
+                <div 
+                  className="inline-flex p-2 md:p-3 rounded-xl md:rounded-2xl border mb-3 md:mb-4 group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
+                  style={{
+                    backgroundColor: `${COLORS.navy[4]}20`,
+                    borderColor: `${COLORS.navy[4]}30`
+                  }}
+                >
                   {feature.icon}
                 </div>
-                <h3 className="text-base md:text-lg font-semibold text-cyan-100 mb-1 md:mb-2">{feature.title}</h3>
-                <p className="text-cyan-200/70 text-xs md:text-sm leading-relaxed">{feature.description}</p>
+                <h3 className="text-base md:text-lg font-semibold mb-1 md:mb-2" style={{ color: COLORS.navy[5] }}>{feature.title}</h3>
+                <p className="text-xs md:text-sm leading-relaxed" style={{ color: `${COLORS.navy[5]}90` }}>{feature.description}</p>
               </motion.div>
             ))}
           </motion.div>

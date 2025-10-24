@@ -25,6 +25,17 @@ import {
   FaTag
 } from "react-icons/fa";
 
+/* Color Constants matching your palette */
+const COLORS = {
+  navy: {
+    1: '#0D1B2A',
+    2: '#1D2D44',
+    3: '#3E5C76',
+    4: '#748CAB',
+    5: '#F0EBD8'
+  }
+};
+
 const LawList = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
@@ -135,7 +146,7 @@ const LawList = () => {
         className="flex flex-col items-center gap-4 mt-8 lg:hidden"
       >
         {/* Results Info */}
-        <div className="text-gray-400 text-sm text-center">
+        <div className="text-sm text-center" style={{ color: COLORS.navy[5] }}>
           Page {state.currentPage} of {state.totalPages}
         </div>
 
@@ -149,16 +160,28 @@ const LawList = () => {
             disabled={state.currentPage === 1}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border transition-all duration-300 ${
               state.currentPage === 1
-                ? "bg-white/5 border-white/10 text-gray-500 cursor-not-allowed"
-                : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                ? "cursor-not-allowed"
+                : "hover:bg-white/20"
             }`}
+            style={{
+              backgroundColor: state.currentPage === 1 ? `${COLORS.navy[2]}80` : `${COLORS.navy[2]}80`,
+              borderColor: state.currentPage === 1 ? `${COLORS.navy[4]}20` : `${COLORS.navy[4]}30`,
+              color: state.currentPage === 1 ? `${COLORS.navy[4]}60` : COLORS.navy[5]
+            }}
           >
             <IoChevronBack className="text-lg" />
             <span className="text-sm">Prev</span>
           </motion.button>
 
           {/* Current Page */}
-          <div className="px-4 py-3 bg-cyan-500/30 border border-cyan-400/50 text-cyan-300 font-semibold rounded-xl min-w-[60px] text-center">
+          <div 
+            className="px-4 py-3 font-semibold rounded-xl min-w-[60px] text-center border"
+            style={{
+              backgroundColor: `${COLORS.navy[4]}30`,
+              borderColor: `${COLORS.navy[4]}50`,
+              color: COLORS.navy[4]
+            }}
+          >
             {state.currentPage}
           </div>
 
@@ -170,9 +193,14 @@ const LawList = () => {
             disabled={state.currentPage === state.totalPages}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border transition-all duration-300 ${
               state.currentPage === state.totalPages
-                ? "bg-white/5 border-white/10 text-gray-500 cursor-not-allowed"
-                : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                ? "cursor-not-allowed"
+                : "hover:bg-white/20"
             }`}
+            style={{
+              backgroundColor: state.currentPage === state.totalPages ? `${COLORS.navy[2]}80` : `${COLORS.navy[2]}80`,
+              borderColor: state.currentPage === state.totalPages ? `${COLORS.navy[4]}20` : `${COLORS.navy[4]}30`,
+              color: state.currentPage === state.totalPages ? `${COLORS.navy[4]}60` : COLORS.navy[5]
+            }}
           >
             <span className="text-sm">Next</span>
             <IoChevronForward className="text-lg" />
@@ -180,7 +208,7 @@ const LawList = () => {
         </div>
 
         {/* Total Results */}
-        <div className="text-gray-400 text-xs text-center">
+        <div className="text-xs text-center" style={{ color: COLORS.navy[4] }}>
           {state.totalCount} total results
         </div>
       </motion.div>
@@ -212,7 +240,7 @@ const LawList = () => {
         className="hidden lg:flex flex-col sm:flex-row justify-between items-center gap-6 mt-12"
       >
         {/* Results Info */}
-        <div className="text-gray-400 text-sm">
+        <div className="text-sm" style={{ color: COLORS.navy[5] }}>
           Showing {((state.currentPage - 1) * 9) + 1} - {Math.min(state.currentPage * 9, state.totalCount)} of {state.totalCount} results
         </div>
 
@@ -226,9 +254,14 @@ const LawList = () => {
             disabled={state.currentPage === 1}
             className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all duration-300 ${
               state.currentPage === 1
-                ? "bg-white/5 border-white/10 text-gray-500 cursor-not-allowed"
-                : "bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/30"
+                ? "cursor-not-allowed"
+                : "hover:bg-white/20"
             }`}
+            style={{
+              backgroundColor: state.currentPage === 1 ? `${COLORS.navy[2]}80` : `${COLORS.navy[2]}80`,
+              borderColor: state.currentPage === 1 ? `${COLORS.navy[4]}20` : `${COLORS.navy[4]}30`,
+              color: state.currentPage === 1 ? `${COLORS.navy[4]}60` : COLORS.navy[5]
+            }}
           >
             <IoChevronBack className="text-lg" />
             Previous
@@ -244,9 +277,23 @@ const LawList = () => {
                 onClick={() => handlePageChange(page)}
                 className={`px-4 py-3 rounded-xl border transition-all duration-300 min-w-[48px] ${
                   page === state.currentPage
-                    ? "bg-cyan-500/30 border-cyan-400/50 text-cyan-300 font-semibold shadow-lg shadow-cyan-500/20"
-                    : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                    ? "font-semibold shadow-lg"
+                    : "hover:bg-white/20"
                 }`}
+                style={{
+                  backgroundColor: page === state.currentPage 
+                    ? `${COLORS.navy[4]}30` 
+                    : `${COLORS.navy[2]}80`,
+                  borderColor: page === state.currentPage 
+                    ? `${COLORS.navy[4]}50` 
+                    : `${COLORS.navy[4]}30`,
+                  color: page === state.currentPage 
+                    ? COLORS.navy[4] 
+                    : COLORS.navy[5],
+                  boxShadow: page === state.currentPage 
+                    ? `0 8px 32px ${COLORS.navy[4]}20` 
+                    : 'none'
+                }}
               >
                 {page}
               </motion.button>
@@ -261,9 +308,14 @@ const LawList = () => {
             disabled={state.currentPage === state.totalPages}
             className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all duration-300 ${
               state.currentPage === state.totalPages
-                ? "bg-white/5 border-white/10 text-gray-500 cursor-not-allowed"
-                : "bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/30"
+                ? "cursor-not-allowed"
+                : "hover:bg-white/20"
             }`}
+            style={{
+              backgroundColor: state.currentPage === state.totalPages ? `${COLORS.navy[2]}80` : `${COLORS.navy[2]}80`,
+              borderColor: state.currentPage === state.totalPages ? `${COLORS.navy[4]}20` : `${COLORS.navy[4]}30`,
+              color: state.currentPage === state.totalPages ? `${COLORS.navy[4]}60` : COLORS.navy[5]
+            }}
           >
             Next
             <IoChevronForward className="text-lg" />
@@ -274,39 +326,57 @@ const LawList = () => {
   };
 
   return (
-    <div className="min-h-screen md:pt-[5%] pt-[20%] text-white relative overflow-hidden">
+    <div className="min-h-screen md:pt-[5%] pt-[20%] relative overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-72 h-72 sm:w-96 sm:h-96 bg-cyan-500/10 rounded-full blur-3xl -top-10 -left-10 sm:-top-20 sm:-left-20 animate-pulse-slow" />
-        <div className="absolute w-64 h-64 sm:w-80 sm:h-80 bg-blue-400/10 rounded-full blur-3xl top-1/3 -right-10 sm:top-1/2 sm:-right-20 animate-pulse-slower" />
-        <div className="absolute w-56 h-56 sm:w-72 sm:h-72 bg-teal-400/10 rounded-full blur-3xl bottom-10 left-1/4 sm:bottom-20 animate-pulse-slow" />
-        <div className="absolute w-48 h-48 sm:w-64 sm:h-64 bg-cyan-400/5 rounded-full blur-3xl top-1/4 left-1/2 sm:top-1/3 animate-pulse-slow" />
+        <div 
+          className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full blur-3xl -top-10 -left-10 sm:-top-20 sm:-left-20 animate-pulse-slow"
+          style={{ backgroundColor: `${COLORS.navy[3]}10` }}
+        />
+        <div 
+          className="absolute w-64 h-64 sm:w-80 sm:h-80 rounded-full blur-3xl top-1/3 -right-10 sm:top-1/2 sm:-right-20 animate-pulse-slower"
+          style={{ backgroundColor: `${COLORS.navy[4]}10` }}
+        />
+        <div 
+          className="absolute w-56 h-56 sm:w-72 sm:h-72 rounded-full blur-3xl bottom-10 left-1/4 sm:bottom-20 animate-pulse-slow"
+          style={{ backgroundColor: `${COLORS.navy[2]}20` }}
+        />
         
         {/* Enhanced Grid Pattern */}
         <div className="absolute inset-0 opacity-[0.03]">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px] sm:bg-[size:60px_60px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(240,235,216,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(240,235,216,0.1)_1px,transparent_1px)] bg-[size:40px_40px] sm:bg-[size:60px_60px]" />
         </div>
       </div>
 
       {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-[#051c1f]/80 backdrop-blur-xl border-b border-white/10">
+      <div 
+        className="lg:hidden fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b"
+        style={{ 
+          backgroundColor: `${COLORS.navy[1]}E6`,
+          borderColor: `${COLORS.navy[4]}20`
+        }}
+      >
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate(-1)}
-              className="flex items-center gap-2 p-2 text-white"
+              className="flex items-center gap-2 p-2"
+              style={{ color: COLORS.navy[5] }}
             >
               <IoArrowBack className="text-xl" />
             </motion.button>
             
             <div className="flex-1 text-center">
-              <h1 className="text-lg font-bold bg-gradient-to-r from-cyan-200 to-gray-200 text-transparent bg-clip-text line-clamp-1">
+              <h1 
+                className="text-lg font-bold line-clamp-1"
+                style={{ color: COLORS.navy[5] }}
+              >
                 {query ? `"${query}"` : "Search Results"}
               </h1>
               {state.totalCount > 0 && (
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs mt-1" style={{ color: COLORS.navy[4] }}>
                   {state.totalCount} results
                 </p>
               )}
@@ -316,7 +386,8 @@ const LawList = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-white"
+              className="p-2"
+              style={{ color: COLORS.navy[5] }}
             >
               {isMobileMenuOpen ? <IoClose className="text-xl" /> : <IoFilter className="text-xl" />}
             </motion.button>
@@ -332,7 +403,8 @@ const LawList = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+              className="fixed inset-0 backdrop-blur-sm z-40 lg:hidden"
+              style={{ backgroundColor: `${COLORS.navy[1]}CC` }}
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
@@ -340,14 +412,19 @@ const LawList = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: "spring", damping: 30 }}
-              className="fixed top-0 right-0 bottom-0 w-80 bg-[#08292e] border-l border-white/10 z-50 lg:hidden overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 w-80 border-l z-50 lg:hidden overflow-y-auto backdrop-blur-xl"
+              style={{ 
+                backgroundColor: `${COLORS.navy[2]}F0`,
+                borderColor: `${COLORS.navy[4]}20`
+              }}
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-cyan-300">Filter & Sort</h2>
+                  <h2 className="text-xl font-bold" style={{ color: COLORS.navy[4] }}>Filter & Sort</h2>
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-2 text-gray-400 hover:text-white"
+                    className="p-2"
+                    style={{ color: COLORS.navy[5] }}
                   >
                     <IoClose className="text-xl" />
                   </button>
@@ -355,7 +432,7 @@ const LawList = () => {
                 
                 {/* Sort Options */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-300">Sort By</h3>
+                  <h3 className="text-lg font-semibold" style={{ color: COLORS.navy[5] }}>Sort By</h3>
                   {["relevance", "alphabetical", "recent"].map((option) => (
                     <button
                       key={option}
@@ -363,16 +440,22 @@ const LawList = () => {
                         setSortBy(option);
                         setIsMobileMenuOpen(false);
                       }}
-                      className={`w-full text-left p-3 rounded-xl transition-all duration-200 ${
+                      className={`w-full text-left p-3 rounded-xl transition-all duration-200 border ${
                         sortBy === option
-                          ? "bg-cyan-500/20 border border-cyan-400/30 text-cyan-300"
-                          : "bg-white/5 border border-white/10 text-white hover:bg-white/10"
+                          ? "border text-cyan-300"
+                          : "border text-white hover:bg-white/10"
                       }`}
+                      style={{
+                        backgroundColor: sortBy === option ? `${COLORS.navy[4]}20` : `${COLORS.navy[2]}80`,
+                        borderColor: sortBy === option ? `${COLORS.navy[4]}30` : `${COLORS.navy[4]}20`
+                      }}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="capitalize">{option}</span>
+                        <span className="capitalize" style={{ color: sortBy === option ? COLORS.navy[4] : COLORS.navy[5] }}>
+                          {option}
+                        </span>
                         {sortBy === option && (
-                          <div className="w-2 h-2 bg-cyan-400 rounded-full" />
+                          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS.navy[4] }} />
                         )}
                       </div>
                     </button>
@@ -381,19 +464,29 @@ const LawList = () => {
 
                 {/* Quick Actions */}
                 <div className="mt-8 space-y-3">
-                  <h3 className="text-lg font-semibold text-gray-300">Quick Actions</h3>
+                  <h3 className="text-lg font-semibold" style={{ color: COLORS.navy[5] }}>Quick Actions</h3>
                   <button
                     onClick={() => navigate("/search")}
-                    className="w-full flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-colors duration-200"
+                    className="w-full flex items-center gap-3 p-3 rounded-xl border transition-colors duration-200"
+                    style={{
+                      backgroundColor: `${COLORS.navy[2]}80`,
+                      borderColor: `${COLORS.navy[4]}20`,
+                      color: COLORS.navy[5]
+                    }}
                   >
-                    <IoSearch className="text-cyan-400" />
+                    <IoSearch style={{ color: COLORS.navy[4] }} />
                     <span>New Search</span>
                   </button>
                   <button
                     onClick={() => navigate("/category")}
-                    className="w-full flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-colors duration-200"
+                    className="w-full flex items-center gap-3 p-3 rounded-xl border transition-colors duration-200"
+                    style={{
+                      backgroundColor: `${COLORS.navy[2]}80`,
+                      borderColor: `${COLORS.navy[4]}20`,
+                      color: COLORS.navy[5]
+                    }}
                   >
-                    <IoBook className="text-cyan-400" />
+                    <IoBook style={{ color: COLORS.navy[4] }} />
                     <span>Browse Categories</span>
                   </button>
                 </div>
@@ -419,24 +512,37 @@ const LawList = () => {
                 whileHover={{ scale: 1.05, x: -5 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate(-1)}
-                className="group flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/20 text-white font-semibold hover:bg-white/20 rounded-2xl px-6 py-4 shadow-2xl transition-all duration-300"
+                className="group flex items-center gap-3 backdrop-blur-xl border font-semibold rounded-2xl px-6 py-4 shadow-2xl transition-all duration-300"
+                style={{
+                  backgroundColor: `${COLORS.navy[2]}80`,
+                  borderColor: `${COLORS.navy[4]}30`,
+                  color: COLORS.navy[5]
+                }}
               >
                 <IoArrowBack className="text-xl group-hover:-translate-x-1 transition-transform" />
                 Back
               </motion.button>
 
               <div className="max-w-2xl">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-cyan-200 via-cyan-100 to-gray-200 text-transparent bg-clip-text leading-tight">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight" style={{ color: COLORS.navy[5] }}>
                   Search Results
                 </h1>
                 <div className="flex flex-wrap items-center gap-4 mt-4">
-                  <p className="text-gray-300 flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-4 py-2">
-                    <IoSearch className="text-cyan-400 text-lg" />
+                  <p className="flex items-center gap-2 backdrop-blur-xl border rounded-full px-4 py-2" style={{
+                    backgroundColor: `${COLORS.navy[2]}80`,
+                    borderColor: `${COLORS.navy[4]}20`,
+                    color: COLORS.navy[5]
+                  }}>
+                    <IoSearch style={{ color: COLORS.navy[4] }} className="text-lg" />
                     <span className="font-medium">"{query}"</span>
                   </p>
                   {state.totalCount > 0 && (
-                    <div className="flex items-center gap-4 text-sm text-gray-400">
-                      <span className="bg-cyan-500/20 border border-cyan-400/30 rounded-full px-3 py-1 text-cyan-300">
+                    <div className="flex items-center gap-4 text-sm" style={{ color: COLORS.navy[4] }}>
+                      <span className="rounded-full px-3 py-1 border" style={{
+                        backgroundColor: `${COLORS.navy[4]}20`,
+                        borderColor: `${COLORS.navy[4]}30`,
+                        color: COLORS.navy[4]
+                      }}>
                         {state.totalCount} results
                       </span>
                       <span>Page {state.currentPage} of {state.totalPages}</span>
@@ -458,13 +564,18 @@ const LawList = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="appearance-none bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl pl-4 pr-10 py-3 text-white focus:outline-none focus:border-cyan-400 transition-colors"
+                    className="appearance-none backdrop-blur-xl border rounded-xl pl-4 pr-10 py-3 focus:outline-none transition-colors"
+                    style={{
+                      backgroundColor: `${COLORS.navy[2]}80`,
+                      borderColor: `${COLORS.navy[4]}30`,
+                      color: COLORS.navy[5]
+                    }}
                   >
                     <option value="relevance">Sort by Relevance</option>
                     <option value="alphabetical">Sort A-Z</option>
                     <option value="recent">Most Recent</option>
                   </select>
-                  <IoFilter className="absolute right-3 top-1/2 transform -translate-y-1/2 text-cyan-400" />
+                  <IoFilter className="absolute right-3 top-1/2 transform -translate-y-1/2" style={{ color: COLORS.navy[4] }} />
                 </div>
               </motion.div>
             )}
@@ -482,7 +593,7 @@ const LawList = () => {
             >
               <div className="text-center">
                 <Loader />
-                <p className="text-gray-400 mt-4 text-base lg:text-lg">Searching through legal database...</p>
+                <p className="mt-4 text-base lg:text-lg" style={{ color: COLORS.navy[5] }}>Searching through legal database...</p>
               </div>
             </motion.div>
           )}
@@ -498,13 +609,16 @@ const LawList = () => {
               className="text-center py-16 lg:py-20 px-4"
             >
               <div className="max-w-md mx-auto">
-                <div className="w-16 h-16 lg:w-20 lg:h-20 bg-red-500/20 rounded-2xl border border-red-400/30 flex items-center justify-center mx-auto mb-6">
-                  <IoAlertCircle className="text-2xl lg:text-3xl text-red-400" />
+                <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl border flex items-center justify-center mx-auto mb-6" style={{
+                  backgroundColor: `${COLORS.navy[4]}20`,
+                  borderColor: `${COLORS.navy[4]}30`
+                }}>
+                  <IoAlertCircle className="text-2xl lg:text-3xl" style={{ color: COLORS.navy[4] }} />
                 </div>
-                <h3 className="text-xl lg:text-2xl font-bold text-gray-300 mb-3">
+                <h3 className="text-xl lg:text-2xl font-bold mb-3" style={{ color: COLORS.navy[5] }}>
                   Search Failed
                 </h3>
-                <p className="text-gray-400 mb-6 lg:mb-8 leading-relaxed text-sm lg:text-base">
+                <p className="mb-6 lg:mb-8 leading-relaxed text-sm lg:text-base" style={{ color: COLORS.navy[5] }}>
                   {state.error}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -512,7 +626,12 @@ const LawList = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => navigate("/search")}
-                    className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 rounded-xl hover:bg-cyan-500/30 transition-all duration-300 text-sm lg:text-base"
+                    className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3 border rounded-xl transition-all duration-300 text-sm lg:text-base"
+                    style={{
+                      backgroundColor: `${COLORS.navy[4]}20`,
+                      borderColor: `${COLORS.navy[4]}30`,
+                      color: COLORS.navy[4]
+                    }}
                   >
                     <IoSearch className="text-lg" />
                     New Search
@@ -521,7 +640,12 @@ const LawList = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => fetchLaws(1)}
-                    className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3 bg-white/10 border border-white/20 text-gray-300 rounded-xl hover:bg-white/20 transition-all duration-300 text-sm lg:text-base"
+                    className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3 border rounded-xl transition-all duration-300 text-sm lg:text-base"
+                    style={{
+                      backgroundColor: `${COLORS.navy[2]}80`,
+                      borderColor: `${COLORS.navy[4]}30`,
+                      color: COLORS.navy[5]
+                    }}
                   >
                     <IoArrowBack className="text-lg" />
                     Try Again
@@ -550,14 +674,17 @@ const LawList = () => {
                   className="text-center py-16 lg:py-24 px-4"
                 >
                   <div className="max-w-lg mx-auto">
-                    <div className="w-16 h-16 lg:w-24 lg:h-24 bg-white/5 rounded-2xl lg:rounded-3xl border border-white/10 flex items-center justify-center mx-auto mb-6 lg:mb-8">
-                      <IoSearch className="text-2xl lg:text-4xl text-gray-400" />
+                    <div className="w-16 h-16 lg:w-24 lg:h-24 rounded-2xl lg:rounded-3xl border flex items-center justify-center mx-auto mb-6 lg:mb-8" style={{
+                      backgroundColor: `${COLORS.navy[2]}80`,
+                      borderColor: `${COLORS.navy[4]}20`
+                    }}>
+                      <IoSearch className="text-2xl lg:text-4xl" style={{ color: COLORS.navy[4] }} />
                     </div>
-                    <h3 className="text-xl lg:text-3xl font-bold text-gray-300 mb-4">
+                    <h3 className="text-xl lg:text-3xl font-bold mb-4" style={{ color: COLORS.navy[5] }}>
                       No Results Found
                     </h3>
-                    <p className="text-gray-400 mb-6 lg:mb-8 text-sm lg:text-lg leading-relaxed">
-                      No laws found matching <span className="text-cyan-400 font-semibold">"{query}"</span>. 
+                    <p className="mb-6 lg:mb-8 text-sm lg:text-lg leading-relaxed" style={{ color: COLORS.navy[5] }}>
+                      No laws found matching <span className="font-semibold" style={{ color: COLORS.navy[4] }}>"{query}"</span>. 
                       Try different keywords or browse our legal categories.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -565,7 +692,12 @@ const LawList = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => navigate("/search")}
-                        className="flex items-center justify-center gap-2 px-6 lg:px-8 py-3 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 rounded-xl hover:bg-cyan-500/30 transition-all duration-300 font-semibold text-sm lg:text-base"
+                        className="flex items-center justify-center gap-2 px-6 lg:px-8 py-3 border rounded-xl transition-all duration-300 font-semibold text-sm lg:text-base"
+                        style={{
+                          backgroundColor: `${COLORS.navy[4]}20`,
+                          borderColor: `${COLORS.navy[4]}30`,
+                          color: COLORS.navy[4]
+                        }}
                       >
                         <IoSearch className="text-lg" />
                         New Search
@@ -574,7 +706,12 @@ const LawList = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => navigate("/category")}
-                        className="flex items-center justify-center gap-2 px-6 lg:px-8 py-3 bg-white/10 border border-white/20 text-gray-300 rounded-xl hover:bg-white/20 transition-all duration-300 font-semibold text-sm lg:text-base"
+                        className="flex items-center justify-center gap-2 px-6 lg:px-8 py-3 border rounded-xl transition-all duration-300 font-semibold text-sm lg:text-base"
+                        style={{
+                          backgroundColor: `${COLORS.navy[2]}80`,
+                          borderColor: `${COLORS.navy[4]}30`,
+                          color: COLORS.navy[5]
+                        }}
                       >
                         <IoBook className="text-lg" />
                         Browse Categories
@@ -600,24 +737,37 @@ const LawList = () => {
                             scale: 1.01,
                             transition: { duration: 0.3 }
                           }}
-                          className="group relative bg-gradient-to-br from-white/5 to-white/3 backdrop-blur-2xl border border-white/10 rounded-2xl lg:rounded-3xl p-4 lg:p-6 shadow-xl lg:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 overflow-hidden"
+                          className="group relative backdrop-blur-2xl border rounded-2xl lg:rounded-3xl p-4 lg:p-6 shadow-xl lg:shadow-2xl transition-all duration-500 overflow-hidden"
+                          style={{
+                            backgroundColor: `${COLORS.navy[2]}40`,
+                            borderColor: `${COLORS.navy[4]}20`
+                          }}
                         >
                           {/* Enhanced Background Effect */}
-                          <div className="absolute top-0 right-0 w-24 h-24 lg:w-32 lg:h-32 bg-cyan-500/10 rounded-full -translate-y-12 translate-x-12 group-hover:scale-150 group-hover:opacity-30 transition-all duration-700" />
+                          <div 
+                            className="absolute top-0 right-0 w-24 h-24 lg:w-32 lg:h-32 rounded-full -translate-y-12 translate-x-12 group-hover:scale-150 group-hover:opacity-30 transition-all duration-700"
+                            style={{ backgroundColor: `${COLORS.navy[4]}10` }}
+                          />
                           
                           {/* Content */}
                           <div className="relative z-10 h-full flex flex-col">
                             {/* Header */}
                             <div className="flex items-start gap-3 lg:gap-4 mb-3 lg:mb-4">
-                              <div className="p-2 lg:p-3 bg-cyan-500/20 rounded-xl lg:rounded-2xl border border-cyan-400/30 flex-shrink-0 group-hover:bg-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300">
-                                <IoScale className="text-cyan-400 text-lg lg:text-xl" />
+                              <div 
+                                className="p-2 lg:p-3 rounded-xl lg:rounded-2xl border flex-shrink-0 group-hover:border-cyan-400/50 transition-all duration-300"
+                                style={{
+                                  backgroundColor: `${COLORS.navy[4]}20`,
+                                  borderColor: `${COLORS.navy[4]}30`
+                                }}
+                              >
+                                <IoScale className="text-lg lg:text-xl" style={{ color: COLORS.navy[4] }} />
                               </div>
                               <div className="flex-1 min-w-0">
-                                <h2 className="text-lg lg:text-xl font-bold text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300 line-clamp-2 mb-1 lg:mb-2">
+                                <h2 className="text-lg lg:text-xl font-bold group-hover:text-cyan-200 transition-colors duration-300 line-clamp-2 mb-1 lg:mb-2" style={{ color: COLORS.navy[4] }}>
                                   {law.section || law.legalConcept || "Unnamed Law"}
                                 </h2>
                                 {law.lawTitle && law.lawTitle !== law.section && (
-                                  <p className="text-gray-400 text-xs lg:text-sm line-clamp-1">
+                                  <p className="text-xs lg:text-sm line-clamp-1" style={{ color: COLORS.navy[5] }}>
                                     {law.lawTitle}
                                   </p>
                                 )}
@@ -625,26 +775,38 @@ const LawList = () => {
                             </div>
 
                             {/* Description */}
-                            <p className="text-gray-300 text-xs lg:text-sm leading-relaxed mb-4 lg:mb-6 line-clamp-3 flex-1">
+                            <p className="text-xs lg:text-sm leading-relaxed mb-4 lg:mb-6 line-clamp-3 flex-1" style={{ color: COLORS.navy[5] }}>
                               {law.description || law.sectionOverview || "No description available."}
                             </p>
 
                             {/* Metadata */}
                             <div className="flex flex-wrap gap-1 lg:gap-2 mb-3 lg:mb-4">
                               {law.category && (
-                                <span className="inline-flex items-center gap-1 text-xs text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 lg:px-3 py-1">
+                                <span className="inline-flex items-center gap-1 text-xs rounded-full px-2 lg:px-3 py-1 border" style={{
+                                  color: COLORS.navy[4],
+                                  backgroundColor: `${COLORS.navy[4]}10`,
+                                  borderColor: `${COLORS.navy[4]}20`
+                                }}>
                                   <FaTag className="text-xs" />
                                   {law.category}
                                 </span>
                               )}
                               {law.jurisdiction && (
-                                <span className="inline-flex items-center gap-1 text-xs text-cyan-300 bg-cyan-500/10 border border-cyan-400/20 rounded-full px-2 lg:px-3 py-1">
+                                <span className="inline-flex items-center gap-1 text-xs rounded-full px-2 lg:px-3 py-1 border" style={{
+                                  color: COLORS.navy[4],
+                                  backgroundColor: `${COLORS.navy[4]}10`,
+                                  borderColor: `${COLORS.navy[4]}20`
+                                }}>
                                   <FaMapMarkerAlt className="text-xs" />
                                   {law.jurisdiction}
                                 </span>
                               )}
                               {law.createdAt && (
-                                <span className="inline-flex items-center gap-1 text-xs text-gray-400 bg-white/5 border border-white/10 rounded-full px-2 lg:px-3 py-1">
+                                <span className="inline-flex items-center gap-1 text-xs rounded-full px-2 lg:px-3 py-1 border" style={{
+                                  color: COLORS.navy[5],
+                                  backgroundColor: `${COLORS.navy[2]}80`,
+                                  borderColor: `${COLORS.navy[4]}20`
+                                }}>
                                   <IoTime className="text-xs" />
                                   {formatDate(law.createdAt)}
                                 </span>
@@ -652,18 +814,26 @@ const LawList = () => {
                             </div>
 
                             {law?.sabCategory && (
-                              <div className="flex items-center gap-2 bg-purple-500/10 border border-purple-400/20 rounded-full px-2 lg:px-3 py-1 lg:py-2 mb-3 lg:mb-4">
-                                <FaTag className="text-xs text-purple-300" />
-                                <span className="text-xs text-purple-300 font-medium">{law.sabCategory}</span>
+                              <div className="flex items-center gap-2 rounded-full px-2 lg:px-3 py-1 lg:py-2 mb-3 lg:mb-4 border" style={{
+                                backgroundColor: `${COLORS.navy[4]}10`,
+                                borderColor: `${COLORS.navy[4]}20`
+                              }}>
+                                <FaTag className="text-xs" style={{ color: COLORS.navy[4] }} />
+                                <span className="text-xs font-medium" style={{ color: COLORS.navy[4] }}>{law.sabCategory}</span>
                               </div>
                             )}
 
                             {/* Action */}
-                            <div className="flex justify-between items-center pt-3 lg:pt-4 border-t border-white/10 mt-auto">
+                            <div className="flex justify-between items-center pt-3 lg:pt-4 border-t mt-auto" style={{ borderColor: `${COLORS.navy[4]}20` }}>
                               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                 <Link
                                   to={`/law/${law._id}`}
-                                  className="group flex items-center gap-2 px-3 lg:px-5 py-2 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 rounded-xl hover:bg-cyan-500/30 transition-all duration-300 font-medium text-sm lg:text-base"
+                                  className="group flex items-center gap-2 px-3 lg:px-5 py-2 border rounded-xl hover:bg-cyan-500/30 transition-all duration-300 font-medium text-sm lg:text-base"
+                                  style={{
+                                    backgroundColor: `${COLORS.navy[4]}20`,
+                                    borderColor: `${COLORS.navy[4]}30`,
+                                    color: COLORS.navy[4]
+                                  }}
                                 >
                                   View Details
                                   <IoArrowForward className="text-sm lg:text-lg group-hover:translate-x-1 transition-transform" />
@@ -671,8 +841,8 @@ const LawList = () => {
                               </motion.div>
                               
                               {law.score && (
-                                <div className="text-gray-400 text-xs flex items-center gap-1">
-                                  <IoStarOutline className="text-amber-400" />
+                                <div className="text-xs flex items-center gap-1" style={{ color: COLORS.navy[5] }}>
+                                  <IoStarOutline style={{ color: COLORS.navy[4] }} />
                                   {(law.score * 100).toFixed(0)}% match
                                 </div>
                               )}
@@ -680,7 +850,10 @@ const LawList = () => {
                           </div>
 
                           {/* Enhanced Hover Effect */}
-                          <div className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 group-hover:w-full transition-all duration-500" />
+                          <div 
+                            className="absolute bottom-0 left-0 w-0 h-1 group-hover:w-full transition-all duration-500"
+                            style={{ backgroundColor: COLORS.navy[4] }}
+                          />
                         </motion.div>
                       ))}
                     </AnimatePresence>

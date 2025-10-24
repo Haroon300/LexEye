@@ -13,7 +13,23 @@ import {
   FiUser,
   FiSend,
   FiMapPin,
+  FiShield,
+  FiBookmark,
+  FiFolder
 } from "react-icons/fi";
+
+import logo from '/logo-2.png';
+
+/* Color Constants matching your palette */
+const COLORS = {
+  navy: {
+    1: '#0D1B2A',
+    2: '#1D2D44',
+    3: '#3E5C76',
+    4: '#748CAB',
+    5: '#F0EBD8'
+  }
+};
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -49,34 +65,56 @@ const Footer = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-y border-amber-400/30 py-4 px-6 text-center relative overflow-hidden"
+        className="w-full border-y py-4 px-6 text-center relative overflow-hidden backdrop-blur-sm"
+        style={{
+          backgroundColor: `${COLORS.navy[2]}E6`,
+          borderColor: `${COLORS.navy[4]}30`
+        }}
       >
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(251,191,36,0.1)_50%,transparent_75%)] bg-[size:10px_10px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(116,140,171,0.1)_50%,transparent_75%)] bg-[size:10px_10px]" />
         </div>
         
         <div className="max-w-4xl mx-auto flex items-center justify-center gap-3 text-sm relative z-10">
-          <p className="text-amber-200 font-medium">
-            <span className="font-bold text-amber-300">IMPORTANT:</span> LexEye provides informational guidance only. 
-            For specific legal advice, always consult a{" "}
-            <span className="font-bold text-amber-300">licensed legal professional</span>.
+          <div 
+            className="flex-shrink-0 p-2 rounded-lg"
+            style={{
+              backgroundColor: `${COLORS.navy[4]}20`,
+              border: `1px solid ${COLORS.navy[4]}30`
+            }}
+          >
+            <FiShield className="text-lg" style={{ color: COLORS.navy[4] }} />
+          </div>
+          <p className="font-medium" style={{ color: COLORS.navy[5] }}>
+            <span className="font-bold" style={{ color: COLORS.navy[4] }}>Important:</span> LexEye provides informational guidance only. 
+            For specific legal advice, consult a{" "}
+            <span className="font-bold" style={{ color: COLORS.navy[4] }}>licensed legal professional</span>.
           </p>
         </div>
       </motion.div>
 
       {/* Main Footer */}
-      <footer className="bg-gradient-to-br from-[#051c1f] to-[#08292e] text-gray-300 relative overflow-hidden">
+      <footer className="relative overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:60px_60px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(240,235,216,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(240,235,216,0.1)_1px,transparent_1px)] bg-[size:60px_60px]" />
         </div>
 
         {/* Floating Elements */}
         <div className="absolute inset-0">
-          <div className="absolute w-32 h-32 bg-cyan-500/5 rounded-full blur-xl -top-8 -left-8" />
-          <div className="absolute w-24 h-24 bg-blue-500/5 rounded-full blur-xl bottom-16 right-16" />
-          <div className="absolute w-20 h-20 bg-teal-500/5 rounded-full blur-xl top-1/2 left-1/3" />
+          <div 
+            className="absolute w-32 h-32 rounded-full blur-xl -top-8 -left-8"
+            style={{ backgroundColor: `${COLORS.navy[3]}10` }}
+          />
+          <div 
+            className="absolute w-24 h-24 rounded-full blur-xl bottom-16 right-16"
+            style={{ backgroundColor: `${COLORS.navy[4]}10` }}
+          />
+          <div 
+            className="absolute w-20 h-20 rounded-full blur-xl top-1/2 left-1/3"
+            style={{ backgroundColor: `${COLORS.navy[2]}20` }}
+          />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto py-16 px-6 lg:px-8">
@@ -92,30 +130,48 @@ const Footer = () => {
               className="lg:col-span-1"
               variants={itemVariants}
             >
-              <div className="flex items-center gap-3 relative group">
-                        <div className="relative w-14 h-14 sm:w-12 sm:h-12">
-                          <img
-                            src="/logo-2.png"
-                            className="w-full h-full"
-                            alt="LexEye"
-                          />
-                        </div>
-                      
-                      <div className="flex flex-col">
-                        <h1 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-white via-cyan-100 to-white text-transparent bg-clip-text tracking-tight">
-                          Lex<span className="text-cyan-400 drop-shadow-lg">Eye</span>
-                        </h1>
-                        <motion.p 
-                          className="text-cyan-400/80 text-[10px] font-medium tracking-wider"
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.5 }}
-                        >
-                          LEGAL INTELLIGENCE
-                        </motion.p>
-                      </div>
-                    </div>
-              <p className="text-gray-400 leading-relaxed mb-6 text-sm">
+              <div className="flex items-center gap-3 mb-6">
+                <motion.div 
+                  className="relative w-12 h-12"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <div 
+                    className="absolute inset-0 rounded-2xl border backdrop-blur-xl"
+                    style={{
+                      backgroundColor: `${COLORS.navy[2]}80`,
+                      borderColor: `${COLORS.navy[4]}30`
+                    }}
+                  />
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <img
+                      className="text-2xl" 
+                      src={logo}
+                      alt="LexEye logo"
+                    />
+                  </div>
+                </motion.div>
+                
+                <div className="flex flex-col">
+                  <h1 
+                    className="text-2xl font-black tracking-tight"
+                    style={{ color: COLORS.navy[5] }}
+                  >
+                    Lex<span style={{ color: COLORS.navy[4] }}>Eye</span>
+                  </h1>
+                  <p 
+                    className="text-xs font-medium tracking-wider"
+                    style={{ color: COLORS.navy[4] }}
+                  >
+                    LEGAL INTELLIGENCE
+                  </p>
+                </div>
+              </div>
+              
+              <p 
+                className="leading-relaxed mb-6 text-sm font-light"
+                style={{ color: COLORS.navy[5] }}
+              >
                 Your clarity engine for legal knowledge. Explore categories, search laws, 
                 and bookmark what matters most — all designed for modern legal research.
               </p>
@@ -126,19 +182,16 @@ const Footer = () => {
                   { 
                     icon: FiMail, 
                     href: "mailto:contact.lexeye78@gmail.com", 
-                    color: "hover:bg-cyan-500/20 hover:border-cyan-400/30",
                     tooltip: "Email Us"
                   },
                   { 
                     icon: FiGithub, 
                     href: "#", 
-                    color: "hover:bg-purple-500/20 hover:border-purple-400/30",
                     tooltip: "GitHub"
                   },
                   { 
                     icon: FiTwitter, 
                     href: "#", 
-                    color: "hover:bg-blue-500/20 hover:border-blue-400/30",
                     tooltip: "Twitter"
                   },
                 ].map((social, index) => (
@@ -147,12 +200,24 @@ const Footer = () => {
                     href={social.href}
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`p-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl text-gray-400 ${social.color} transition-all duration-300 group relative`}
+                    className="p-3 rounded-xl border transition-all duration-300 group relative backdrop-blur-xl"
+                    style={{
+                      backgroundColor: `${COLORS.navy[2]}80`,
+                      borderColor: `${COLORS.navy[4]}30`,
+                      color: COLORS.navy[5]
+                    }}
                     title={social.tooltip}
                   >
                     <social.icon className="text-lg group-hover:scale-110 transition-transform" />
                     {/* Tooltip */}
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                    <div 
+                      className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap backdrop-blur-xl border"
+                      style={{
+                        backgroundColor: `${COLORS.navy[2]}F0`,
+                        borderColor: `${COLORS.navy[4]}30`,
+                        color: COLORS.navy[5]
+                      }}
+                    >
                       {social.tooltip}
                     </div>
                   </motion.a>
@@ -165,25 +230,34 @@ const Footer = () => {
               variants={itemVariants}
               className="lg:col-span-1"
             >
-              <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-                <FiHome className="text-cyan-400" />
+              <h3 
+                className="text-lg font-semibold mb-6 flex items-center gap-2"
+                style={{ color: COLORS.navy[5] }}
+              >
+                <FiHome style={{ color: COLORS.navy[4] }} />
                 Quick Navigation
               </h3>
               <ul className="space-y-3">
                 {[
                   { to: "/", label: "Home", icon: FiHome },
                   { to: "/search", label: "Search Laws", icon: FiHelpCircle },
-                  { to: "/category", label: "Categories", icon: FiBook },
+                  { to: "/category", label: "Categories", icon: FiFolder },
                   { to: "/glossary", label: "Legal Glossary", icon: FiBook },
-                  { to: "/bookmarks", label: "My Bookmarks", icon: FiUser }
+                  { to: "/bookmarks", label: "My Bookmarks", icon: FiBookmark }
                 ].map((link, index) => (
                   <motion.li key={index} whileHover={{ x: 5 }}>
                     <Link
                       to={link.to}
-                      className="flex items-center gap-3 text-gray-400 hover:text-cyan-400 transition-all duration-300 group py-2"
+                      className="flex items-center gap-3 transition-all duration-300 group py-2"
+                      style={{ color: COLORS.navy[5] }}
                     >
-                      <link.icon className="text-gray-500 group-hover:text-cyan-400 transition-colors text-sm" />
-                      {link.label}
+                      <link.icon 
+                        className="text-sm transition-colors group-hover:scale-110" 
+                        style={{ color: `${COLORS.navy[5]}80` }}
+                      />
+                      <span className="font-light group-hover:font-normal">
+                        {link.label}
+                      </span>
                     </Link>
                   </motion.li>
                 ))}
@@ -195,8 +269,11 @@ const Footer = () => {
               variants={itemVariants}
               className="lg:col-span-1"
             >
-              <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-                <FiUsers className="text-cyan-400" />
+              <h3 
+                className="text-lg font-semibold mb-6 flex items-center gap-2"
+                style={{ color: COLORS.navy[5] }}
+              >
+                <FiUsers style={{ color: COLORS.navy[4] }} />
                 Resources
               </h3>
               <ul className="space-y-3">
@@ -209,7 +286,8 @@ const Footer = () => {
                   <motion.li key={index} whileHover={{ x: 5 }}>
                     <Link
                       to={link.to}
-                      className="text-gray-400 hover:text-cyan-400 transition-all duration-300 py-2 block"
+                      className="transition-all duration-300 py-2 block font-light hover:font-normal"
+                      style={{ color: COLORS.navy[5] }}
                     >
                       {link.label}
                     </Link>
@@ -223,11 +301,17 @@ const Footer = () => {
               variants={itemVariants}
               className="lg:col-span-1"
             >
-              <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-                <FiSend className="text-cyan-400" />
+              <h3 
+                className="text-lg font-semibold mb-6 flex items-center gap-2"
+                style={{ color: COLORS.navy[5] }}
+              >
+                <FiSend style={{ color: COLORS.navy[4] }} />
                 Stay Connected
               </h3>
-              <p className="text-gray-400 text-sm mb-4">
+              <p 
+                className="text-sm mb-4 font-light"
+                style={{ color: COLORS.navy[5] }}
+              >
                 Get the latest legal insights and platform updates delivered to your inbox.
               </p>
               
@@ -237,32 +321,60 @@ const Footer = () => {
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="w-full px-4 py-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300 pr-12"
+                    className="w-full px-4 py-3 backdrop-blur-xl border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-300 pr-12"
+                    style={{
+                      backgroundColor: `${COLORS.navy[2]}80`,
+                      borderColor: `${COLORS.navy[4]}30`,
+                      color: COLORS.navy[5]
+                    }}
                   />
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 rounded-lg hover:bg-cyan-500/30 transition-all duration-300"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 border rounded-lg transition-all duration-300"
+                    style={{
+                      backgroundColor: `${COLORS.navy[4]}20`,
+                      borderColor: `${COLORS.navy[4]}30`,
+                      color: COLORS.navy[4]
+                    }}
                   >
                     <FiSend className="text-sm" />
                   </motion.button>
                 </div>
-                <p className="text-gray-500 text-xs">
+                <p 
+                  className="text-xs font-light"
+                  style={{ color: `${COLORS.navy[5]}70` }}
+                >
                   No spam, unsubscribe at any time
                 </p>
               </div>
 
               {/* Contact Info */}
               <div className="space-y-3">
-                <div className="flex items-center gap-3 text-gray-400 hover:text-cyan-400 transition-colors duration-200 group">
-                  <FiMail className="text-cyan-400 group-hover:scale-110 transition-transform" />
-                  <a href="mailto:contact.lexeye78@gmail.com" className="text-sm">
+                <div className="flex items-center gap-3 transition-colors duration-200 group">
+                  <FiMail 
+                    className="transition-transform group-hover:scale-110" 
+                    style={{ color: COLORS.navy[4] }}
+                  />
+                  <a 
+                    href="mailto:contact.lexeye78@gmail.com" 
+                    className="text-sm font-light group-hover:font-normal"
+                    style={{ color: COLORS.navy[5] }}
+                  >
                     contact.lexeye78@gmail.com
                   </a>
                 </div>
-                <div className="flex items-center gap-3 text-gray-400 hover:text-cyan-400 transition-colors duration-200 group">
-                  <FiMapPin className="text-cyan-400 group-hover:scale-110 transition-transform" />
-                  <span className="text-sm">Pakistan</span>
+                <div className="flex items-center gap-3 transition-colors duration-200 group">
+                  <FiMapPin 
+                    className="transition-transform group-hover:scale-110" 
+                    style={{ color: COLORS.navy[4] }}
+                  />
+                  <span 
+                    className="text-sm font-light group-hover:font-normal"
+                    style={{ color: COLORS.navy[5] }}
+                  >
+                    Pakistan
+                  </span>
                 </div>
               </div>
             </motion.div>
@@ -270,35 +382,43 @@ const Footer = () => {
 
           {/* Bottom Bar */}
           <motion.div 
-            className="mt-12 pt-8 border-t border-white/10 flex flex-col lg:flex-row justify-between items-center gap-4"
+            className="mt-12 pt-8 border-t flex flex-col lg:flex-row justify-between items-center gap-4"
+            style={{ borderColor: `${COLORS.navy[4]}20` }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            <div className="flex items-center gap-3 text-gray-400 text-sm">
+            <div className="flex items-center gap-3 text-sm">
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <FiHeart className="text-red-400" />
+                <FiHeart style={{ color: COLORS.navy[4] }} />
               </motion.div>
-              <span>
+              <span 
+                className="font-light"
+                style={{ color: COLORS.navy[5] }}
+              >
                 © {new Date().getFullYear()} LexEye • A University Project by{" "}
-                <span className="text-cyan-400 font-semibold">Team Mavericks</span>
+                <span className="font-semibold" style={{ color: COLORS.navy[4] }}>Team Mavericks</span>
               </span>
             </div>
             
-            <div className="flex items-center gap-6 text-sm text-gray-400">
-              
+            <div className="flex items-center gap-6 text-sm">
               {/* Scroll to Top Button */}
               <motion.button
                 onClick={scrollToTop}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-2 bg-cyan-500/20 border border-cyan-400/30 rounded-xl text-cyan-400 hover:bg-cyan-500/30 transition-all duration-300 flex items-center gap-2 group"
+                className="p-2 border rounded-xl transition-all duration-300 flex items-center gap-2 group backdrop-blur-xl"
+                style={{
+                  backgroundColor: `${COLORS.navy[4]}20`,
+                  borderColor: `${COLORS.navy[4]}30`,
+                  color: COLORS.navy[4]
+                }}
                 title="Back to top"
               >
-                <span className="text-xs">Top</span>
+                <span className="text-xs font-medium">Top</span>
                 <FiArrowUp className="text-sm group-hover:-translate-y-0.5 transition-transform" />
               </motion.button>
             </div>
@@ -311,9 +431,20 @@ const Footer = () => {
             transition={{ delay: 0.6 }}
             className="mt-6 text-center"
           >
-            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2">
-              <FiUsers className="text-cyan-400 text-sm" />
-              <span className="text-gray-400 text-xs">University Project • Computer Science Department</span>
+            <div 
+              className="inline-flex items-center gap-2 border rounded-full px-4 py-2 backdrop-blur-xl"
+              style={{
+                backgroundColor: `${COLORS.navy[2]}80`,
+                borderColor: `${COLORS.navy[4]}30`
+              }}
+            >
+              <FiUsers style={{ color: COLORS.navy[4] }} className="text-sm" />
+              <span 
+                className="text-xs font-light"
+                style={{ color: `${COLORS.navy[5]}80` }}
+              >
+                University Project • Computer Science Department
+              </span>
             </div>
           </motion.div>
         </div>

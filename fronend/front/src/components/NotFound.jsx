@@ -5,7 +5,10 @@ import {
   FiBookmark, 
   FiSearch,
   FiCompass,
-  FiCloudOff
+  FiCloudOff,
+  FiArrowLeft,
+  FiNavigation,
+  FiHelpCircle
 } from "react-icons/fi";
 
 const NotFound = () => {
@@ -43,12 +46,12 @@ const NotFound = () => {
   };
 
   return (
-    <div className="min-h-screen pt-[8%] bg-gradient-to-br from-[#051c1f] via-[#08292e] to-[#0a1b1f] text-white relative overflow-hidden">
+    <div className="min-h-screen pt-[8%] bg-gradient-to-br from-[#0D1B2A] via-[#1D2D44] to-[#3E5C76] text-[#F0EBD8] relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-96 h-96 bg-purple-500/10 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" />
-        <div className="absolute w-80 h-80 bg-pink-500/10 rounded-full blur-3xl top-1/3 -right-20 animate-pulse-slower" />
-        <div className="absolute w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl bottom-20 left-1/4 animate-pulse-slow" />
+        <div className="absolute w-96 h-96 bg-[#748CAB]/20 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" />
+        <div className="absolute w-80 h-80 bg-[#3E5C76]/20 rounded-full blur-3xl top-1/3 -right-20 animate-pulse-slower" />
+        <div className="absolute w-72 h-72 bg-[#1D2D44]/20 rounded-full blur-3xl bottom-20 left-1/4 animate-pulse-slow" />
         
         {/* Grid Pattern */}
         <div className="absolute inset-0 opacity-5">
@@ -59,7 +62,7 @@ const NotFound = () => {
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute text-6xl font-black text-white/5 pointer-events-none"
+            className="absolute text-6xl font-black text-[#F0EBD8]/5 pointer-events-none"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -95,7 +98,7 @@ const NotFound = () => {
           >
             <div className="relative inline-block">
               {/* Glow Effect */}
-              <div className="absolute inset-0 w-48 h-48 bg-purple-500/20 rounded-full blur-2xl" />
+              <div className="absolute inset-0 w-48 h-48 bg-[#748CAB]/20 rounded-full blur-2xl" />
               
               {/* Main 404 Container */}
               <motion.div
@@ -103,7 +106,7 @@ const NotFound = () => {
                 animate="animate"
                 className="relative bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-12 shadow-2xl"
               >
-                <h1 className="text-8xl sm:text-9xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 text-transparent bg-clip-text">
+                <h1 className="text-8xl sm:text-9xl font-black bg-gradient-to-r from-[#F0EBD8] via-[#F0EBD8] to-[#748CAB] text-transparent bg-clip-text">
                   404
                 </h1>
                 
@@ -116,7 +119,7 @@ const NotFound = () => {
                   {[FiCloudOff, FiCompass, FiSearch, FiBookmark].map((Icon, i) => (
                     <motion.div
                       key={i}
-                      className="absolute w-8 h-8 bg-purple-500/20 rounded-xl border border-purple-400/30 flex items-center justify-center"
+                      className="absolute w-8 h-8 bg-[#748CAB]/20 rounded-xl border border-[#748CAB]/30 flex items-center justify-center"
                       style={{
                         top: '20%',
                         left: '50%',
@@ -133,7 +136,7 @@ const NotFound = () => {
                         ease: "easeInOut"
                       }}
                     >
-                      <Icon className="text-purple-400 text-sm" />
+                      <Icon className="text-[#748CAB] text-sm" />
                     </motion.div>
                   ))}
                 </motion.div>
@@ -146,16 +149,16 @@ const NotFound = () => {
             variants={itemVariants}
             className="mb-12"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#F0EBD8] mb-4">
               Page Not Found
             </h2>
             
-            <div className="space-y-4 text-lg text-gray-300 max-w-xl mx-auto">
+            <div className="space-y-4 text-lg text-[#F0EBD8]/80 max-w-xl mx-auto">
               <p>
                 It seems you've ventured into uncharted territory. The page you're looking for 
                 doesn't exist or may have been moved.
               </p>
-              <p className="text-gray-400 text-sm">
+              <p className="text-[#F0EBD8]/60 text-sm">
                 Don't worry, let's get you back on track with these helpful options.
               </p>
             </div>
@@ -173,30 +176,13 @@ const NotFound = () => {
             >
               <Link
                 to="/"
-                className="group flex flex-col items-center gap-3 bg-cyan-500/20 backdrop-blur-xl border border-cyan-400/30 text-cyan-300 rounded-2xl p-6 hover:bg-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
+                className="group flex flex-col items-center gap-3 bg-[#748CAB]/20 backdrop-blur-xl border border-[#748CAB]/30 text-[#748CAB] rounded-2xl p-6 hover:bg-[#748CAB]/30 hover:shadow-lg hover:shadow-[#748CAB]/25 transition-all duration-300"
               >
-                <div className="p-3 bg-cyan-500/30 rounded-2xl border border-cyan-400/30 group-hover:scale-110 transition-transform">
+                <div className="p-3 bg-[#748CAB]/30 rounded-2xl border border-[#748CAB]/30 group-hover:scale-110 transition-transform">
                   <FiHome className="text-2xl" />
                 </div>
                 <span className="font-semibold">Go Home</span>
-                <span className="text-cyan-200/70 text-sm">Start fresh</span>
-              </Link>
-            </motion.div>
-
-            {/* Bookmarks Button */}
-            <motion.div
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                to="/bookmarks"
-                className="group flex flex-col items-center gap-3 bg-green-500/20 backdrop-blur-xl border border-green-400/30 text-green-300 rounded-2xl p-6 hover:bg-green-500/30 hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300"
-              >
-                <div className="p-3 bg-green-500/30 rounded-2xl border border-green-400/30 group-hover:scale-110 transition-transform">
-                  <FiBookmark className="text-2xl" />
-                </div>
-                <span className="font-semibold">Bookmarks</span>
-                <span className="text-green-200/70 text-sm">Your saved content</span>
+                <span className="text-[#748CAB]/70 text-sm">Start fresh</span>
               </Link>
             </motion.div>
 
@@ -207,58 +193,88 @@ const NotFound = () => {
             >
               <Link
                 to="/search"
-                className="group flex flex-col items-center gap-3 bg-purple-500/20 backdrop-blur-xl border border-purple-400/30 text-purple-300 rounded-2xl p-6 hover:bg-purple-500/30 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                className="group flex flex-col items-center gap-3 bg-[#3E5C76]/20 backdrop-blur-xl border border-[#3E5C76]/30 text-[#3E5C76] rounded-2xl p-6 hover:bg-[#3E5C76]/30 hover:shadow-lg hover:shadow-[#3E5C76]/25 transition-all duration-300"
               >
-                <div className="p-3 bg-purple-500/30 rounded-2xl border border-purple-400/30 group-hover:scale-110 transition-transform">
+                <div className="p-3 bg-[#3E5C76]/30 rounded-2xl border border-[#3E5C76]/30 group-hover:scale-110 transition-transform">
                   <FiSearch className="text-2xl" />
                 </div>
                 <span className="font-semibold">Search</span>
-                <span className="text-purple-200/70 text-sm">Find what you need</span>
+                <span className="text-[#3E5C76]/70 text-sm">Find what you need</span>
               </Link>
+            </motion.div>
+
+            {/* Back Button */}
+            <motion.div
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <button
+                onClick={() => window.history.back()}
+                className="group flex flex-col items-center gap-3 bg-[#1D2D44]/20 backdrop-blur-xl border border-[#1D2D44]/30 text-[#1D2D44] rounded-2xl p-6 hover:bg-[#1D2D44]/30 hover:shadow-lg hover:shadow-[#1D2D44]/25 transition-all duration-300 w-full"
+              >
+                <div className="p-3 bg-[#1D2D44]/30 rounded-2xl border border-[#1D2D44]/30 group-hover:scale-110 transition-transform">
+                  <FiArrowLeft className="text-2xl" />
+                </div>
+                <span className="font-semibold">Go Back</span>
+                <span className="text-[#1D2D44]/70 text-sm">Previous page</span>
+              </button>
             </motion.div>
           </motion.div>
 
           {/* Quick Navigation */}
           <motion.div
             variants={itemVariants}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 max-w-md mx-auto"
+            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 max-w-md mx-auto mb-8"
           >
-            <h3 className="text-lg font-semibold text-white mb-4 flex items-center justify-center gap-2">
-              <FiCompass className="text-cyan-400" />
+            <h3 className="text-lg font-semibold text-[#F0EBD8] mb-4 flex items-center justify-center gap-2">
+              <FiNavigation className="text-[#748CAB]" />
               Quick Navigation
             </h3>
             <div className="flex flex-wrap justify-center gap-3 text-sm">
               {[
-                { to: "/glossary", label: "Glossary" },
-                { to: "/categories", label: "Categories" },
-                { to: "/faq", label: "FAQ" },
-                { to: "/about", label: "About" }
+                { to: "/glossary", label: "Legal Glossary", icon: FiBookmark },
+                { to: "/emergency", label: "Helpline", icon: FiHelpCircle },
+                { to: "/categories", label: "Categories", icon: FiCompass },
+                { to: "/bookmarks", label: "Bookmarks", icon: FiBookmark }
               ].map((link, index) => (
                 <Link
                   key={index}
                   to={link.to}
-                  className="px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-gray-300 hover:text-white transition-all duration-300"
+                  className="flex items-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[#F0EBD8]/80 hover:text-[#F0EBD8] transition-all duration-300"
                 >
+                  <link.icon className="text-[#748CAB] text-xs" />
                   {link.label}
                 </Link>
               ))}
             </div>
           </motion.div>
 
-          {/* Help Text */}
+          {/* Help Section */}
           <motion.div
             variants={itemVariants}
-            className="mt-8 text-center"
+            className="bg-gradient-to-r from-[#1D2D44]/50 to-[#3E5C76]/50 backdrop-blur-xl border border-[#748CAB]/20 rounded-2xl p-6 max-w-lg mx-auto"
           >
-            <p className="text-gray-400 text-sm">
-              Still lost?{" "}
-              <button 
-                onClick={() => window.history.back()}
-                className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
-              >
-                Go back to previous page
-              </button>
-            </p>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <FiHelpCircle className="text-[#748CAB] text-xl" />
+              <h3 className="text-lg font-semibold text-[#F0EBD8]">Need Help?</h3>
+            </div>
+            <div className="space-y-3 text-sm text-[#F0EBD8]/80">
+              <p>If you continue to experience issues, you can:</p>
+              <ul className="space-y-2 text-left">
+                <li className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-[#748CAB] rounded-full"></div>
+                  Check the URL for typos
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-[#748CAB] rounded-full"></div>
+                  Use the search function to find content
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-[#748CAB] rounded-full"></div>
+                  Browse through our main categories
+                </li>
+              </ul>
+            </div>
           </motion.div>
         </motion.div>
       </div>
@@ -268,14 +284,51 @@ const NotFound = () => {
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1.5 }}
-        className="fixed bottom-6 right-6"
+        className="fixed bottom-6 right-6 z-20"
       >
         <motion.div
           whileHover={{ scale: 1.1 }}
-          className="bg-cyan-500/20 backdrop-blur-xl border border-cyan-400/30 rounded-2xl p-4 text-cyan-300 shadow-2xl shadow-cyan-500/20"
+          className="bg-[#748CAB]/20 backdrop-blur-xl border border-[#748CAB]/30 rounded-2xl p-4 text-[#748CAB] shadow-2xl shadow-[#748CAB]/20 cursor-pointer"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          <FiCompass className="text-2xl" />
+          <FiNavigation className="text-2xl" />
         </motion.div>
+      </motion.div>
+
+      {/* Bottom Navigation Bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+        className="fixed bottom-0 left-0 right-0 bg-[#0D1B2A]/80 backdrop-blur-xl border-t border-[#1D2D44] z-10"
+      >
+        <div className="max-w-4xl mx-auto px-4 py-3">
+          <div className="flex justify-between items-center">
+            <button
+              onClick={() => window.history.back()}
+              className="flex items-center gap-2 px-4 py-2 bg-[#1D2D44]/50 border border-[#3E5C76] rounded-xl text-[#F0EBD8] hover:bg-[#1D2D44] transition-all duration-300"
+            >
+              <FiArrowLeft className="text-sm" />
+              <span className="text-sm">Back</span>
+            </button>
+            
+            <Link
+              to="/"
+              className="flex items-center gap-2 px-4 py-2 bg-[#748CAB]/20 border border-[#748CAB] rounded-xl text-[#F0EBD8] hover:bg-[#748CAB]/30 transition-all duration-300"
+            >
+              <FiHome className="text-sm" />
+              <span className="text-sm">Home</span>
+            </Link>
+            
+            <Link
+              to="/search"
+              className="flex items-center gap-2 px-4 py-2 bg-[#3E5C76]/20 border border-[#3E5C76] rounded-xl text-[#F0EBD8] hover:bg-[#3E5C76]/30 transition-all duration-300"
+            >
+              <FiSearch className="text-sm" />
+              <span className="text-sm">Search</span>
+            </Link>
+          </div>
+        </div>
       </motion.div>
     </div>
   );

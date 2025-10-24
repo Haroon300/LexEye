@@ -15,7 +15,7 @@ await mongoose.connect(MONGO_URI);
 console.log("✅ Connected to MongoDB");
 
 // ✅ Read Excel file
-const workbook = xlsx.readFile("./criminal law lexeye.xlsx");
+const workbook = xlsx.readFile("./constitution law lexeye.xlsx");
 const sheet =
   workbook.Sheets["LexEye Law Template"] ||
   workbook.Sheets[workbook.SheetNames[0]];
@@ -153,7 +153,7 @@ let inserted = 0,
   skipped = 0;
 
 // ✅ MANUAL CATEGORY - Yahan apni manual category set karen
-const MANUAL_CATEGORY = "Criminal Laws"; // 👈 Yahan apni category set karen
+const MANUAL_CATEGORY = "Constitution Law"; // 👈 Yahan apni category set karen
 
 // ✅ Insert or update laws
 for (const law of parsed) {

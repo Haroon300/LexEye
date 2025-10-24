@@ -11,7 +11,10 @@ import {
   FiEyeOff, 
   FiArrowRight,
   FiCheck,
-  FiShield
+  FiShield,
+  FiHome,
+  FiBookmark,
+  FiStar
 } from "react-icons/fi";
 
 const SignUp = () => {
@@ -153,15 +156,30 @@ const SignUp = () => {
       <main className="relative pt-[5%] min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 overflow-hidden">
         {/* Enhanced Background Effects */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute w-96 h-96 bg-green-500/10 rounded-full blur-3xl -top-20 -right-20 animate-pulse-slow" />
-          <div className="absolute w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl top-1/3 -left-20 animate-pulse-slower" />
-          <div className="absolute w-72 h-72 bg-teal-400/10 rounded-full blur-3xl bottom-20 right-1/4 animate-pulse-slow" />
+          <div className="absolute w-96 h-96 bg-[#748CAB]/20 rounded-full blur-3xl -top-20 -right-20 animate-pulse-slow" />
+          <div className="absolute w-80 h-80 bg-[#3E5C76]/20 rounded-full blur-3xl top-1/3 -left-20 animate-pulse-slower" />
+          <div className="absolute w-72 h-72 bg-[#1D2D44]/20 rounded-full blur-3xl bottom-20 right-1/4 animate-pulse-slow" />
           
           {/* Grid Pattern */}
           <div className="absolute inset-0 opacity-5">
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:80px_80px]" />
           </div>
         </div>
+
+        {/* Home Button */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="absolute top-6 left-6 z-20"
+        >
+          <Link
+            to="/"
+            className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-[#F0EBD8] font-semibold hover:bg-white/20 rounded-xl px-4 py-3 shadow-2xl transition-all duration-300 hover:scale-105 group"
+          >
+            <FiHome className="text-lg group-hover:-translate-x-1 transition-transform duration-300" />
+            <span className="text-sm">Home</span>
+          </Link>
+        </motion.div>
 
         {/* Main Card */}
         <motion.div
@@ -172,20 +190,20 @@ const SignUp = () => {
         >
           <motion.div
             variants={itemVariants}
-            className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 shadow-2xl shadow-green-500/10"
+            className="bg-gradient-to-br from-[#1D2D44]/80 to-[#0D1B2A]/80 backdrop-blur-2xl border border-[#748CAB]/20 rounded-3xl p-8 shadow-2xl shadow-[#748CAB]/10"
           >
             {/* Header */}
             <motion.div
               variants={itemVariants}
               className="text-center mb-8"
             >
-              <div className="inline-flex p-3 bg-green-500/20 rounded-2xl border border-green-400/30 mb-4">
-                <FiUser className="text-3xl text-green-400" />
+              <div className="inline-flex p-4 bg-[#748CAB]/20 rounded-2xl border border-[#748CAB]/30 mb-4">
+                <FiUser className="text-3xl text-[#748CAB]" />
               </div>
-              <h1 className="text-3xl font-black bg-gradient-to-r from-green-200 to-emerald-200 text-transparent bg-clip-text mb-2">
+              <h1 className="text-3xl font-black bg-gradient-to-r from-[#F0EBD8] to-[#F0EBD8] text-transparent bg-clip-text mb-2">
                 Join LexEye
               </h1>
-              <p className="text-gray-400 text-sm">
+              <p className="text-[#F0EBD8]/60 text-sm">
                 Create your account to access personalized legal resources
               </p>
             </motion.div>
@@ -207,24 +225,45 @@ const SignUp = () => {
               )}
             </AnimatePresence>
 
+            {/* Benefits Section */}
+            <motion.div
+              variants={itemVariants}
+              className="mb-6 p-4 bg-[#748CAB]/10 border border-[#748CAB]/20 rounded-2xl"
+            >
+              <h3 className="text-[#F0EBD8] font-semibold text-sm mb-3 text-center">Create your account to unlock:</h3>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {[
+                  { icon: FiBookmark, text: "Save Legal Guides" },
+                  { icon: FiStar, text: "Personal Profile" },
+                  { icon: FiShield, text: "Secure Access" },
+                  { icon: FiUser, text: "Track History" }
+                ].map((benefit, index) => (
+                  <div key={index} className="flex items-center gap-2 text-[#F0EBD8]/70 p-2 rounded-lg bg-[#0D1B2A]/30">
+                    <benefit.icon className="text-[#748CAB] text-sm" />
+                    <span>{benefit.text}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
             {/* Form */}
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Name Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-gray-300 text-sm font-medium mb-3">
+                <label className="block text-[#F0EBD8] text-sm font-medium mb-3">
                   Full Name
                 </label>
                 <div className="relative">
-                  <FiUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
+                  <FiUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40 text-lg" />
                   <input
                     type="text"
                     placeholder="Enter your full name"
                     value={data.name}
                     onChange={(e) => setData({ ...data, name: e.target.value })}
-                    className={`w-full pl-12 pr-4 py-4 bg-white/5 backdrop-blur-xl border rounded-2xl text-white placeholder-gray-400 focus:outline-none transition-all duration-300 ${
+                    className={`w-full pl-12 pr-4 py-4 bg-[#0D1B2A]/50 backdrop-blur-xl border rounded-2xl text-[#F0EBD8] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
                       errors.name 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
-                        : "border-white/10 focus:border-green-400 focus:ring-2 focus:ring-green-400/20"
+                        : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
                     }`}
                     required
                   />
@@ -242,20 +281,20 @@ const SignUp = () => {
 
               {/* Email Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-gray-300 text-sm font-medium mb-3">
+                <label className="block text-[#F0EBD8] text-sm font-medium mb-3">
                   Email Address
                 </label>
                 <div className="relative">
-                  <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
+                  <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40 text-lg" />
                   <input
                     type="email"
                     placeholder="Enter your email"
                     value={data.email}
                     onChange={(e) => setData({ ...data, email: e.target.value })}
-                    className={`w-full pl-12 pr-4 py-4 bg-white/5 backdrop-blur-xl border rounded-2xl text-white placeholder-gray-400 focus:outline-none transition-all duration-300 ${
+                    className={`w-full pl-12 pr-4 py-4 bg-[#0D1B2A]/50 backdrop-blur-xl border rounded-2xl text-[#F0EBD8] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
                       errors.email 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
-                        : "border-white/10 focus:border-green-400 focus:ring-2 focus:ring-green-400/20"
+                        : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
                     }`}
                     required
                   />
@@ -273,27 +312,27 @@ const SignUp = () => {
 
               {/* Password Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-gray-300 text-sm font-medium mb-3">
+                <label className="block text-[#F0EBD8] text-sm font-medium mb-3">
                   Password
                 </label>
                 <div className="relative">
-                  <FiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
+                  <FiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40 text-lg" />
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a strong password"
                     value={data.password}
                     onChange={(e) => handlePasswordChange(e.target.value)}
-                    className={`w-full pl-12 pr-12 py-4 bg-white/5 backdrop-blur-xl border rounded-2xl text-white placeholder-gray-400 focus:outline-none transition-all duration-300 ${
+                    className={`w-full pl-12 pr-12 py-4 bg-[#0D1B2A]/50 backdrop-blur-xl border rounded-2xl text-[#F0EBD8] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
                       errors.password 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
-                        : "border-white/10 focus:border-green-400 focus:ring-2 focus:ring-green-400/20"
+                        : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
                     }`}
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-400 transition-colors duration-200"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40 hover:text-[#748CAB] transition-colors duration-200"
                   >
                     {showPassword ? <FiEyeOff className="text-lg" /> : <FiEye className="text-lg" />}
                   </button>
@@ -307,7 +346,7 @@ const SignUp = () => {
                     className="mt-3 space-y-2"
                   >
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-400">Password strength:</span>
+                      <span className="text-[#F0EBD8]/60">Password strength:</span>
                       <span className={`font-medium ${
                         passwordStrength <= 2 ? "text-red-400" :
                         passwordStrength <= 3 ? "text-yellow-400" : "text-green-400"
@@ -315,7 +354,7 @@ const SignUp = () => {
                         {getPasswordStrengthText()}
                       </span>
                     </div>
-                    <div className="w-full bg-white/10 rounded-full h-2">
+                    <div className="w-full bg-[#0D1B2A]/50 rounded-full h-2">
                       <div 
                         className={`h-2 rounded-full bg-gradient-to-r ${getPasswordStrengthColor()} transition-all duration-500`}
                         style={{ width: `${(passwordStrength / 5) * 100}%` }}
@@ -337,27 +376,27 @@ const SignUp = () => {
 
               {/* Confirm Password Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-gray-300 text-sm font-medium mb-3">
+                <label className="block text-[#F0EBD8] text-sm font-medium mb-3">
                   Confirm Password
                 </label>
                 <div className="relative">
-                  <FiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
+                  <FiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40 text-lg" />
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Re-enter your password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className={`w-full pl-12 pr-12 py-4 bg-white/5 backdrop-blur-xl border rounded-2xl text-white placeholder-gray-400 focus:outline-none transition-all duration-300 ${
+                    className={`w-full pl-12 pr-12 py-4 bg-[#0D1B2A]/50 backdrop-blur-xl border rounded-2xl text-[#F0EBD8] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
                       errors.confirmPassword 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
-                        : "border-white/10 focus:border-green-400 focus:ring-2 focus:ring-green-400/20"
+                        : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
                     }`}
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-400 transition-colors duration-200"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40 hover:text-[#748CAB] transition-colors duration-200"
                   >
                     {showConfirmPassword ? <FiEyeOff className="text-lg" /> : <FiEye className="text-lg" />}
                   </button>
@@ -373,6 +412,26 @@ const SignUp = () => {
                 )}
               </motion.div>
 
+              {/* Terms Agreement */}
+              <motion.div variants={itemVariants}>
+                <label className="flex items-start gap-3 text-[#F0EBD8]/60 text-sm cursor-pointer group">
+                  <input 
+                    type="checkbox" 
+                    required
+                    className="mt-1 rounded bg-[#0D1B2A]/50 border-[#3E5C76] text-[#748CAB] focus:ring-[#748CAB] focus:ring-2 focus:ring-offset-1 focus:ring-offset-[#0D1B2A] transition-all duration-300 group-hover:border-[#748CAB]" 
+                  />
+                  <span>
+                    I agree to the{" "}
+                    <Link to="/terms" className="text-[#748CAB] hover:text-[#8FA8C9] transition-colors">
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link to="/privacy" className="text-[#748CAB] hover:text-[#8FA8C9] transition-colors">
+                      Privacy Policy
+                    </Link>
+                  </span>
+                </label>
+              </motion.div>
 
               {/* Submit Button */}
               <motion.div variants={itemVariants}>
@@ -381,15 +440,15 @@ const SignUp = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   disabled={loader}
-                  className="group relative w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-green-500/25 hover:shadow-green-500/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 border border-green-400/30 overflow-hidden"
+                  className="group relative w-full bg-gradient-to-r from-[#748CAB] to-[#3E5C76] text-[#F0EBD8] font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-[#748CAB]/25 hover:shadow-[#748CAB]/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 border border-[#748CAB]/30 overflow-hidden"
                 >
                   {/* Shine effect */}
-                  <div className="absolute inset-0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                  <div className="absolute inset-0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-[#F0EBD8]/10 to-transparent" />
                   
                   <div className="relative z-10 flex items-center justify-center gap-3">
                     {loader ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-[#F0EBD8] border-t-transparent rounded-full animate-spin" />
                         <span>Creating Account...</span>
                       </>
                     ) : (
@@ -409,9 +468,9 @@ const SignUp = () => {
               variants={itemVariants}
               className="flex items-center my-8"
             >
-              <div className="flex-1 h-px bg-white/10"></div>
-              <span className="px-4 text-gray-400 text-sm">or</span>
-              <div className="flex-1 h-px bg-white/10"></div>
+              <div className="flex-1 h-px bg-[#F0EBD8]/10"></div>
+              <span className="px-4 text-[#F0EBD8]/40 text-sm">Already have an account?</span>
+              <div className="flex-1 h-px bg-[#F0EBD8]/10"></div>
             </motion.div>
 
             {/* Sign In Link */}
@@ -419,19 +478,53 @@ const SignUp = () => {
               variants={itemVariants}
               className="text-center"
             >
-              <p className="text-gray-400 text-sm">
-                Already have an account?{" "}
-                <Link 
-                  to="/signin" 
-                  className="text-green-400 hover:text-green-300 font-semibold transition-colors duration-200 group inline-flex items-center gap-1"
-                >
-                  Sign In
-                  <FiArrowRight className="text-sm group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </p>
+              <Link 
+                to="/signin" 
+                className="group flex items-center justify-center gap-3 w-full bg-[#1D2D44]/50 border border-[#3E5C76] text-[#F0EBD8] font-semibold py-4 px-8 rounded-2xl hover:bg-[#1D2D44] hover:border-[#748CAB] transition-all duration-300"
+              >
+                <FiUser className="text-lg group-hover:scale-110 transition-transform" />
+                <span>Sign In to Existing Account</span>
+                <FiArrowRight className="text-lg group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+
+            {/* Security Note */}
+            <motion.div
+              variants={itemVariants}
+              className="mt-6 p-4 bg-[#748CAB]/10 border border-[#748CAB]/20 rounded-2xl text-center"
+            >
+              <div className="flex items-center justify-center gap-2 text-[#748CAB] text-sm">
+                <FiShield className="text-base" />
+                <span>Your legal information is protected with encryption</span>
+              </div>
             </motion.div>
           </motion.div>
         </motion.div>
+
+        {/* Background Legal Icons */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-6xl text-[#F0EBD8]/5"
+              style={{
+                left: `${20 + i * 15}%`,
+                top: `${10 + i * 12}%`,
+              }}
+              animate={{
+                y: [0, -10, 0],
+                rotate: [0, 5, 0],
+              }}
+              transition={{
+                duration: 8 + i * 2,
+                repeat: Infinity,
+                delay: i * 1.5,
+              }}
+            >
+              ⚖️
+            </motion.div>
+          ))}
+        </div>
       </main>
     </>
   );

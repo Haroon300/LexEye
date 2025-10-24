@@ -50,12 +50,12 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className="min-h-screen pt-[5%] flex items-center justify-center bg-gradient-to-br from-[#051c1f] via-[#08292e] to-[#0a1b1f] text-white px-4 py-8 relative overflow-hidden">
+    <div className="min-h-screen pt-[5%] flex items-center justify-center bg-gradient-to-br from-[#0D1B2A] via-[#1D2D44] to-[#3E5C76] text-[#F0EBD8] px-4 py-8 relative overflow-hidden">
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" />
-        <div className="absolute w-80 h-80 bg-blue-400/10 rounded-full blur-3xl top-1/3 -right-20 animate-pulse-slower" />
-        <div className="absolute w-72 h-72 bg-teal-400/10 rounded-full blur-3xl bottom-20 left-1/4 animate-pulse-slow" />
+        <div className="absolute w-96 h-96 bg-[#748CAB]/20 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" />
+        <div className="absolute w-80 h-80 bg-[#3E5C76]/20 rounded-full blur-3xl top-1/3 -right-20 animate-pulse-slower" />
+        <div className="absolute w-72 h-72 bg-[#1D2D44]/20 rounded-full blur-3xl bottom-20 left-1/4 animate-pulse-slow" />
         
         {/* Grid Pattern */}
         <div className="absolute inset-0 opacity-5">
@@ -106,17 +106,19 @@ export default function FeedbackPage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="p-3 bg-cyan-500/20 rounded-2xl border border-cyan-400/30">
-                <GiScales className="text-4xl text-cyan-400" />
+            <div className="flex flex-col items-center gap-6 mb-6">
+              <div className="p-4 bg-[#748CAB]/20 rounded-2xl border border-[#748CAB]/30">
+                <GiScales className="text-5xl text-[#748CAB]" />
               </div>
-              <h1 className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-cyan-200 via-gray-200 to-silver text-transparent bg-clip-text">
-                Help Us Balance the Scales
-              </h1>
+              <div>
+                <h1 className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-[#F0EBD8] via-[#F0EBD8] to-[#748CAB] text-transparent bg-clip-text mb-4">
+                  Help Us Balance the Scales
+                </h1>
+                <p className="text-[#F0EBD8]/80 text-lg leading-relaxed max-w-2xl mx-auto">
+                  Your insights shape LexEye's future. Share your experience to help us create a better legal resource for everyone.
+                </p>
+              </div>
             </div>
-            <p className="text-gray-300 text-lg leading-relaxed max-w-2xl mx-auto">
-              Your insights shape LexEye's future. Share your experience to help us create a better legal resource for everyone.
-            </p>
           </motion.div>
 
           <form
@@ -130,50 +132,53 @@ export default function FeedbackPage() {
               variants={sectionVariants}
               initial="hidden"
               animate="visible"
-              className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8"
+              className="bg-gradient-to-br from-[#1D2D44]/50 to-[#3E5C76]/50 backdrop-blur-xl border border-[#748CAB]/20 rounded-2xl p-8"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-blue-500/20 rounded-lg">
-                  <FiUser className="text-blue-400 text-lg" />
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-[#748CAB]/20 rounded-xl border border-[#748CAB]/30">
+                  <FiUser className="text-[#748CAB] text-xl" />
                 </div>
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-200 to-cyan-200 text-transparent bg-clip-text">
-                  Your Details
-                </h2>
+                <div>
+                  <h2 className="text-2xl font-bold text-[#F0EBD8]">
+                    Your Details
+                  </h2>
+                  <p className="text-[#F0EBD8]/60 text-sm">We'll use this to follow up if needed</p>
+                </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-gray-300 font-semibold mb-3">
+                  <label htmlFor="name" className="block text-[#F0EBD8] font-semibold mb-3">
                     Full Name
                   </label>
                   <div className="relative">
-                    <FiUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <FiUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40" />
                     <input
                       id="name"
                       type="text"
                       name="name"
                       placeholder="Enter your full name"
                       required
-                      className="w-full pl-12 pr-4 py-4 bg-black/30 border border-gray-700 rounded-xl text-white 
-                        focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all duration-300"
+                      className="w-full pl-12 pr-4 py-4 bg-[#0D1B2A]/50 border border-[#3E5C76] rounded-xl text-[#F0EBD8] 
+                        focus:outline-none focus:border-[#748CAB] focus:ring-4 focus:ring-[#748CAB]/20 transition-all duration-300 placeholder-[#F0EBD8]/40"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-gray-300 font-semibold mb-3">
+                  <label htmlFor="email" className="block text-[#F0EBD8] font-semibold mb-3">
                     Email Address
                   </label>
                   <div className="relative">
-                    <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40" />
                     <input
                       id="email"
                       type="email"
                       name="email"
                       placeholder="your.email@example.com"
                       required
-                      className="w-full pl-12 pr-4 py-4 bg-black/30 border border-gray-700 rounded-xl text-white 
-                        focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all duration-300"
+                      className="w-full pl-12 pr-4 py-4 bg-[#0D1B2A]/50 border border-[#3E5C76] rounded-xl text-[#F0EBD8] 
+                        focus:outline-none focus:border-[#748CAB] focus:ring-4 focus:ring-[#748CAB]/20 transition-all duration-300 placeholder-[#F0EBD8]/40"
                     />
                   </div>
                 </div>
@@ -186,42 +191,48 @@ export default function FeedbackPage() {
               initial="hidden"
               animate="visible"
               transition={{ delay: 0.1 }}
-              className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8"
+              className="bg-gradient-to-br from-[#1D2D44]/50 to-[#3E5C76]/50 backdrop-blur-xl border border-[#748CAB]/20 rounded-2xl p-8"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-purple-500/20 rounded-lg">
-                  <FiFolder className="text-purple-400 text-lg" />
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-[#3E5C76]/20 rounded-xl border border-[#3E5C76]/30">
+                  <FiFolder className="text-[#3E5C76] text-xl" />
                 </div>
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-200 to-pink-200 text-transparent bg-clip-text">
-                  Content Quality
-                </h2>
+                <div>
+                  <h2 className="text-2xl font-bold text-[#F0EBD8]">
+                    Content Quality
+                  </h2>
+                  <p className="text-[#F0EBD8]/60 text-sm">How helpful was our legal content?</p>
+                </div>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-gray-300 font-semibold mb-3">
+                  <label className="block text-[#F0EBD8] font-semibold mb-3">
                     Which topic did you review?
                   </label>
                   <select
                     name="topicReviewed"
                     required
-                    className="w-full px-4 py-4 bg-black/30 border border-gray-700 rounded-xl text-white 
-                      focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all duration-300"
+                    className="w-full px-4 py-4 bg-[#0D1B2A]/50 border border-[#3E5C76] rounded-xl text-[#F0EBD8] 
+                      focus:outline-none focus:border-[#748CAB] focus:ring-4 focus:ring-[#748CAB]/20 transition-all duration-300"
                   >
-                    <option value="" disabled selected className="text-gray-400">
-                      Select a category
+                    <option value="" disabled selected className="text-[#F0EBD8]/40">
+                      Select a legal category
                     </option>
                     <option>Tenancy Rights</option>
                     <option>Workplace Issues</option>
                     <option>Harassment</option>
                     <option>Digital Safety</option>
                     <option>Consumer Issues</option>
+                    <option>Criminal Laws</option>
+                    <option>Family Laws</option>
+                    <option>Property Laws</option>
                     <option>Other / Missing Topic</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-gray-300 font-semibold mb-4">
+                  <label className="block text-[#F0EBD8] font-semibold mb-4">
                     How clear was the content?
                   </label>
                   <div className="space-y-4">
@@ -232,20 +243,20 @@ export default function FeedbackPage() {
                       max="5"
                       value={clarity}
                       onChange={(e) => setClarity(Number(e.target.value))}
-                      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer 
+                      className="w-full h-2 bg-[#3E5C76] rounded-lg appearance-none cursor-pointer 
                         [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 
-                        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-cyan-400"
+                        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#748CAB]"
                     />
-                    <div className="flex justify-between text-sm text-gray-400">
+                    <div className="flex justify-between text-sm text-[#F0EBD8]/60">
                       <span>Too Complex</span>
-                      <span className="text-cyan-400 font-semibold">Selected: {clarity}/5</span>
+                      <span className="text-[#748CAB] font-semibold">Selected: {clarity}/5</span>
                       <span>Perfectly Clear</span>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-gray-300 font-semibold mb-3">
+                  <label className="block text-[#F0EBD8] font-semibold mb-3">
                     Was the content accurate?
                   </label>
                   <div className="flex gap-4">
@@ -258,12 +269,12 @@ export default function FeedbackPage() {
                           required
                           className="peer hidden"
                         />
-                        <div className="w-5 h-5 border-2 border-gray-500 rounded-full flex items-center justify-center 
-                          peer-checked:bg-cyan-400 peer-checked:border-cyan-400 transition-all duration-300
-                          group-hover:border-cyan-400">
+                        <div className="w-5 h-5 border-2 border-[#3E5C76] rounded-full flex items-center justify-center 
+                          peer-checked:bg-[#748CAB] peer-checked:border-[#748CAB] transition-all duration-300
+                          group-hover:border-[#748CAB]">
                           <div className="w-2 h-2 bg-white rounded-full opacity-0 peer-checked:opacity-100 transition-opacity" />
                         </div>
-                        <span className="text-gray-300 group-hover:text-cyan-300 transition-colors">{val}</span>
+                        <span className="text-[#F0EBD8]/80 group-hover:text-[#748CAB] transition-colors">{val}</span>
                       </label>
                     ))}
                   </div>
@@ -277,25 +288,28 @@ export default function FeedbackPage() {
               initial="hidden"
               animate="visible"
               transition={{ delay: 0.2 }}
-              className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8"
+              className="bg-gradient-to-br from-[#1D2D44]/50 to-[#3E5C76]/50 backdrop-blur-xl border border-[#748CAB]/20 rounded-2xl p-8"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-orange-500/20 rounded-lg">
-                  <FiZap className="text-orange-400 text-lg" />
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-[#748CAB]/20 rounded-xl border border-[#748CAB]/30">
+                  <FiZap className="text-[#748CAB] text-xl" />
                 </div>
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-200 to-yellow-200 text-transparent bg-clip-text">
-                  Usability & Performance
-                </h2>
+                <div>
+                  <h2 className="text-2xl font-bold text-[#F0EBD8]">
+                    Usability & Performance
+                  </h2>
+                  <p className="text-[#F0EBD8]/60 text-sm">How was your experience using LexEye?</p>
+                </div>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-gray-300 font-semibold mb-3">
+                  <label className="block text-[#F0EBD8] font-semibold mb-3">
                     Which feature are you commenting on?
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {["Search", "Bookmarks", "Categories", "UI/Design", "Offline Mode", "Navigation"].map((val) => (
-                      <label key={val} className="flex items-center gap-3 cursor-pointer group p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300">
+                    {["Search", "Bookmarks", "Categories", "UI/Design", "Navigation", "Emergency Helpline", "Legal Glossary", "Offline Mode", "Language Support"].map((val) => (
+                      <label key={val} className="flex items-center gap-3 cursor-pointer group p-3 rounded-lg bg-[#0D1B2A]/30 hover:bg-[#0D1B2A]/50 transition-all duration-300 border border-transparent hover:border-[#748CAB]/20">
                         <input
                           type="radio"
                           name="featureFocus"
@@ -303,18 +317,18 @@ export default function FeedbackPage() {
                           required
                           className="peer hidden"
                         />
-                        <div className="w-4 h-4 border-2 border-gray-500 rounded flex items-center justify-center 
-                          peer-checked:bg-cyan-400 peer-checked:border-cyan-400 transition-all duration-300">
+                        <div className="w-4 h-4 border-2 border-[#3E5C76] rounded flex items-center justify-center 
+                          peer-checked:bg-[#748CAB] peer-checked:border-[#748CAB] transition-all duration-300">
                           <FiCheck className="text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity" />
                         </div>
-                        <span className="text-gray-300 group-hover:text-white transition-colors text-sm">{val}</span>
+                        <span className="text-[#F0EBD8]/80 group-hover:text-[#F0EBD8] transition-colors text-sm">{val}</span>
                       </label>
                     ))}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-gray-300 font-semibold mb-4">
+                  <label className="block text-[#F0EBD8] font-semibold mb-4">
                     How fast was your experience?
                   </label>
                   <div className="space-y-4">
@@ -325,28 +339,28 @@ export default function FeedbackPage() {
                       max="5"
                       value={speed}
                       onChange={(e) => setSpeed(Number(e.target.value))}
-                      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer 
+                      className="w-full h-2 bg-[#3E5C76] rounded-lg appearance-none cursor-pointer 
                         [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 
-                        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-cyan-400"
+                        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#748CAB]"
                     />
-                    <div className="flex justify-between text-sm text-gray-400">
+                    <div className="flex justify-between text-sm text-[#F0EBD8]/60">
                       <span>Too Slow</span>
-                      <span className="text-cyan-400 font-semibold">Selected: {speed}/5</span>
+                      <span className="text-[#748CAB] font-semibold">Selected: {speed}/5</span>
                       <span>Lightning Fast</span>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-gray-300 font-semibold mb-3">
+                  <label className="block text-[#F0EBD8] font-semibold mb-3">
                     Describe any issues or suggestions
                   </label>
                   <textarea
                     name="bugDescription"
                     placeholder="Tell us about any bugs, issues, or improvement ideas..."
                     rows="4"
-                    className="w-full px-4 py-4 bg-black/30 border border-gray-700 rounded-xl text-white 
-                      focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all duration-300 resize-none"
+                    className="w-full px-4 py-4 bg-[#0D1B2A]/50 border border-[#3E5C76] rounded-xl text-[#F0EBD8] 
+                      focus:outline-none focus:border-[#748CAB] focus:ring-4 focus:ring-[#748CAB]/20 transition-all duration-300 resize-none placeholder-[#F0EBD8]/40"
                   ></textarea>
                 </div>
               </div>
@@ -358,34 +372,37 @@ export default function FeedbackPage() {
               initial="hidden"
               animate="visible"
               transition={{ delay: 0.3 }}
-              className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8"
+              className="bg-gradient-to-br from-[#1D2D44]/50 to-[#3E5C76]/50 backdrop-blur-xl border border-[#748CAB]/20 rounded-2xl p-8"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-pink-500/20 rounded-lg">
-                  <FiHeart className="text-pink-400 text-lg" />
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-[#3E5C76]/20 rounded-xl border border-[#3E5C76]/30">
+                  <FiHeart className="text-[#3E5C76] text-xl" />
                 </div>
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-200 to-rose-200 text-transparent bg-clip-text">
-                  Additional Feedback
-                </h2>
+                <div>
+                  <h2 className="text-2xl font-bold text-[#F0EBD8]">
+                    Additional Feedback
+                  </h2>
+                  <p className="text-[#F0EBD8]/60 text-sm">Help us improve LexEye further</p>
+                </div>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-gray-300 font-semibold mb-3">
-                    Suggest a new topic we should cover
+                  <label className="block text-[#F0EBD8] font-semibold mb-3">
+                    Suggest a new legal topic we should cover
                   </label>
                   <input
                     type="text"
                     name="newTopic"
                     placeholder="E.g., Traffic fines, Property laws, Business regulations..."
-                    className="w-full px-4 py-4 bg-black/30 border border-gray-700 rounded-xl text-white 
-                      focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all duration-300"
+                    className="w-full px-4 py-4 bg-[#0D1B2A]/50 border border-[#3E5C76] rounded-xl text-[#F0EBD8] 
+                      focus:outline-none focus:border-[#748CAB] focus:ring-4 focus:ring-[#748CAB]/20 transition-all duration-300 placeholder-[#F0EBD8]/40"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-300 font-semibold mb-4">
-                    Overall satisfaction
+                  <label className="block text-[#F0EBD8] font-semibold mb-4">
+                    Overall satisfaction with LexEye
                   </label>
                   <div className="flex gap-2 justify-between">
                     {["😞", "😐", "🙂", "😀", "🤩"].map((emoji, index) => (
@@ -397,13 +414,26 @@ export default function FeedbackPage() {
                           required
                           className="hidden peer"
                         />
-                        <div className="text-3xl transition-all duration-300 transform peer-checked:scale-125 peer-checked:drop-shadow-[0_0_12px_rgba(34,211,238,0.6)] group-hover:scale-110">
+                        <div className="text-3xl transition-all duration-300 transform peer-checked:scale-125 peer-checked:drop-shadow-[0_0_12px_rgba(116,140,171,0.6)] group-hover:scale-110">
                           {emoji}
                         </div>
-                        <span className="text-xs text-gray-400 peer-checked:text-cyan-400">{index + 1}</span>
+                        <span className="text-xs text-[#F0EBD8]/60 peer-checked:text-[#748CAB]">{index + 1}</span>
                       </label>
                     ))}
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-[#F0EBD8] font-semibold mb-3">
+                    Any other comments or suggestions?
+                  </label>
+                  <textarea
+                    name="additionalComments"
+                    placeholder="We'd love to hear your thoughts, ideas, or any other feedback..."
+                    rows="3"
+                    className="w-full px-4 py-4 bg-[#0D1B2A]/50 border border-[#3E5C76] rounded-xl text-[#F0EBD8] 
+                      focus:outline-none focus:border-[#748CAB] focus:ring-4 focus:ring-[#748CAB]/20 transition-all duration-300 resize-none placeholder-[#F0EBD8]/40"
+                  ></textarea>
                 </div>
               </div>
             </motion.div>
@@ -422,14 +452,14 @@ export default function FeedbackPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group relative bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold py-5 px-12 rounded-2xl 
-                  transition-all duration-300 hover:from-cyan-600 hover:to-blue-600 hover:shadow-2xl hover:shadow-cyan-500/25 
-                  disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                className="group relative bg-gradient-to-r from-[#748CAB] to-[#3E5C76] text-[#F0EBD8] font-bold py-5 px-12 rounded-2xl 
+                  transition-all duration-300 hover:from-[#8FA8C9] hover:to-[#4A6B8A] hover:shadow-2xl hover:shadow-[#748CAB]/25 
+                  disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden border border-[#748CAB]/30"
               >
                 <div className="flex items-center gap-3">
                   {isSubmitting ? (
                     <>
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-[#F0EBD8] border-t-transparent rounded-full animate-spin" />
                       <span>Submitting...</span>
                     </>
                   ) : (
@@ -441,7 +471,7 @@ export default function FeedbackPage() {
                 </div>
                 
                 {/* Shine effect */}
-                <div className="absolute inset-0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                <div className="absolute inset-0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-[#F0EBD8]/10 to-transparent" />
               </button>
             </motion.div>
           </form>
