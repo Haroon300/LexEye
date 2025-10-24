@@ -189,7 +189,7 @@ const LandingPage = () => {
                 }}
               >
                 <FiSearch className="text-xl text-black group-hover:scale-110 transition-transform" />
-                Start Your Search
+                <p className="text-black">Start Your Search</p>
                 <FiArrowRight className="text-lg text-black group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
@@ -628,8 +628,8 @@ const LandingPage = () => {
                   boxShadow: `0 20px 40px ${COLORS.navy[4]}25`
                 }}
               >
-                Explore All Guides
-                <FiArrowRight className="text-lg group-hover:translate-x-1 transition-transform" />
+                <p className="text-black">Explore All Guides</p>
+                <FiArrowRight className="text-lg text-black group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
           </motion.div>
@@ -687,8 +687,8 @@ const LandingPage = () => {
                     boxShadow: `0 20px 40px ${COLORS.navy[4]}25`
                   }}
                 >
-                  <FiUser className="text-xl" />
-                  Sign In to Access Saved Guides
+                  <FiUser className="text-xl text-black" />
+                  <p className="text-black">Sign In to Access Saved Guides</p>
                 </Link>
               </motion.div>
               <motion.div

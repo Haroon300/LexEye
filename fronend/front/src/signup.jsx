@@ -190,17 +190,17 @@ const SignUp = () => {
         >
           <motion.div
             variants={itemVariants}
-            className="bg-gradient-to-br from-[#1D2D44]/80 to-[#0D1B2A]/80 backdrop-blur-2xl border border-[#748CAB]/20 rounded-3xl p-8 shadow-2xl shadow-[#748CAB]/10"
+            className="bg-gradient-to-br from-[#000000]/80 to-[#66666e]/80 backdrop-blur-2xl border border-[#748CAB]/20 rounded-3xl p-8 shadow-2xl shadow-[#748CAB]/10"
           >
             {/* Header */}
             <motion.div
               variants={itemVariants}
               className="text-center mb-8"
             >
-              <div className="inline-flex p-4 bg-[#748CAB]/20 rounded-2xl border border-[#748CAB]/30 mb-4">
-                <FiUser className="text-3xl text-[#748CAB]" />
+              <div className="inline-flex p-4 bg-[#66666e]/20 rounded-2xl border border-[#000]/30 mb-4">
+                <FiUser className="text-3xl text-[#e6e6e9]" />
               </div>
-              <h1 className="text-3xl font-black bg-gradient-to-r from-[#F0EBD8] to-[#F0EBD8] text-transparent bg-clip-text mb-2">
+              <h1 className="text-3xl font-black bg-gradient-to-r from-[#fff] to-[#fff] text-transparent bg-clip-text mb-2">
                 Join LexEye
               </h1>
               <p className="text-[#F0EBD8]/60 text-sm">
@@ -230,7 +230,7 @@ const SignUp = () => {
               variants={itemVariants}
               className="mb-6 p-4 bg-[#748CAB]/10 border border-[#748CAB]/20 rounded-2xl"
             >
-              <h3 className="text-[#F0EBD8] font-semibold text-sm mb-3 text-center">Create your account to unlock:</h3>
+              <h3 className="text-[#fff] font-semibold text-sm mb-3 text-center">Create your account to unlock:</h3>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 {[
                   { icon: FiBookmark, text: "Save Legal Guides" },
@@ -239,7 +239,7 @@ const SignUp = () => {
                   { icon: FiUser, text: "Track History" }
                 ].map((benefit, index) => (
                   <div key={index} className="flex items-center gap-2 text-[#F0EBD8]/70 p-2 rounded-lg bg-[#0D1B2A]/30">
-                    <benefit.icon className="text-[#748CAB] text-sm" />
+                    <benefit.icon className="text-[#66666e] text-sm" />
                     <span>{benefit.text}</span>
                   </div>
                 ))}
@@ -250,7 +250,7 @@ const SignUp = () => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Name Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-[#F0EBD8] text-sm font-medium mb-3">
+                <label className="block text-[#fff] text-sm font-medium mb-3">
                   Full Name
                 </label>
                 <div className="relative">
@@ -260,10 +260,10 @@ const SignUp = () => {
                     placeholder="Enter your full name"
                     value={data.name}
                     onChange={(e) => setData({ ...data, name: e.target.value })}
-                    className={`w-full pl-12 pr-4 py-4 bg-[#0D1B2A]/50 backdrop-blur-xl border rounded-2xl text-[#F0EBD8] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
-                      errors.name 
+                    className={`w-full pl-12 pr-4 py-4 bg-[#000]/50 backdrop-blur-xl border rounded-2xl text-[#fff] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
+                      errors.email 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
-                        : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
+                        : "border-[#9999a1] focus:border-[#9999a1] focus:ring-2 focus:ring-[#66666e]/20"
                     }`}
                     required
                   />
@@ -281,7 +281,7 @@ const SignUp = () => {
 
               {/* Email Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-[#F0EBD8] text-sm font-medium mb-3">
+                <label className="block text-[#fff] text-sm font-medium mb-3">
                   Email Address
                 </label>
                 <div className="relative">
@@ -291,10 +291,10 @@ const SignUp = () => {
                     placeholder="Enter your email"
                     value={data.email}
                     onChange={(e) => setData({ ...data, email: e.target.value })}
-                    className={`w-full pl-12 pr-4 py-4 bg-[#0D1B2A]/50 backdrop-blur-xl border rounded-2xl text-[#F0EBD8] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
+                    className={`w-full pl-12 pr-4 py-4 bg-[#000]/50 backdrop-blur-xl border rounded-2xl text-[#fff] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
                       errors.email 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
-                        : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
+                        : "border-[#9999a1] focus:border-[#9999a1] focus:ring-2 focus:ring-[#66666e]/20"
                     }`}
                     required
                   />
@@ -312,7 +312,7 @@ const SignUp = () => {
 
               {/* Password Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-[#F0EBD8] text-sm font-medium mb-3">
+                <label className="block text-[#fff] text-sm font-medium mb-3">
                   Password
                 </label>
                 <div className="relative">
@@ -322,10 +322,10 @@ const SignUp = () => {
                     placeholder="Create a strong password"
                     value={data.password}
                     onChange={(e) => handlePasswordChange(e.target.value)}
-                    className={`w-full pl-12 pr-12 py-4 bg-[#0D1B2A]/50 backdrop-blur-xl border rounded-2xl text-[#F0EBD8] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
-                      errors.password 
+                    className={`w-full pl-12 pr-4 py-4 bg-[#000]/50 backdrop-blur-xl border rounded-2xl text-[#fff] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
+                      errors.email 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
-                        : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
+                        : "border-[#9999a1] focus:border-[#9999a1] focus:ring-2 focus:ring-[#66666e]/20"
                     }`}
                     required
                   />
@@ -376,20 +376,20 @@ const SignUp = () => {
 
               {/* Confirm Password Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-[#F0EBD8] text-sm font-medium mb-3">
+                <label className="block text-[#fff] text-sm font-medium mb-3">
                   Confirm Password
                 </label>
                 <div className="relative">
-                  <FiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#F0EBD8]/40 text-lg" />
+                  <FiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#fff] text-lg" />
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Re-enter your password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className={`w-full pl-12 pr-12 py-4 bg-[#0D1B2A]/50 backdrop-blur-xl border rounded-2xl text-[#F0EBD8] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
-                      errors.confirmPassword 
+                    className={`w-full pl-12 pr-4 py-4 bg-[#000]/50 backdrop-blur-xl border rounded-2xl text-[#fff] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
+                      errors.email 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
-                        : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
+                        : "border-[#9999a1] focus:border-[#9999a1] focus:ring-2 focus:ring-[#66666e]/20"
                     }`}
                     required
                   />
@@ -440,7 +440,7 @@ const SignUp = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   disabled={loader}
-                  className="group relative w-full bg-gradient-to-r from-[#748CAB] to-[#3E5C76] text-[#F0EBD8] font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-[#748CAB]/25 hover:shadow-[#748CAB]/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 border border-[#748CAB]/30 overflow-hidden"
+                  className="group relative w-full bg-gradient-to-r from-[#9999a1] to-[#66666e] text-[#fff] font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-[#748CAB]/25 hover:shadow-[#748CAB]/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 border border-[#748CAB]/30 overflow-hidden"
                 >
                   {/* Shine effect */}
                   <div className="absolute inset-0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-[#F0EBD8]/10 to-transparent" />
@@ -480,7 +480,7 @@ const SignUp = () => {
             >
               <Link 
                 to="/signin" 
-                className="group flex items-center justify-center gap-3 w-full bg-[#1D2D44]/50 border border-[#3E5C76] text-[#F0EBD8] font-semibold py-4 px-8 rounded-2xl hover:bg-[#1D2D44] hover:border-[#748CAB] transition-all duration-300"
+                className="group flex items-center justify-center gap-3 w-full bg-[#66666e]/50 border border-[#9999a1] text-[#fff] font-semibold py-4 px-8 rounded-2xl hover:bg-[#000] hover:border-[#9999a1] transition-all duration-300"
               >
                 <FiUser className="text-lg group-hover:scale-110 transition-transform" />
                 <span>Sign In to Existing Account</span>
@@ -493,7 +493,7 @@ const SignUp = () => {
               variants={itemVariants}
               className="mt-6 p-4 bg-[#748CAB]/10 border border-[#748CAB]/20 rounded-2xl text-center"
             >
-              <div className="flex items-center justify-center gap-2 text-[#748CAB] text-sm">
+              <div className="flex items-center justify-center gap-2 text-[#66666e] text-sm">
                 <FiShield className="text-base" />
                 <span>Your legal information is protected with encryption</span>
               </div>

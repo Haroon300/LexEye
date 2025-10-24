@@ -304,7 +304,7 @@ const Search = () => {
                     disabled={!query.trim() || isSearching}
                     className="ml-1 md:ml-2 font-semibold rounded-lg md:rounded-xl px-3 md:px-6 py-2 md:py-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:shadow-lg flex items-center gap-1 md:gap-2 min-w-[70px] md:min-w-auto border"
                     style={{
-                      backgroundColor: COLORS.navy[4],
+                      backgroundColor: COLORS.navy[1],
                       borderColor: `${COLORS.navy[4]}50`,
                       color: COLORS.navy[5],
                       boxShadow: `0 4px 20px ${COLORS.navy[4]}25`

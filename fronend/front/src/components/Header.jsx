@@ -245,7 +245,7 @@ export default function Header() {
                       onClick={handleLogout}
                       className="flex items-center gap-3 w-full px-3 py-3 rounded-xl transition-all duration-300 group"
                       style={{ 
-                        color: COLORS.navy[5],
+                        color: COLORS.navy[1],
                         backgroundColor: 'transparent'
                       }}
                       whileHover={{
@@ -270,7 +270,7 @@ export default function Header() {
               className="hidden sm:flex items-center gap-2 font-semibold py-3 px-6 rounded-2xl shadow-lg transition-all duration-300 border"
               style={{
                 backgroundColor: COLORS.navy[4],
-                color: COLORS.navy[5],
+                color: COLORS.navy[1],
                 borderColor: `${COLORS.navy[4]}50`,
                 boxShadow: `0 8px 32px ${COLORS.navy[4]}25`
               }}
@@ -321,7 +321,7 @@ export default function Header() {
             exit="closed"
             className="fixed top-1/3 md:top-1/4 md:left-1/3 transform -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-sm sm:max-w-md backdrop-blur-2xl border rounded-3xl shadow-2xl z-50 p-6 mx-auto"
             style={{
-              backgroundColor: `${COLORS.navy[2]}F0`,
+              backgroundColor: `${COLORS.navy[1]}F0`,
               borderColor: `${COLORS.navy[4]}30`,
               boxShadow: `0 25px 50px ${COLORS.navy[1]}80`
             }}
@@ -332,7 +332,7 @@ export default function Header() {
                 className="text-2xl font-bold flex items-center gap-3"
                 style={{ color: COLORS.navy[5] }}
               >
-                <CgMenuGridR style={{ color: COLORS.navy[4] }} />
+                <CgMenuGridR style={{ color: COLORS.navy[5] }} />
                 Navigation
               </h2>
               <motion.button

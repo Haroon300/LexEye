@@ -218,7 +218,7 @@ const SignIn = () => {
                     className={`w-full pl-12 pr-4 py-4 bg-[#000]/50 backdrop-blur-xl border rounded-2xl text-[#fff] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
                       errors.email 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
-                        : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
+                        : "border-[#9999a1] focus:border-[#9999a1] focus:ring-2 focus:ring-[#66666e]/20"
                     }`}
                     required
                   />
@@ -250,7 +250,7 @@ const SignIn = () => {
                     className={`w-full pl-12 pr-4 py-4 bg-[#000]/50 backdrop-blur-xl border rounded-2xl text-[#fff] placeholder-[#F0EBD8]/40 focus:outline-none transition-all duration-300 ${
                       errors.email 
                         ? "border-red-400/50 focus:border-red-400 focus:ring-2 focus:ring-red-400/20" 
-                        : "border-[#3E5C76] focus:border-[#748CAB] focus:ring-2 focus:ring-[#748CAB]/20"
+                        : "border-[#9999a1] focus:border-[#9999a1] focus:ring-2 focus:ring-[#66666e]/20"
                     }`}
                     required
                   />
@@ -287,7 +287,7 @@ const SignIn = () => {
                 </label>
                 <Link 
                   to="/forgot-password" 
-                  className="text-[#748CAB] hover:text-[#8FA8C9] transition-colors duration-200 text-sm"
+                  className="text-[#66666e] hover:text-[#fff] transition-colors duration-200 text-sm"
                 >
                   Forgot password?
                 </Link>
@@ -300,7 +300,7 @@ const SignIn = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   disabled={loader}
-                  className="group relative w-full bg-gradient-to-r from-[#748CAB] to-[#3E5C76] text-[#F0EBD8] font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-[#748CAB]/25 hover:shadow-[#748CAB]/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 border border-[#748CAB]/30 overflow-hidden"
+                  className="group relative w-full bg-gradient-to-r from-[#9999a1] to-[#66666e] text-[#fff] font-semibold py-4 px-8 rounded-2xl shadow-2xl shadow-[#748CAB]/25 hover:shadow-[#748CAB]/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 border border-[#748CAB]/30 overflow-hidden"
                 >
                   {/* Shine effect */}
                   <div className="absolute inset-0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-[#F0EBD8]/10 to-transparent" />
@@ -340,7 +340,7 @@ const SignIn = () => {
             >
               <Link 
                 to="/signup" 
-                className="group flex items-center justify-center gap-3 w-full bg-[#1D2D44]/50 border border-[#3E5C76] text-[#F0EBD8] font-semibold py-4 px-8 rounded-2xl hover:bg-[#1D2D44] hover:border-[#748CAB] transition-all duration-300"
+                className="group flex items-center justify-center gap-3 w-full bg-[#66666e]/50 border border-[#9999a1] text-[#fff] font-semibold py-4 px-8 rounded-2xl hover:bg-[#000] hover:border-[#9999a1] transition-all duration-300"
               >
                 <FiUser className="text-lg group-hover:scale-110 transition-transform" />
                 <span>Create New Account</span>
@@ -353,7 +353,7 @@ const SignIn = () => {
               variants={itemVariants}
               className="mt-8 space-y-4"
             >
-              <h3 className="text-[#F0EBD8] font-semibold text-sm text-center mb-4">Sign in to access:</h3>
+              <h3 className="text-[#fff] font-semibold text-sm text-center mb-4">Sign in to access:</h3>
               <div className="grid grid-cols-2 gap-3 text-xs">
                 {[
                   { icon: FiShield, text: "Saved Bookmarks" },
@@ -362,7 +362,7 @@ const SignIn = () => {
                   { icon: FiLock, text: "Secure Data" }
                 ].map((feature, index) => (
                   <div key={index} className="flex items-center gap-2 text-[#F0EBD8]/60 p-2 rounded-lg bg-[#0D1B2A]/30">
-                    <feature.icon className="text-[#748CAB] text-sm" />
+                    <feature.icon className="text-[#66666e] text-sm" />
                     <span>{feature.text}</span>
                   </div>
                 ))}
@@ -374,7 +374,7 @@ const SignIn = () => {
               variants={itemVariants}
               className="mt-8 p-4 bg-[#748CAB]/10 border border-[#748CAB]/20 rounded-2xl text-center"
             >
-              <div className="flex items-center justify-center gap-2 text-[#748CAB] text-sm">
+              <div className="flex items-center justify-center gap-2 text-[#9999a1] text-sm">
                 <FiShield className="text-base" />
                 <span>Your legal data is securely encrypted</span>
               </div>
