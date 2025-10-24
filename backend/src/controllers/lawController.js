@@ -84,7 +84,7 @@ export const getLawById = asyncWrapper(async (req, res) => {
   res.json(law);
 });
 
-// ✅ Search
+// ✅ Enhanced Search
 export const searchLaws = asyncWrapper(async (req, res) => {
   const { query, page = 1, limit = 10 } = req.body;
 
@@ -93,192 +93,155 @@ export const searchLaws = asyncWrapper(async (req, res) => {
   }
 
   const skip = (page - 1) * limit;
-  
-  // Split query into words for better search
-  const searchWords = query.trim().toLowerCase().split(/\s+/).filter(word => word.length > 0);
+  const searchQuery = query.trim().toLowerCase();
 
   try {
-    // --- MongoDB Atlas Search ---
-    let results = await Law.aggregate([
-      {
-        $search: {
-          index: "default",
-          compound: {
-            should: searchWords.map((word) => ({
-              text: {
-                query: word,
-                path: [
-                  "lawTitle",
-                  "section", 
-                  "category",
-                  "sabCategory",
-                  "jurisdiction",
-                  "sectionOverview",
-                  "legalConcept",
-                  "description",
-                  "legalConsequence",
-                  "preventionSolutions",
-                  "stepByStepGuide",
-                ],
-                fuzzy: {
-                  maxEdits: 2,
-                  prefixLength: 1,
-                },
-              },
-            })),
-          },
-        },
-      },
-      {
-        $addFields: { 
-          score: { $meta: "searchScore" },
-          // Add relevance scoring based on field importance
-          relevanceScore: {
-            $add: [
-              { $cond: [{ $regexMatch: { input: "$lawTitle", regex: new RegExp(searchWords.join('|'), 'i') } }, 10, 0] },
-              { $cond: [{ $regexMatch: { input: "$section", regex: new RegExp(searchWords.join('|'), 'i') } }, 8, 0] },
-              { $cond: [{ $regexMatch: { input: "$legalConcept", regex: new RegExp(searchWords.join('|'), 'i') } }, 6, 0] },
-              { $cond: [{ $regexMatch: { input: "$description", regex: new RegExp(searchWords.join('|'), 'i') } }, 4, 0] },
-              { $cond: [{ $regexMatch: { input: "$category", regex: new RegExp(searchWords.join('|'), 'i') } }, 3, 0] },
-            ]
-          }
-        },
-      },
-      { 
-        $sort: { 
-          relevanceScore: -1,
-          score: -1 
-        } 
-      },
-      {
-        $facet: {
-          data: [
-            { $skip: skip },
-            { $limit: parseInt(limit) },
-          ],
-          totalCount: [{ $count: "count" }],
-        },
-      },
-    ]);
+    // First, try a simple regex search as primary approach
+    const searchRegex = new RegExp(searchQuery.split(/\s+/).filter(word => word.length > 2).join('|'), 'i');
+    
+    console.log("Searching for:", searchQuery);
+    console.log("Using regex:", searchRegex);
 
-    let data = results[0]?.data || [];
-    let totalCount = results[0]?.totalCount?.[0]?.count || 0;
+    const results = await Law.find({
+      $or: [
+        { lawTitle: searchRegex },
+        { section: searchRegex },
+        { legalConcept: searchRegex },
+        { description: searchRegex },
+        { category: searchRegex },
+        { sabCategory: searchRegex },
+        { sectionOverview: searchRegex },
+        { legalConsequence: searchRegex },
+        { preventionSolutions: searchRegex },
+        { stepByStepGuide: searchRegex },
+        { jurisdiction: searchRegex }
+      ]
+    })
+    .sort({ 
+      // Prioritize matches in important fields
+      lawTitle: 1 
+    })
+    .skip(skip)
+    .limit(parseInt(limit))
+    .lean();
 
-    // --- Fallback: Fuse.js if no Atlas Search results ---
-    if (!data.length) {
-      const allLaws = await Law.find().lean();
+    const totalCount = await Law.countDocuments({
+      $or: [
+        { lawTitle: searchRegex },
+        { section: searchRegex },
+        { legalConcept: searchRegex },
+        { description: searchRegex },
+        { category: searchRegex },
+        { sabCategory: searchRegex },
+        { sectionOverview: searchRegex },
+        { legalConsequence: searchRegex },
+        { preventionSolutions: searchRegex },
+        { stepByStepGuide: searchRegex },
+        { jurisdiction: searchRegex }
+      ]
+    });
 
-      const fuse = new Fuse(allLaws, {
-        keys: [
-          { name: "lawTitle", weight: 3 },
-          { name: "section", weight: 3 },
-          { name: "legalConcept", weight: 2 },
-          { name: "description", weight: 2 },
-          { name: "category", weight: 1.5 },
-          { name: "sabCategory", weight: 1.5 },
-          { name: "sectionOverview", weight: 1 },
-          { name: "legalConsequence", weight: 1 },
-          { name: "preventionSolutions", weight: 1 },
-          { name: "stepByStepGuide", weight: 1 },
-          { name: "jurisdiction", weight: 0.5 },
-        ],
-        threshold: 0.3, // Lower threshold for more results
-        distance: 100,
-        includeScore: true,
-        ignoreLocation: true, // Search in entire strings
-        minMatchCharLength: 2, // Match even short words
-      });
+    console.log(`Found ${results.length} results for query: "${searchQuery}"`);
 
-      const allResults = fuse.search(query)
-        .sort((a, b) => a.score - b.score)
-        .map((r) => ({ 
-          ...r.item, 
-          score: 1 - r.score,
-          // Add relevance highlights for frontend
-          searchHighlights: getSearchHighlights(r.item, query)
-        }));
-
-      totalCount = allResults.length;
-      data = allResults.slice(skip, skip + parseInt(limit));
+    // If no results with regex, try keyword-based search
+    let finalResults = results;
+    if (results.length === 0) {
+      console.log("Trying keyword-based search...");
+      finalResults = await keywordBasedSearch(searchQuery, skip, limit);
     }
 
     return res.json({
       success: true,
-      count: data.length,
-      totalCount,
+      count: finalResults.length,
+      totalCount: finalResults.length === 0 ? 0 : totalCount,
       currentPage: parseInt(page),
-      totalPages: Math.ceil(totalCount / limit),
-      results: data,
+      totalPages: Math.ceil((finalResults.length === 0 ? 0 : totalCount) / limit),
+      results: finalResults.map(item => ({ 
+        ...item, 
+        score: 1,
+        searchMatch: getMatchedFields(item, searchQuery)
+      })),
     });
+
   } catch (error) {
-    // If Atlas search fails, use Fuse.js directly
-    console.log("Atlas search failed, using Fuse.js fallback:", error.message);
+    console.log("Search error:", error.message);
     
+    // Final fallback - return all laws and let frontend filter
     const allLaws = await Law.find().lean();
-    const fuse = new Fuse(allLaws, {
-      keys: [
-        { name: "lawTitle", weight: 3 },
-        { name: "section", weight: 3 },
-        { name: "legalConcept", weight: 2 },
-        { name: "description", weight: 2 },
-        { name: "category", weight: 1.5 },
-        { name: "sabCategory", weight: 1.5 },
-        { name: "sectionOverview", weight: 1 },
-        { name: "legalConsequence", weight: 1 },
-        { name: "preventionSolutions", weight: 1 },
-        { name: "stepByStepGuide", weight: 1 },
-        { name: "jurisdiction", weight: 0.5 },
-      ],
-      threshold: 0.3,
-      distance: 100,
-      includeScore: true,
-      ignoreLocation: true,
-      minMatchCharLength: 2,
-    });
-
-    const allResults = fuse.search(query)
-      .sort((a, b) => a.score - b.score)
-      .map((r) => ({ 
-        ...r.item, 
-        score: 1 - r.score,
-        searchHighlights: getSearchHighlights(r.item, query)
-      }));
-
-    const totalCount = allResults.length;
-    const data = allResults.slice(skip, skip + parseInt(limit));
+    const filteredResults = allLaws.filter(law => 
+      containsSearchTerms(law, searchQuery)
+    ).slice(skip, skip + parseInt(limit));
 
     return res.json({
       success: true,
-      count: data.length,
-      totalCount,
+      count: filteredResults.length,
+      totalCount: filteredResults.length,
       currentPage: parseInt(page),
-      totalPages: Math.ceil(totalCount / limit),
-      results: data,
+      totalPages: Math.ceil(filteredResults.length / limit),
+      results: filteredResults.map(item => ({ ...item, score: 1 })),
     });
   }
 });
 
-// Helper function to generate search highlights
-function getSearchHighlights(law, query) {
-  const highlights = {};
+// Helper function for keyword-based search
+async function keywordBasedSearch(query, skip, limit) {
+  const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 2);
+  
+  if (keywords.length === 0) return [];
+
+  const keywordRegex = new RegExp(keywords.join('|'), 'i');
+  
+  const results = await Law.find({
+    $or: [
+      { lawTitle: keywordRegex },
+      { section: keywordRegex },
+      { legalConcept: keywordRegex },
+      { description: keywordRegex },
+      { category: keywordRegex },
+      { sabCategory: keywordRegex }
+    ]
+  })
+  .limit(parseInt(limit))
+  .skip(skip)
+  .lean();
+
+  return results;
+}
+
+// Helper function to check if law contains search terms
+function containsSearchTerms(law, query) {
   const searchTerms = query.toLowerCase().split(/\s+/).filter(term => term.length > 2);
   
-  const fieldsToCheck = [
-    'lawTitle', 'section', 'legalConcept', 'description', 
-    'category', 'sabCategory', 'sectionOverview'
-  ];
+  if (searchTerms.length === 0) return false;
+
+  const lawText = JSON.stringify(law).toLowerCase();
   
-  fieldsToCheck.forEach(field => {
-    if (law[field]) {
-      const fieldValue = law[field].toLowerCase();
-      const hasMatch = searchTerms.some(term => fieldValue.includes(term));
-      if (hasMatch) {
-        highlights[field] = true;
-      }
+  return searchTerms.some(term => lawText.includes(term));
+}
+
+// Helper function to show which fields matched
+function getMatchedFields(law, query) {
+  const matches = [];
+  const searchTerms = query.toLowerCase().split(/\s+/);
+  
+  const fields = {
+    lawTitle: law.lawTitle,
+    section: law.section,
+    legalConcept: law.legalConcept,
+    description: law.description,
+    category: law.category,
+    sabCategory: law.sabCategory
+  };
+
+  Object.entries(fields).forEach(([field, value]) => {
+    if (value && searchTerms.some(term => 
+      value.toLowerCase().includes(term.toLowerCase())
+    )) {
+      matches.push(field);
     }
   });
-  
-  return highlights;
+
+  return matches;
 }
 
 // ✅ Get all categories
