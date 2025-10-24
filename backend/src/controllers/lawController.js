@@ -93,6 +93,9 @@ export const searchLaws = asyncWrapper(async (req, res) => {
   }
 
   const skip = (page - 1) * limit;
+  
+  // Split query into words for better search
+  const searchWords = query.trim().toLowerCase().split(/\s+/).filter(word => word.length > 0);
 
   try {
     // --- MongoDB Atlas Search ---
@@ -101,12 +104,12 @@ export const searchLaws = asyncWrapper(async (req, res) => {
         $search: {
           index: "default",
           compound: {
-            should: words.map((word) => ({
+            should: searchWords.map((word) => ({
               text: {
                 query: word,
                 path: [
                   "lawTitle",
-                  "section",
+                  "section", 
                   "category",
                   "sabCategory",
                   "jurisdiction",
@@ -127,9 +130,26 @@ export const searchLaws = asyncWrapper(async (req, res) => {
         },
       },
       {
-        $addFields: { score: { $meta: "searchScore" } },
+        $addFields: { 
+          score: { $meta: "searchScore" },
+          // Add relevance scoring based on field importance
+          relevanceScore: {
+            $add: [
+              { $cond: [{ $regexMatch: { input: "$lawTitle", regex: new RegExp(searchWords.join('|'), 'i') } }, 10, 0] },
+              { $cond: [{ $regexMatch: { input: "$section", regex: new RegExp(searchWords.join('|'), 'i') } }, 8, 0] },
+              { $cond: [{ $regexMatch: { input: "$legalConcept", regex: new RegExp(searchWords.join('|'), 'i') } }, 6, 0] },
+              { $cond: [{ $regexMatch: { input: "$description", regex: new RegExp(searchWords.join('|'), 'i') } }, 4, 0] },
+              { $cond: [{ $regexMatch: { input: "$category", regex: new RegExp(searchWords.join('|'), 'i') } }, 3, 0] },
+            ]
+          }
+        },
       },
-      { $sort: { score: -1 } },
+      { 
+        $sort: { 
+          relevanceScore: -1,
+          score: -1 
+        } 
+      },
       {
         $facet: {
           data: [
@@ -150,26 +170,33 @@ export const searchLaws = asyncWrapper(async (req, res) => {
 
       const fuse = new Fuse(allLaws, {
         keys: [
-          "lawTitle",
-          "section",
-          "category",
-          "sabCategory",
-          "jurisdiction",
-          "sectionOverview",
-          "legalConcept",
-          "description",
-          "legalConsequence",
-          "preventionSolutions",
-          "stepByStepGuide",
+          { name: "lawTitle", weight: 3 },
+          { name: "section", weight: 3 },
+          { name: "legalConcept", weight: 2 },
+          { name: "description", weight: 2 },
+          { name: "category", weight: 1.5 },
+          { name: "sabCategory", weight: 1.5 },
+          { name: "sectionOverview", weight: 1 },
+          { name: "legalConsequence", weight: 1 },
+          { name: "preventionSolutions", weight: 1 },
+          { name: "stepByStepGuide", weight: 1 },
+          { name: "jurisdiction", weight: 0.5 },
         ],
-        threshold: 0.4,
-        distance: 200,
+        threshold: 0.3, // Lower threshold for more results
+        distance: 100,
         includeScore: true,
+        ignoreLocation: true, // Search in entire strings
+        minMatchCharLength: 2, // Match even short words
       });
 
       const allResults = fuse.search(query)
         .sort((a, b) => a.score - b.score)
-        .map((r) => ({ ...r.item, score: 1 - r.score }));
+        .map((r) => ({ 
+          ...r.item, 
+          score: 1 - r.score,
+          // Add relevance highlights for frontend
+          searchHighlights: getSearchHighlights(r.item, query)
+        }));
 
       totalCount = allResults.length;
       data = allResults.slice(skip, skip + parseInt(limit));
@@ -190,26 +217,32 @@ export const searchLaws = asyncWrapper(async (req, res) => {
     const allLaws = await Law.find().lean();
     const fuse = new Fuse(allLaws, {
       keys: [
-        "lawTitle",
-        "section",
-        "category",
-        "sabCategory",
-        "jurisdiction",
-        "sectionOverview",
-        "legalConcept",
-        "description",
-        "legalConsequence",
-        "preventionSolutions",
-        "stepByStepGuide",
+        { name: "lawTitle", weight: 3 },
+        { name: "section", weight: 3 },
+        { name: "legalConcept", weight: 2 },
+        { name: "description", weight: 2 },
+        { name: "category", weight: 1.5 },
+        { name: "sabCategory", weight: 1.5 },
+        { name: "sectionOverview", weight: 1 },
+        { name: "legalConsequence", weight: 1 },
+        { name: "preventionSolutions", weight: 1 },
+        { name: "stepByStepGuide", weight: 1 },
+        { name: "jurisdiction", weight: 0.5 },
       ],
-      threshold: 0.4,
-      distance: 200,
+      threshold: 0.3,
+      distance: 100,
       includeScore: true,
+      ignoreLocation: true,
+      minMatchCharLength: 2,
     });
 
     const allResults = fuse.search(query)
       .sort((a, b) => a.score - b.score)
-      .map((r) => ({ ...r.item, score: 1 - r.score }));
+      .map((r) => ({ 
+        ...r.item, 
+        score: 1 - r.score,
+        searchHighlights: getSearchHighlights(r.item, query)
+      }));
 
     const totalCount = allResults.length;
     const data = allResults.slice(skip, skip + parseInt(limit));
@@ -224,6 +257,29 @@ export const searchLaws = asyncWrapper(async (req, res) => {
     });
   }
 });
+
+// Helper function to generate search highlights
+function getSearchHighlights(law, query) {
+  const highlights = {};
+  const searchTerms = query.toLowerCase().split(/\s+/).filter(term => term.length > 2);
+  
+  const fieldsToCheck = [
+    'lawTitle', 'section', 'legalConcept', 'description', 
+    'category', 'sabCategory', 'sectionOverview'
+  ];
+  
+  fieldsToCheck.forEach(field => {
+    if (law[field]) {
+      const fieldValue = law[field].toLowerCase();
+      const hasMatch = searchTerms.some(term => fieldValue.includes(term));
+      if (hasMatch) {
+        highlights[field] = true;
+      }
+    }
+  });
+  
+  return highlights;
+}
 
 // ✅ Get all categories
 export const getAllLawCategories = asyncWrapper(async (req, res) => {
