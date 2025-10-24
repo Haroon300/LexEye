@@ -94,6 +94,7 @@ const LawDetail = () => {
   const [loading, setLoading] = useState(true);
   const [relatedLawsLoading, setRelatedLawsLoading] = useState(false);
   const [isPrinting, setIsPrinting] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const token = localStorage.getItem("token");
@@ -244,9 +245,85 @@ const LawDetail = () => {
     }
   };
 
-  // Enhanced Share feature
+  // Helper function to copy to clipboard with fallback
+  const copyToClipboard = async (text) => {
+    try {
+      // Try modern clipboard API first
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } else {
+        // Fallback for older browsers or insecure contexts
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        if (!successful) {
+          throw new Error('Fallback copy failed');
+        }
+        return successful;
+      }
+    } catch (err) {
+      console.error('Clipboard copy failed:', err);
+      throw err;
+    }
+  };
+
+  // Helper function to show notifications
+  const showNotification = (message) => {
+    // Remove any existing notifications
+    const existingNotifications = document.querySelectorAll('.share-notification');
+    existingNotifications.forEach(notification => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    });
+
+    const notification = document.createElement('div');
+    notification.className = 'share-notification fixed top-4 right-4 text-white px-4 py-3 rounded-lg shadow-2xl z-50 backdrop-blur-xl border transform transition-transform duration-300';
+    notification.style.backgroundColor = `${COLORS.navy[4]}E6`;
+    notification.style.borderColor = `${COLORS.navy[4]}40`;
+    notification.style.color = COLORS.navy[5];
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+
+    // Add entrance animation
+    setTimeout(() => {
+      notification.style.transform = 'translateX(0)';
+    }, 10);
+
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            document.body.removeChild(notification);
+          }
+        }, 300);
+      }
+    }, 3000);
+  };
+
+  // Enhanced Share feature with comprehensive error handling
   const handleShare = async () => {
     if (!law) return;
+    
+    // Prevent multiple simultaneous share attempts
+    if (isSharing) {
+      showNotification('⚠️ Please wait...');
+      return;
+    }
+
     const shareData = {
       title: `${law.lawTitle || law.section || "Law Section"} - LexEye`,
       text: `${law.legalConcept || "Legal information"} - ${law.description?.substring(0, 100)}...`,
@@ -254,22 +331,39 @@ const LawDetail = () => {
     };
 
     try {
-      if (navigator.share) {
+      setIsSharing(true);
+      
+      // Check if Web Share API is supported and available
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
         await navigator.share(shareData);
       } else {
-        await navigator.clipboard.writeText(window.location.href);
-        // Show success notification
-        const notification = document.createElement('div');
-        notification.className = 'fixed top-4 right-4 text-white px-4 py-2 rounded-lg shadow-lg z-50';
-        notification.style.backgroundColor = `${COLORS.navy[4]}E6`;
-        notification.textContent = '🔗 Link copied to clipboard!';
-        document.body.appendChild(notification);
-        setTimeout(() => {
-          document.body.removeChild(notification);
-        }, 3000);
+        // Fallback to clipboard
+        await copyToClipboard(window.location.href);
+        showNotification('🔗 Link copied to clipboard!');
       }
     } catch (err) {
-      console.error("Share failed:", err);
+      // Handle specific error types
+      switch (err.name) {
+        case 'AbortError':
+          // User cancelled the share - no action needed
+          break;
+        case 'NotAllowedError':
+          showNotification('❌ Share permission denied');
+          break;
+        case 'TypeError':
+          // Invalid share data - fallback to clipboard
+          await copyToClipboard(window.location.href);
+          showNotification('🔗 Link copied to clipboard!');
+          break;
+        default:
+          // Any other error - fallback to clipboard
+          console.warn('Share error:', err);
+          await copyToClipboard(window.location.href);
+          showNotification('🔗 Link copied to clipboard!');
+          break;
+      }
+    } finally {
+      setIsSharing(false);
     }
   };
 
@@ -823,7 +917,10 @@ const LawDetail = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleShare}
-                className="flex items-center justify-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-4 border rounded-xl md:rounded-2xl font-semibold backdrop-blur-xl transition-all duration-300"
+                disabled={isSharing}
+                className={`flex items-center justify-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-4 border rounded-xl md:rounded-2xl font-semibold backdrop-blur-xl transition-all duration-300 ${
+                  isSharing ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
                 style={{
                   backgroundColor: `${COLORS.navy[4]}20`,
                   borderColor: `${COLORS.navy[4]}30`,
@@ -831,7 +928,9 @@ const LawDetail = () => {
                 }}
               >
                 <IoShareOutline className="text-lg md:text-2xl" />
-                <span className="text-sm md:text-base">Share Law</span>
+                <span className="text-sm md:text-base">
+                  {isSharing ? 'Sharing...' : 'Share Law'}
+                </span>
               </MotionButton>
             </div>
           </div>
