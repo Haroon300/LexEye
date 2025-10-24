@@ -401,57 +401,57 @@ const Glossary = () => {
         </div>
       </div>
 
-      
+      {/* Top Action Buttons */}
+      <div className="absolute md:top-[7%] top-[4%] left-6 right-6 z-20">
+        <div className="flex justify-between items-center">
+          {/* Back Button */}
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-[#F0EBD8] font-semibold hover:bg-white/20 rounded-xl px-4 py-3 shadow-2xl transition-all duration-300 hover:scale-105 group"
+            >
+              <TiArrowBack className="text-xl group-hover:-translate-x-1 transition-transform duration-300" />
+              <span className="hidden sm:inline">{t.back}</span>
+            </button>
+          </motion.div>
 
-      {/* Back Button */}
-      <motion.div 
-        className="absolute md:top-[7%] top-[4%] left-6 z-20"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-[#F0EBD8] font-semibold hover:bg-white/20 rounded-xl px-5 py-3 shadow-2xl transition-all duration-300 hover:scale-105 group"
-        >
-          <TiArrowBack className="text-xl group-hover:-translate-x-1 transition-transform duration-300" />
-          <span className="hidden sm:inline">{t.back}</span>
-        </button>
-      </motion.div>
-
-
-      <div className="absolute top-[7%] right-20 z-20 hidden lg:block" >
-        <div className="flex items-center gap-2"> 
-            {/* Language Toggle */}
+          {/* Right Side Buttons */}
+          <div className="flex items-center gap-2">
+            {/* Language Toggle - Visible on both mobile and desktop */}
             <motion.div 
-              className=" z-20"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              >
+            >
               <button
                 onClick={() => setLanguage(language === "en" ? "ur" : "en")}
-                className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-[#F0EBD8] font-semibold hover:bg-white/20 rounded-xl px-4 py-2 shadow-2xl transition-all duration-300 hover:scale-105"
-                >
+                className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-[#F0EBD8] font-semibold hover:bg-white/20 rounded-xl px-4 py-3 shadow-2xl transition-all duration-300 hover:scale-105"
+              >
                 <IoLanguage className="text-lg" />
                 <span className="text-sm">{language === "en" ? "اردو" : "English"}</span>
               </button>
             </motion.div>
-            {/* Desktop Category Sidebar Toggle */}
+
+            {/* Desktop Category Sidebar Toggle - Hidden on mobile */}
             <motion.div 
-              
+              className="hidden lg:block"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <button
                 onClick={() => setShowCategorySidebar(!showCategorySidebar)}
-                className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-[#F0EBD8] font-semibold hover:bg-white/20 rounded-xl px-5 py-3 shadow-2xl transition-all duration-300 hover:scale-105 group"
+                className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-[#F0EBD8] font-semibold hover:bg-white/20 rounded-xl px-4 py-3 shadow-2xl transition-all duration-300 hover:scale-105 group"
               >
                 <IoFilter className="text-xl group-hover:scale-110 transition-transform duration-300" />
                 <span>{t.categories}</span>
               </button>
             </motion.div>
+          </div>
         </div>
       </div>
 
@@ -516,6 +516,7 @@ const Glossary = () => {
         </div>
       </motion.div>
 
+      {/* Rest of your component remains the same... */}
       {/* Current Category Display */}
       <motion.div 
         className="px-4 sm:px-6 py-4 text-center relative z-10"
@@ -663,6 +664,7 @@ const Glossary = () => {
           initial="hidden"
           animate="visible"
         >
+          {/* ... rest of your glossary grid content ... */}
           <AnimatePresence mode="wait">
             {currentItems.length > 0 ? (
               <>
