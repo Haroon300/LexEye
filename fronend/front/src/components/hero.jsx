@@ -103,7 +103,6 @@ const LandingPage = () => {
         <div className="absolute inset-0 opacity-10">
           <div 
             className="absolute inset-0 bg-[linear-gradient(rgba(240,235,216,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(240,235,216,0.1)_1px,transparent_1px)] bg-[size:60px_60px]"
-            style={{ backgroundColor: COLORS.navy[1] }}
           />
         </div>
       </div>
@@ -282,13 +281,6 @@ const LandingPage = () => {
             scene="https://prod.spline.design/zHdL4fLC68VLmFBT/scene.splinecode"
             className="w-full h-full"
           />
-          {/* Enhanced overlay gradient */}
-          <div 
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: `radial-gradient(circle at 70% 50%, transparent 0%, ${COLORS.navy[1]} 70%)`
-            }}
-          ></div>
         </motion.div>
       </main>
 
