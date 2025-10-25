@@ -122,13 +122,13 @@ export default function Header() {
     <motion.header
       className={`fixed top-0 left-0 w-full flex justify-between items-center py-4 px-6 lg:px-16 z-50 transition-all duration-500 backdrop-blur-xl ${
         scrolled
-          ? "border-b shadow-2xl"
-          : "bg-transparent"
+          ? "bg-transparent"
+          : "border-b shadow-2xl"
       }`}
       style={{ 
-        backgroundColor: scrolled ? `${COLORS.navy[1]}E6` : 'transparent',
-        borderColor: scrolled ? `${COLORS.navy[4]}20` : 'transparent',
-        boxShadow: scrolled ? `0 8px 32px ${COLORS.navy[1]}40` : 'none'
+        backgroundColor: scrolled ? 'transparent' : `${COLORS.navy[1]}E6`,
+        borderColor: scrolled ? 'transparent' :`${COLORS.navy[4]}20`,
+        boxShadow: scrolled ?  'none' : `0 8px 32px ${COLORS.navy[1]}40`
       }}
       variants={headerVariants}
       initial="hidden"
@@ -189,7 +189,7 @@ export default function Header() {
               className="relative h-11 w-11 flex items-center justify-center font-semibold rounded-2xl shadow-lg transition-all duration-300 overflow-hidden group border"
               style={{
                 backgroundColor: COLORS.navy[4],
-                color: COLORS.navy[5],
+                color: COLORS.navy[1],
                 borderColor: `${COLORS.navy[4]}50`,
                 boxShadow: `0 8px 32px ${COLORS.navy[4]}25`
               }}
@@ -223,7 +223,7 @@ export default function Header() {
                         className="w-10 h-10 rounded-xl flex items-center justify-center font-bold border"
                         style={{
                           backgroundColor: COLORS.navy[4],
-                          color: COLORS.navy[5],
+                          color: COLORS.navy[1],
                           borderColor: `${COLORS.navy[4]}50`
                         }}
                       >
@@ -245,14 +245,14 @@ export default function Header() {
                       onClick={handleLogout}
                       className="flex items-center gap-3 w-full px-3 py-3 rounded-xl transition-all duration-300 group"
                       style={{ 
-                        color: COLORS.navy[1],
+                        color: COLORS.navy[5],
                         backgroundColor: 'transparent'
                       }}
                       whileHover={{
-                        backgroundColor: `${COLORS.navy[3]}40`
+                        backgroundColor: `${COLORS.navy[4]}20`
                       }}
                     >
-                      <FiLogOut className="text-lg" />
+                      <FiLogOut className="text-lg" style={{ color: COLORS.navy[4] }} />
                       <span className="text-sm font-medium">Sign Out</span>
                     </button>
                   </div>
@@ -288,8 +288,8 @@ export default function Header() {
           onClick={() => setIsPopupOpen(true)}
           className="p-3 rounded-2xl border transition-all duration-300 backdrop-blur-xl"
           style={{
-            backgroundColor: `${COLORS.navy[2]}80`,
-            borderColor: `${COLORS.navy[4]}30`,
+            backgroundColor: `${COLORS.navy[5]}10`,
+            borderColor: `${COLORS.navy[5]}30`,
             color: COLORS.navy[5]
           }}
         >
@@ -332,7 +332,7 @@ export default function Header() {
                 className="text-2xl font-bold flex items-center gap-3"
                 style={{ color: COLORS.navy[5] }}
               >
-                <CgMenuGridR style={{ color: COLORS.navy[5] }} />
+                <CgMenuGridR style={{ color: COLORS.navy[4] }} />
                 Navigation
               </h2>
               <motion.button
@@ -366,16 +366,16 @@ export default function Header() {
                     style={{
                       backgroundColor: location.pathname === to 
                         ? `${COLORS.navy[4]}20` 
-                        : `${COLORS.navy[3]}15`,
+                        : `${COLORS.navy[5]}05`,
                       borderColor: location.pathname === to 
                         ? `${COLORS.navy[4]}50` 
-                        : `${COLORS.navy[4]}20`,
+                        : `${COLORS.navy[5]}10`,
                       color: COLORS.navy[5]
                     }}
                   >
                     <motion.div 
                       className="mb-3 text-2xl transition-transform duration-300"
-                      style={{ color: COLORS.navy[4] }}
+                      style={{ color: location.pathname === to ? COLORS.navy[4] : COLORS.navy[4] }}
                       whileHover={{ scale: 1.2 }}
                     >
                       {icon}
@@ -385,7 +385,7 @@ export default function Header() {
                     </span>
                     <span 
                       className="text-xs text-center font-light"
-                      style={{ color: `${COLORS.navy[5]}90` }}
+                      style={{ color: `${COLORS.navy[5]}80` }}
                     >
                       {description}
                     </span>
