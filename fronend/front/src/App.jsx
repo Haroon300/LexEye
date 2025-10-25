@@ -20,6 +20,7 @@ import CommentList from "./components/Comment";
 import Glossary from "./Glossary";
 import About from "./About.jsx";
 import EmergencyHelpline from "./EmergencyHelpline";
+import FAQHelpCenter from "./faqHelpCenter";
 
 import { useEffect, useState } from "react";
 
@@ -87,7 +88,7 @@ export default function App() {
               <Route path="/law/:lawId" element={<LawDetail />} />
               <Route path="/comments" element={<CommentList />} />
               <Route path="/about" element={<About />} />
-
+              <Route path="/faq" element={<FAQHelpCenter/>} />
               {/* Extra Pages */}
               <Route path="/comment" element={<Comment />} />
 
