@@ -186,13 +186,8 @@ const Footer = () => {
                   },
                   { 
                     icon: FiGithub, 
-                    href: "#", 
+                    href: "https://github.com/Haroon300/LexEye", 
                     tooltip: "GitHub"
-                  },
-                  { 
-                    icon: FiTwitter, 
-                    href: "#", 
-                    tooltip: "Twitter"
                   },
                 ].map((social, index) => (
                   <motion.a
