@@ -98,13 +98,6 @@ const LandingPage = () => {
           className="absolute w-72 h-72 rounded-full blur-3xl bottom-20 left-1/4 animate-pulse-slow"
           style={{ backgroundColor: `${COLORS.navy[2]}25` }}
         />
-        
-        {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div 
-            className="absolute inset-0 bg-[linear-gradient(rgba(240,235,216,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(240,235,216,0.1)_1px,transparent_1px)] bg-[size:60px_60px]"
-          />
-        </div>
       </div>
 
       {/* Enhanced Hero Section */}
