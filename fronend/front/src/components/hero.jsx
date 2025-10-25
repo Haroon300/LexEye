@@ -14,7 +14,13 @@ import {
   FiZap,
   FiShield,
   FiFileText,
-  FiHome
+  FiHome,
+  FiBriefcase,
+  FiShield as FiPolice,
+  FiHome as FiHouse,
+  FiUserCheck,
+  FiShoppingCart,
+  FiMapPin
 } from "react-icons/fi";
 import {
   FaBalanceScale,
@@ -103,126 +109,188 @@ const LandingPage = () => {
       </div>
 
       {/* Enhanced Hero Section */}
-<main className="relative flex flex-col-reverse lg:flex-row items-center justify-between min-h-screen px-6 lg:px-20 pt-20 lg:pt-0">
-  {/* Left Content */}
-  <div className="w-full lg:w-[45%] z-10 mt-10 pt-[10%] lg:mt-0 text-center lg:text-left flex flex-col justify-center">
-    
-    {/* Enhanced Title */}
-    <motion.h1
-      variants={slideIn}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black mb-6 leading-tight"
-    >
-      Understand the Law.
-      <br/>
-      Find Simple Answers.
-      <br />
-      <span className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl">Anytime. Anywhere.</span>
-      <span 
-        className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold block mt-2"
-        style={{ color: COLORS.navy[4] }}
-      >
-        Know Your Rights.
-      </span>
-    </motion.h1>
+      <main className="relative flex flex-col-reverse lg:flex-row items-center justify-between min-h-screen px-6 lg:px-20 pt-20">
+        {/* Left Content */}
+        <div className="max-w-2xl z-10 mt-10 lg:mt-0 text-center lg:text-left">
+          {/* Enhanced Badge */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6 backdrop-blur-sm border"
+            style={{ 
+              backgroundColor: `${COLORS.navy[4]}20`,
+              borderColor: `${COLORS.navy[4]}30`,
+              color: COLORS.navy[5]
+            }}
+          >
+            <FiShield className="text-lg" />
+            <span className="text-sm font-medium">Trusted Legal Guidance</span>
+          </motion.div>
 
-    {/* Enhanced Description */}
-    <motion.p
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      transition={{ duration: 0.3, delay: 0.15 }}
-      className="text-base sm:text-lg lg:text-xl leading-relaxed mb-8 font-light"
-      style={{ color: COLORS.navy[5] }}
-    >
-      <Typewriter
-        words={[
-          "The definitive responsive guide to everyday law in Pakistan. Get clear, step-by-step guidance on harassment, tenancy, and workplace issues, saved for use — even offline.",
-        ]}
-        loop={1}
-        cursor
-        cursorStyle="|"
-        typeSpeed={50}
-        deleteSpeed={30}
-        delaySpeed={1000}
-      />
-    </motion.p>
-
-    {/* Enhanced Buttons */}
-    <motion.div
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: 0.25 }}
-      className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8"
-    >
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <Link
-          to="/search"
-          className="group flex items-center gap-3 font-semibold py-3 px-6 rounded-xl shadow-xl transition-all duration-300 border"
-          style={{ 
-            backgroundColor: COLORS.navy[4],
-            color: COLORS.navy[5],
-            borderColor: `${COLORS.navy[4]}50`,
-            boxShadow: `0 15px 30px ${COLORS.navy[4]}25`
-          }}
-        >
-          <FiSearch className="text-lg text-black group-hover:scale-110 transition-transform" />
-          <p className="text-black">Start Your Search</p>
-          <FiArrowRight className="text-md text-black group-hover:translate-x-1 transition-transform" />
-        </Link>
-      </motion.div>
-    </motion.div>
-
-    {/* Enhanced Stats */}
-    <motion.div
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      transition={{ delay: 0.4 }}
-      className="flex flex-wrap gap-6 justify-center lg:justify-start"
-    >
-      {[
-        { number: "500+", label: "Legal Guides" },
-        { number: "50+", label: "Categories" },
-        { number: "24/7", label: "Access" },
-      ].map((stat, index) => (
-        <div key={index} className="text-center">
-          <div 
-            className="text-xl font-bold"
-            style={{ color: COLORS.navy[4] }}
-          >{stat.number}</div>
-          <div 
-            className="text-xs font-medium"
+          {/* Enhanced Title */}
+          <motion.h1
+            variants={slideIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 leading-tight"
             style={{ color: COLORS.navy[5] }}
-          >{stat.label}</div>
-        </div>
-      ))}
-    </motion.div>
-  </div>
+          >
+            Find Simple Answers.
+            <br />
+            <span 
+              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold"
+              style={{ color: COLORS.navy[4] }}
+            >
+              Know Your Rights.
+            </span>
+          </motion.h1>
+          
+          {/* Enhanced Description */}
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            transition={{ duration: 0.3, delay: 0.15 }}
+            className="text-lg sm:text-xl lg:text-2xl leading-relaxed mb-8 max-w-2xl font-light"
+            style={{ color: COLORS.navy[5] }}
+          >
+            <Typewriter
+              words={[
+                "Get the clarity and step-by-step guidance you need without the legal jargon.",
+              ]}
+              loop={1}
+              cursor
+              cursorStyle="|"
+              typeSpeed={50}
+              deleteSpeed={30}
+              delaySpeed={1000}
+            />
+          </motion.p>
+          
+          {/* Enhanced Buttons */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+          >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link
+                to="/search"
+                className="group flex items-center gap-3 font-semibold py-4 px-8 rounded-2xl shadow-2xl transition-all duration-300 border"
+                style={{ 
+                  backgroundColor: COLORS.navy[4],
+                  color: COLORS.navy[5],
+                  borderColor: `${COLORS.navy[4]}50`,
+                  boxShadow: `0 20px 40px ${COLORS.navy[4]}25`
+                }}
+              >
+                <FiSearch className="text-xl text-black group-hover:scale-110 transition-transform" />
+                <p className="text-black">Start Your Search</p>
+                <FiArrowRight className="text-lg text-black group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+            
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link
+                to="/category"
+                className="group flex items-center gap-3 backdrop-blur-xl border font-semibold py-4 px-8 rounded-2xl transition-all duration-300"
+                style={{ 
+                  backgroundColor: `${COLORS.navy[5]}10`,
+                  borderColor: `${COLORS.navy[5]}30`,
+                  color: COLORS.navy[5]
+                }}
+              >
+                <FiBook className="text-xl" />
+                Browse Categories
+              </Link>
+            </motion.div>
+          </motion.div>
 
-  {/* Enhanced Right Side - Spline Scene */}
-  <motion.div
-    variants={scaleIn}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true }}
-    className="relative w-full lg:w-[55%] h-[350px] sm:h-[450px] lg:h-[600px] flex items-center justify-center"
-  >
-    <Spline 
-      scene="https://prod.spline.design/zHdL4fLC68VLmFBT/scene.splinecode"
-      className="w-full h-full"
-    />
-  </motion.div>
-</main>
+          {/* Enhanced Search Bar Preview */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="mt-8 max-w-md"
+          >
+            <div 
+              className="p-4 rounded-2xl backdrop-blur-lg border"
+              style={{ 
+                backgroundColor: `${COLORS.navy[3]}30`,
+                borderColor: `${COLORS.navy[4]}30`
+              }}
+            >
+              <div className="flex items-center gap-3 text-sm" style={{ color: COLORS.navy[5] }}>
+                <FiSearch className="flex-shrink-0" />
+                <span className="opacity-70">Ask your issue as a question: "My landlord won't return the deposit..."</span>
+              </div>
+            </div>
+          </motion.div>
+          
+          {/* Enhanced Stats */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="flex flex-wrap gap-8 mt-12 justify-center lg:justify-start"
+          >
+            {[
+              { number: "500+", label: "Legal Guides" },
+              { number: "50+", label: "Categories" },
+              { number: "24/7", label: "Access" },
+            ].map((stat, index) => (
+              <div key={index} className="text-center">
+                <div 
+                  className="text-2xl font-bold"
+                  style={{ color: COLORS.navy[4] }}
+                >{stat.number}</div>
+                <div 
+                  className="text-sm font-medium"
+                  style={{ color: COLORS.navy[5] }}
+                >{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Right Side - Spline Scene */}
+        <motion.div
+          variants={scaleIn}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="relative w-full lg:w-[50%] h-[400px] sm:h-[500px] lg:h-[700px] mt-12 lg:mt-0 animate-float"
+        >
+          <Spline 
+            scene="https://prod.spline.design/zHdL4fLC68VLmFBT/scene.splinecode"
+            className="w-full h-full"
+          />
+          {/* Enhanced overlay gradient */}
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: `radial-gradient(circle at 70% 50%, transparent 0%, ${COLORS.navy[1]} 70%)`
+            }}
+          ></div>
+        </motion.div>
+      </main>
 
       {/* Enhanced Why LexEye Section */}
       <section className="py-20 px-6 lg:px-20 relative">
@@ -438,7 +506,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Enhanced Categories Section */}
+      {/* Enhanced Categories Section - Guides for Real Life */}
       <section className="py-20 px-6 lg:px-20">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -471,42 +539,42 @@ const LandingPage = () => {
           >
             {[
               {
-                icon: "💼",
+                icon: <FiBriefcase className="text-3xl" />,
                 title: "Workplace Rights",
                 description: "Harassment, unfair dismissal, and labor rights explained clearly.",
                 link: "/laws?query=workplace",
                 color: COLORS.navy[4]
               },
               {
-                icon: "🚔",
+                icon: <FiPolice className="text-3xl" />,
                 title: "Police Interactions",
                 description: "Your rights during stops, searches, and FIR registration.",
                 link: "/laws?query=police",
                 color: COLORS.navy[4]
               },
               {
-                icon: "🏠",
+                icon: <FiHouse className="text-3xl" />,
                 title: "Tenancy Issues",
                 description: "Rent agreements, security deposits, and eviction procedures.",
                 link: "/laws?query=landlord",
                 color: COLORS.navy[4]
               },
               {
-                icon: "🛡️",
+                icon: <FiShield className="text-3xl" />,
                 title: "Harassment Protection",
                 description: "Legal safeguards and complaint procedures for harassment cases.",
                 link: "/laws?query=harassment",
                 color: COLORS.navy[4]
               },
               {
-                icon: "🛒",
+                icon: <FiShoppingCart className="text-3xl" />,
                 title: "Consumer Rights",
                 description: "Refunds, fraud protection, and your rights as a buyer.",
                 link: "/laws?query=consumer",
                 color: COLORS.navy[4]
               },
               {
-                icon: "📄",
+                icon: <FiMapPin className="text-3xl" />,
                 title: "Property Matters",
                 description: "Ownership transfers, documentation, and dispute resolution.",
                 link: "/laws?query=property",
@@ -527,7 +595,15 @@ const LandingPage = () => {
                     boxShadow: `0 15px 30px ${COLORS.navy[1]}30`
                   }}
                 >
-                  <div className="text-3xl mb-4">{category.icon}</div>
+                  <div 
+                    className="inline-flex p-4 rounded-2xl border mb-4 group-hover:scale-110 transition-transform duration-300"
+                    style={{ 
+                      backgroundColor: `${category.color}20`,
+                      borderColor: `${category.color}30`
+                    }}
+                  >
+                    {category.icon}
+                  </div>
                   <h3 
                     className="text-xl font-bold mb-3 transition-colors"
                     style={{ color: COLORS.navy[5] }}
