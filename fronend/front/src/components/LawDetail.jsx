@@ -24,7 +24,8 @@ import {
 } from "react-icons/fa";
 import { 
   FiMenu, 
-  FiX 
+  FiX,
+  FiBook 
 } from "react-icons/fi";
 import { GiLadder } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
@@ -48,7 +49,7 @@ const COLORS = {
   }
 };
 
-// Custom motion components to prevent prop forwarding issues
+// Create motion components
 const MotionSection = ({ variants, initial, animate, children, className, ...props }) => (
   <motion.div
     variants={variants}
@@ -84,6 +85,9 @@ const MotionButton = ({ whileHover, whileTap, children, className, ...props }) =
     {children}
   </motion.button>
 );
+
+// Create animated Link component
+const MotionLink = motion(Link);
 
 const LawDetail = () => {
   const { lawId } = useParams();
@@ -1265,6 +1269,22 @@ const LawDetail = () => {
                       <IoDocumentTextOutline className="text-sm md:text-lg" />
                       Export as PDF
                     </MotionButton>
+                    
+                    {/* Fixed: Using MotionLink instead of motion.link */}
+                    <MotionLink
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      to={"/glossary"}
+                      className="w-full flex items-center justify-center gap-2 border rounded-lg md:rounded-xl py-2 md:py-3 px-3 transition-all duration-300 text-xs md:text-sm font-medium"
+                      style={{
+                        backgroundColor: `${COLORS.navy[3]}20`,
+                        borderColor: `${COLORS.navy[3]}30`,
+                        color: COLORS.navy[3]
+                      }}
+                    >
+                      <FiBook className="text-sm md:text-lg" />
+                      Legal Glossary
+                    </MotionLink>
                   </div>
                 </div>
 
