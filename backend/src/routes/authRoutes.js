@@ -7,7 +7,6 @@ import {
   forgotPassword, 
   resetPassword 
 } from "../controllers/authController.js";
-import { verifyUser } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -42,7 +41,7 @@ router.all("/forgot-password", (req, res) =>
 );
 
 // Reset password route - protected with verifyUser middleware
-router.post("/reset-password", verifyUser, resetPassword);
+router.post("/reset-password", resetPassword);
 router.all("/reset-password", (req, res) =>
   res.status(405).json({ error: "Method Not Allowed" })
 );
