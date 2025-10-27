@@ -36,7 +36,6 @@ const ForgotPassword = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [resendTimer, setResendTimer] = useState(0);
-  const [resetToken, setResetToken] = useState(""); // Store the reset token
 
   // Handle email submission
   const handleEmailSubmit = async (e) => {
@@ -65,7 +64,7 @@ const ForgotPassword = () => {
     }
   };
 
-  // Handle OTP submission - UPDATED to get reset token
+  // Handle OTP submission
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     const otpString = otp.join("");
@@ -82,10 +81,6 @@ const ForgotPassword = () => {
       const response = await api.post("/verify", { email, otp: otpString });
 
       if (response.data.success) {
-        // Store the reset token if available
-        if (response.data.resetToken) {
-          setResetToken(response.data.resetToken);
-        }
         setStep(3);
         setSuccess("OTP verified successfully! Set your new password.");
       } else {
@@ -102,7 +97,7 @@ const ForgotPassword = () => {
     }
   };
 
-  // Handle new password submission - UPDATED to send token
+  // Handle new password submission
   const handleNewPasswordSubmit = async (e) => {
     e.preventDefault();
     
@@ -120,24 +115,14 @@ const ForgotPassword = () => {
     setError("");
 
     try {
-      // Prepare request data with token
-      const requestData = { 
+      const response = await api.post("/reset-password", { 
         email, 
         password: newPassword 
-      };
-
-      // If we have a reset token, include it in the request
-      if (resetToken) {
-        requestData.resetToken = resetToken;
-      }
-
-      const response = await api.post("/reset-password", requestData);
+      });
 
       if (response.data.success) {
         setStep(4);
         setSuccess("Password reset successfully!");
-        // Clear the reset token after successful reset
-        setResetToken("");
       } else {
         setError(response.data.message || "Failed to reset password");
       }
@@ -222,7 +207,6 @@ const ForgotPassword = () => {
     setOtp(["", "", "", "", "", ""]);
     setNewPassword("");
     setConfirmPassword("");
-    setResetToken("");
     setStep(1);
     setError("");
     setSuccess("");
