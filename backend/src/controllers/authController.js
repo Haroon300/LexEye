@@ -35,24 +35,23 @@ export const resendOtp = asyncWrapper(async (req, res) => {
   return res.json(result);
 });
 
-// ✅ Forgot Password (reuse resend OTP)
+// ✅ Forgot Password
 export const forgotPassword = asyncWrapper(async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: "Email is required" });
 
-  // ⚠️ Best practice: you can make a separate function like AuthService.sendPasswordResetOtp(email)
-  const result = await AuthService.resendUserOtp(email);
+  const result = await AuthService.forgotPassword(email);
   return res.json(result);
 });
 
 // ✅ Reset Password
 export const resetPassword = asyncWrapper(async (req, res) => {
-  const { password } = req.body;
-  const user = req.user; // must come from verified token middleware
+  const { email, password } = req.body;
 
-  if (!user?.email)
-    return res.status(400).json({ error: "User email missing in token" });
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password are required" });
+  }
 
-  const result = await AuthService.updatePassword(user.email, password);
+  const result = await AuthService.resetPassword(email, password);
   return res.json(result);
 });

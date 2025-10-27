@@ -7,7 +7,7 @@ import {
   forgotPassword, 
   resetPassword 
 } from "../controllers/authController.js";
-import { verifyUser } from "../middleware/authMiddleware.js";
+import { verifyUser } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 

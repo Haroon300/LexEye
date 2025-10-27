@@ -22,7 +22,6 @@ export const registerUser = async ({ name, email, password }) => {
     otp,
     otpExpiry,
   });
-  // console.log("test",user);
   
   await sendEmail(
     email,
@@ -55,7 +54,6 @@ export const signinUser = async ({ email, password }) => {
   };
 };
 
-
 // VERIFY OTP
 export const verifyUserOtp = async ({ email, otp }) => {
   const user = await User.findOne({ email });
@@ -83,7 +81,7 @@ export const verifyUserOtp = async ({ email, otp }) => {
 };
 
 // RESEND OTP
-export const resendUserOtp = async ({ email }) => {
+export const resendUserOtp = async (email) => {
   const user = await User.findOne({ email });
   if (!user) return { success: false, message: "User not found" };
 
@@ -103,18 +101,106 @@ export const resendUserOtp = async ({ email }) => {
   return { success: true, message: "New OTP sent successfully to email" };
 };
 
+// FORGOT PASSWORD (Send OTP for password reset)
+export const forgotPassword = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    // For security, don't reveal if user exists or not
+    return { success: true, message: "If the email exists, OTP will be sent" };
+  }
+
+  const otp = generateOtp();
+  const otpExpiry = new Date(Date.now() + 15 * 60 * 1000);
+
+  user.otp = otp;
+  user.otpExpiry = otpExpiry;
+  await user.save();
+
+  await sendEmail(
+    email,
+    "Password Reset OTP - LexEye",
+    `<h2>Password Reset Request</h2>
+     <p>Hello ${user.name},</p>
+     <p>Your password reset OTP is <b>${otp}</b>.</p>
+     <p>This OTP is valid for 15 minutes.</p>`
+  );
+
+  return { success: true, message: "OTP sent successfully for password reset" };
+};
+
+// VERIFY PASSWORD RESET OTP
+export const verifyPasswordResetOtp = async ({ email, otp }) => {
+  const user = await User.findOne({ email });
+  if (!user) return { success: false, message: "User not found" };
+
+  if (user.otp !== otp) return { success: false, message: "Invalid OTP" };
+  if (user.otpExpiry < Date.now()) return { success: false, message: "OTP expired" };
+
+  // Generate a temporary token for password reset
+  const resetToken = jwt.sign(
+    { 
+      id: user._id, 
+      purpose: 'password_reset' 
+    }, 
+    process.env.JWT_SECRET, 
+    { expiresIn: '15m' }
+  );
+
+  // Clear OTP after successful verification
+  user.otp = null;
+  user.otpExpiry = null;
+  await user.save();
+
+  return {
+    success: true,
+    message: "OTP verified successfully",
+    resetToken,
+    user: {
+      id: user._id,
+      email: user.email
+    }
+  };
+};
+
+// RESET PASSWORD
+export const resetPassword = async (email, newPassword) => {
+  const user = await User.findOne({ email });
+  if (!user) return { success: false, message: "User not found" };
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedPassword;
+  await user.save();
+
+  // Send confirmation email
+  await sendEmail(
+    email,
+    "Password Reset Successful - LexEye",
+    `<h2>Password Reset Successful</h2>
+     <p>Hello ${user.name},</p>
+     <p>Your password has been reset successfully.</p>
+     <p>If you didn't request this change, please contact support immediately.</p>`
+  );
+
+  return { success: true, message: "Password reset successfully" };
+};
+
 // FIND USER
 export const findUserById = async (id) => {
   return await User.findById(id);
 };
 
-// UPDATE PASSWORD
-export const updatePassword = async (id, password) => {
+// UPDATE PASSWORD (for authenticated users)
+export const updatePassword = async (id, currentPassword, newPassword) => {
   const user = await User.findById(id);
   if (!user) return { success: false, message: "User not found" };
 
-  const hashed = await bcrypt.hash(password, 10);
-  user.password = hashed;
+  // Verify current password
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) return { success: false, message: "Current password is incorrect" };
+
+  // Hash and update new password
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedPassword;
   await user.save();
 
   return { success: true, message: "Password updated successfully" };
