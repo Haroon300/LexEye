@@ -21,6 +21,7 @@ import Glossary from "./Glossary";
 import About from "./About.jsx";
 import EmergencyHelpline from "./EmergencyHelpline";
 import FAQHelpCenter from "./faqHelpCenter";
+import ForgotPassword from "./components/forgotpassword.jsx";
 
 import { useEffect, useState } from "react";
 
@@ -61,6 +62,13 @@ export default function App() {
 
   return (
     <main className="relative">
+      {/* Background effects */}
+      {/* <img
+        src="/LawpptImage.webp"
+        className="absolute top-0 right-0 bottom opacity-60 -z-10"
+        alt="background image"
+      /> */}
+
       <Router>
         {/* ScrollToTop inside Router */}
         <ScrollToTop />
@@ -89,10 +97,8 @@ export default function App() {
               <Route path="/comments" element={<CommentList />} />
               <Route path="/about" element={<About />} />
               <Route path="/faq" element={<FAQHelpCenter/>} />
-              {/* Extra Pages */}
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/comment" element={<Comment />} />
-
-              {/* Fallback */}
               <Route path="*" element={<NotFound />} />
             </>
           ) : (

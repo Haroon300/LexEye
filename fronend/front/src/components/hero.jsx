@@ -83,7 +83,7 @@ const slideIn = {
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen text-white overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
+    <div className="min-h-screen text-white overflow-hidden">
       {/* Enhanced Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
@@ -278,7 +278,7 @@ const LandingPage = () => {
       </main>
 
       {/* Enhanced Why LexEye Section */}
-      <section className="py-20 px-6 lg:px-20 relative">
+      <section className="py-20 px-6 lg:px-20 relative" style={{ backgroundColor: `${COLORS.navy[1]}` }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
