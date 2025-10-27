@@ -225,7 +225,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 pt-20 md:pt-8 lg:pt-4" style={{ backgroundColor: COLORS.navy[1] }}>
+    <div className="min-h-screen flex items-center justify-center p-4 pt-20 md:pt-8 lg:pt-4">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div 

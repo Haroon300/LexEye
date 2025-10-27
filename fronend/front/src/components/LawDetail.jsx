@@ -762,7 +762,7 @@ const LawDetail = () => {
   const steps = formatStepByStepGuide(law?.stepByStepGuide);
 
   return (
-    <div className="min-h-screen pt-16 md:pt-20" style={{ backgroundColor: COLORS.navy[1] }}>
+    <div className="min-h-screen pt-16 md:pt-20">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div 

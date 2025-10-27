@@ -345,7 +345,7 @@ const EmergencyHelpline = () => {
   };
 
   return (
-    <div className="min-h-screen py-4 px-3 sm:px-4 relative overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
+    <div className="min-h-screen py-4 px-3 sm:px-4 relative overflow-hidden">
       {/* Enhanced Background with LexEye Theme */}
       <div className="absolute inset-0 overflow-hidden">
         <div 

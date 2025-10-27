@@ -101,7 +101,7 @@ const Bookmarks = () => {
   };
 
   return (
-    <div className="min-h-screen pt-[5%] relative overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
+    <div className="min-h-screen pt-[5%] relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div 

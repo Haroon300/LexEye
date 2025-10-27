@@ -183,7 +183,7 @@ const Search = () => {
   };
 
   return (
-    <div className="min-h-screen md:pt-[5%] pt-[25%] relative overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
+    <div className="min-h-screen md:pt-[5%] pt-[25%] relative overflow-hidden">
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div 

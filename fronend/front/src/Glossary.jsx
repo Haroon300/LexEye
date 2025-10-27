@@ -403,7 +403,7 @@ const Glossary = () => {
   const getFlexAlignment = (isUrdu) => isUrdu ? "flex-row-reverse" : "flex-row";
 
   return (
-    <div className="min-h-screen pt-[10%] text-[#F0EBD8] relative overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
+    <div className="min-h-screen pt-[10%] text-[#F0EBD8] relative overflow-hidden">
       {/* Enhanced background effects matching landing page */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-96 h-96 rounded-full blur-3xl -top-20 -left-20 animate-pulse-slow" style={{ backgroundColor: `${COLORS.navy[3]}20` }} />

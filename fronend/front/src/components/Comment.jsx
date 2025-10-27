@@ -61,7 +61,7 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className="min-h-screen md:pt-[10%] pt-[20%] flex items-center justify-center px-4 py-8 relative overflow-hidden" style={{ backgroundColor: COLORS.navy[1] }}>
+    <div className="min-h-screen md:pt-[10%] pt-[20%] flex items-center justify-center px-4 py-8 relative overflow-hidden">
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div 
