@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { TiArrowBack } from "react-icons/ti";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   FiUsers, 
   FiTarget, 
@@ -31,11 +31,12 @@ const About = () => {
   const navigate = useNavigate(); 
   
   const team = [
-    { name: "Obaid", role: "Project Manager" },
-    { name: "Haroon", role: "Backend Developer" },
-    { name: "Faseeh & Ahmed", role: "Frontend Developers" },
-    { name: "Bilal", role: "Legal Content Researcher" },
-    { name: "Hasnain", role: "UI/UX Designer & Tester" },
+    { name: "Obaid", role: "Project Manager", to:"https://www.linkedin.com/in/muhammad-obaid-ullah-4b6b10375/" },
+    { name: "Haroon", role: "Backend Developer", to:"https://www.linkedin.com/in/haroon-hammad-0b5605264/" },
+    { name: "Faseeh", role: "Frontend Developers", to:"https://www.linkedin.com/in/faseehullah-khan-718512298/" },
+    { name: "Ahmed", role: "Frontend Developers", to:"#" },
+    { name: "Bilal", role: "Legal Content Researcher", to:"https://www.linkedin.com/in/bilal-rafiq-31aab8323/" },
+    { name: "Hasnain", role: "UI/UX Designer & Tester", to:"https://www.linkedin.com/in/hasnain-baig-a27a5a396/" },
   ];
 
   const reasons = [
@@ -338,21 +339,27 @@ const About = () => {
                   borderColor: `${COLORS.navy[4]}20`
                 }}
               >
-                <div 
-                  className="w-20 h-20 mx-auto mb-4 rounded-2xl border flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                  style={{
-                    backgroundColor: `${COLORS.navy[4]}20`,
-                    borderColor: `${COLORS.navy[4]}30`
-                  }}
+                <a 
+                  href={member.to} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                 >
-                  <FiCode className="text-2xl" style={{ color: COLORS.navy[4] }} />
-                </div>
-                <h3 className="text-2xl font-bold mb-2" style={{ color: COLORS.navy[5] }}>{member.name}</h3>
-                <p style={{ color: `${COLORS.navy[5]}80` }}>{member.role}</p>
-                <div 
-                  className="mt-4 w-16 h-1 rounded-full mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ backgroundColor: COLORS.navy[4] }}
-                />
+                  <div 
+                    className="w-20 h-20 mx-auto mb-4 rounded-2xl border flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                    style={{
+                      backgroundColor: `${COLORS.navy[4]}20`,
+                      borderColor: `${COLORS.navy[4]}30`
+                    }}
+                  >
+                    <FiCode className="text-2xl" style={{ color: COLORS.navy[4] }} />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2" style={{ color: COLORS.navy[5] }}>{member.name}</h3>
+                  <p style={{ color: `${COLORS.navy[5]}80` }}>{member.role}</p>
+                  <div 
+                    className="mt-4 w-16 h-1 rounded-full mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ backgroundColor: COLORS.navy[4] }}
+                  />
+                </a>
               </motion.div>
             ))}
           </div>

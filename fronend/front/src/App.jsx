@@ -63,11 +63,8 @@ export default function App() {
   return (
     <main className="relative">
       {/* Background effects */}
-       <img
-        src="/gradient.png"
-        className="absolute top-0 right-0 bottom opacity-60 -z-10"
-        alt="background image"
-      /> 
+       <div className="absolute -inset-14 -z-10 bg-[url('/bg.png')] bg-repeat"></div>
+
 
       <Router>
         {/* ScrollToTop inside Router */}
