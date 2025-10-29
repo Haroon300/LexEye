@@ -34,7 +34,7 @@ const About = () => {
     { name: "Obaid", role: "Project Manager", to:"https://www.linkedin.com/in/muhammad-obaid-ullah-4b6b10375/" },
     { name: "Haroon", role: "Backend Developer", to:"https://www.linkedin.com/in/haroon-hammad-0b5605264/" },
     { name: "Faseeh", role: "Frontend Developers", to:"https://www.linkedin.com/in/faseehullah-khan-718512298/" },
-    { name: "Ahmed", role: "Frontend Developers", to:"#" },
+    { name: "Ahmed", role: "Frontend Developers", to:"https://pk.linkedin.com/in/ahmed-shah-322197241" },
     { name: "Bilal", role: "Legal Content Researcher", to:"https://www.linkedin.com/in/bilal-rafiq-31aab8323/" },
     { name: "Hasnain", role: "UI/UX Designer & Tester", to:"https://www.linkedin.com/in/hasnain-baig-a27a5a396/" },
   ];
