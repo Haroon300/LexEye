@@ -185,24 +185,19 @@ const Search = () => {
   return (
     <div className="min-h-screen md:pt-[5%] pt-[25%] relative overflow-hidden">
       {/* Enhanced Background Effects */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20 animate-pulse-slow"
-          style={{ backgroundColor: `${COLORS.navy[3]}10` }}
+          className="absolute w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20"
+          style={{ backgroundColor: '#0e877d40' }}
         />
         <div 
-          className="absolute w-60 h-60 md:w-80 md:h-80 rounded-full blur-3xl top-1/4 -right-10 md:top-1/3 md:-right-20 animate-pulse-slower"
-          style={{ backgroundColor: `${COLORS.navy[4]}10` }}
+          className="absolute w-56 h-56 md:w-80 md:h-80 rounded-full blur-3xl top-1/4 -right-10 md:top-1/3 md:-right-20"
+          style={{ backgroundColor: '#0e877d40' }}
         />
         <div 
-          className="absolute w-56 h-56 md:w-72 md:h-72 rounded-full blur-3xl bottom-10 left-1/4 md:bottom-20 animate-pulse-slow"
-          style={{ backgroundColor: `${COLORS.navy[2]}20` }}
+          className="absolute w-48 h-48 md:w-72 md:h-72 rounded-full blur-3xl bottom-10 left-1/4 md:bottom-20"
+          style={{ backgroundColor: '#0e877d40' }}
         />
-        
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(116,140,171,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(116,140,171,0.1)_1px,transparent_1px)] bg-[size:40px_40px] md:bg-[size:80px_80px]" />
-        </div>
       </div>
 
       {/* Main Content */}

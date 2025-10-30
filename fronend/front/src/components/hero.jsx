@@ -88,15 +88,15 @@ const LandingPage = () => {
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
           className="absolute w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20"
-          style={{ backgroundColor: '#0e877d25' }}
+          style={{ backgroundColor: '#0e877d40' }}
         />
         <div 
           className="absolute w-56 h-56 md:w-80 md:h-80 rounded-full blur-3xl top-1/4 -right-10 md:top-1/3 md:-right-20"
-          style={{ backgroundColor: '#0e877d15' }}
+          style={{ backgroundColor: '#0e877d40' }}
         />
         <div 
           className="absolute w-48 h-48 md:w-72 md:h-72 rounded-full blur-3xl bottom-10 left-1/4 md:bottom-20"
-          style={{ backgroundColor: '#0e877d25' }}
+          style={{ backgroundColor: '#0e877d40' }}
         />
       </div>
 
