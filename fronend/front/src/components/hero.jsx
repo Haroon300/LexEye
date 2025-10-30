@@ -103,14 +103,14 @@ const LandingPage = () => {
       {/* Enhanced Hero Section with Urdu */}
       <main className="relative flex flex-col-reverse lg:flex-row items-center justify-between min-h-screen px-4 sm:px-6 lg:px-8 xl:px-20 pt-16 lg:pt-0">
         {/* Left Content */}
-        <div className="max-w-2xl z-10 mt-8 lg:mt-0 text-center lg:text-left w-full">
+        <div className="max-w-2xl z-10 pt-[10%] lg:mt-0 text-center lg:text-left w-full">
           {/* Trust Badge with Urdu */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6 backdrop-blur-sm border mx-auto lg:mx-0"
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2  backdrop-blur-sm border mx-auto lg:mx-0"
             style={{ 
               backgroundColor: `${COLORS.navy[4]}20`,
               borderColor: `${COLORS.navy[4]}30`,
@@ -122,7 +122,7 @@ const LandingPage = () => {
           </motion.div>
 
           {/* Main Title Section */}
-          <motion.section className="text-center lg:text-left py-8 lg:py-20 px-2">
+          <motion.section className="text-center lg:text-left py-8 lg:py-10 px-2">
             {/* English Heading */}
             <motion.h1
               variants={slideIn}

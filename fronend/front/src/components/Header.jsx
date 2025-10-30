@@ -126,8 +126,8 @@ export default function Header() {
           : "border-b shadow-2xl"
       }`}
       style={{ 
-        backgroundColor: scrolled ? 'transparent' : `${COLORS.navy[1]}E6`,
-        borderColor: scrolled ? 'transparent' :`${COLORS.navy[4]}20`,
+        backgroundColor:'transparent',
+        borderColor:'transparent',
         boxShadow: scrolled ?  'none' : `0 8px 32px ${COLORS.navy[1]}40`
       }}
       variants={headerVariants}
