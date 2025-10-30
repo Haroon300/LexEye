@@ -29,21 +29,14 @@ import {
   FaHandHoldingHeart
 } from "react-icons/fa";
 
-/* Enhanced Color Palette */
+/* Original Color Constants */
 const COLORS = {
   navy: {
-    1: '#0a0a0a',
-    2: '#1a1a2e',
-    3: '#16213e',
-    4: '#0f3460',
-    5: '#e6e6e9',
-    6: '#f8f9fa'
-  },
-  accent: {
-    primary: '#0E877D',
-    secondary: '#0a6159',
-    light: '#E8F9F7',
-    teal: '#14b8a6'
+    1: '#000000',
+    2: '#66666e',
+    3: '#9999a1',
+    4: '#e6e6e9',
+    5: '#f4f4f6'
   }
 };
 
@@ -93,23 +86,20 @@ const LandingPage = () => {
       {/* Enhanced Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div 
-          className="absolute w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20"
-          style={{ backgroundColor: `${COLORS.accent.primary}20` }}
+          className="absolute w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl -top-10 -left-10 md:-top-20 md:-left-20 bg-[#0e877d]/25"
         />
         <div 
-          className="absolute w-56 h-56 md:w-80 md:h-80 rounded-full blur-3xl top-1/4 -right-10 md:top-1/3 md:-right-20"
-          style={{ backgroundColor: `${COLORS.accent.primary}15` }}
+          className="absolute w-56 h-56 md:w-80 md:h-80 rounded-full blur-3xl top-1/4 -right-10 md:top-1/3 md:-right-20 bg-[#0e877d]/15"
         />
         <div 
-          className="absolute w-48 h-48 md:w-72 md:h-72 rounded-full blur-3xl bottom-10 left-1/4 md:bottom-20"
-          style={{ backgroundColor: `${COLORS.accent.primary}20` }}
+          className="absolute w-48 h-48 md:w-72 md:h-72 rounded-full blur-3xl bottom-10 left-1/4 md:bottom-20 bg-[#0e877d]/25"
         />
       </div>
 
       {/* Enhanced Hero Section - Mobile First */}
       <main className="relative flex flex-col-reverse lg:flex-row items-center justify-between min-h-screen px-4 sm:px-6 lg:px-8 xl:px-20 pt-16 lg:pt-20 z-10">
         {/* Left Content */}
-        <div className="max-w-2xl z-10 mt-8 lg:mt-0 text-center lg:text-left w-full">
+        <div className="max-w-2xl z-10 mt-8 lg:mt-4 text-center lg:text-left w-full">
           {/* Enhanced Badge */}
           <motion.div
             variants={fadeUp}
@@ -118,9 +108,9 @@ const LandingPage = () => {
             viewport={{ once: true, margin: "-50px" }}
             className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 md:px-4 md:py-2 backdrop-blur-sm border mx-auto lg:mx-0"
             style={{ 
-              backgroundColor: `${COLORS.accent.light}15`,
-              borderColor: `${COLORS.accent.primary}30`,
-              color: COLORS.accent.light
+              backgroundColor: `${COLORS.navy[4]}20`,
+              borderColor: `${COLORS.navy[4]}30`,
+              color: COLORS.navy[5]
             }}
           >
             <FiShield className="text-sm md:text-lg" />
@@ -128,7 +118,7 @@ const LandingPage = () => {
           </motion.div>
 
           {/* Enhanced Title */}
-          <motion.section className="text-center lg:text-left py-8 md:py-12 lg:py-20 px-2">
+          <motion.section className="text-center lg:text-left py-8 md:py-10 lg:py-12 px-2">
             {/* Heading */}
             <motion.h1
               variants={slideIn}
@@ -137,29 +127,15 @@ const LandingPage = () => {
               viewport={{ once: true, margin: "-50px" }}
               className="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 md:mb-6 leading-tight"
             >
-              Find <span style={{ color: COLORS.accent.light }}>Simple Legal Answers</span>.
+              Find <span style={{ color: "#ffffff" }}>Simple Legal Answers</span>.
               <br />
               <span
                 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold block mt-2 md:mt-4"
-                style={{ color: COLORS.accent.light }}
+                style={{ color: "#E8F9F7" }}
               >
                 Know Your Rights in Pakistan.
               </span>
             </motion.h1>
-
-            {/* Urdu Translation */}
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="text-lg sm:text-xl font-semibold mb-3 md:mb-4 leading-relaxed"
-              style={{ color: COLORS.accent.light }}
-            >
-              آسان قانونی جوابات حاصل کریں۔
-              <br />
-              پاکستان میں اپنے حقوق جانیے۔
-            </motion.p>
 
             {/* Description */}
             <motion.div
@@ -167,9 +143,9 @@ const LandingPage = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="text-base sm:text-lg lg:text-xl leading-relaxed mb-6 md:mb-8 max-w-2xl font-light mx-auto lg:mx-0"
+              className="text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl font-light mx-auto lg:mx-0"
               style={{
-                color: COLORS.navy[6],
+                color: "#ffffff",
                 minHeight: "72px",
               }}
             >
@@ -187,18 +163,6 @@ const LandingPage = () => {
               />
             </motion.div>
 
-            {/* Urdu tagline */}
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="text-base md:text-lg mb-6 md:mb-8 font-medium"
-              style={{ color: COLORS.accent.light }}
-            >
-              قانون کی الجھنیں ختم کریں — سادہ الفاظ میں رہنمائی حاصل کریں۔
-            </motion.p>
-
             {/* Buttons */}
             <motion.div
               variants={fadeUp}
@@ -211,17 +175,17 @@ const LandingPage = () => {
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link
                   to="/search"
-                  className="group flex items-center justify-center gap-2 md:gap-3 font-semibold py-3 md:py-4 px-6 md:px-8 rounded-xl md:rounded-2xl shadow-lg transition-all duration-300 border text-sm md:text-base w-full sm:w-auto"
+                  className="group flex items-center justify-center gap-2 md:gap-3 font-semibold py-3 md:py-4 px-6 md:px-8 rounded-xl md:rounded-2xl shadow-2xl transition-all duration-300 border text-sm md:text-base w-full sm:w-auto"
                   style={{
-                    backgroundColor: COLORS.navy[6],
-                    color: COLORS.accent.primary,
-                    borderColor: `${COLORS.navy[6]}30`,
-                    boxShadow: `0 8px 32px ${COLORS.accent.primary}20`,
+                    backgroundColor: "#ffffff",
+                    color: "#0E877D",
+                    borderColor: "#ffffff50",
+                    boxShadow: "0 20px 40px rgba(255,255,255,0.2)",
                   }}
                 >
-                  <FiSearch className="text-lg md:text-xl group-hover:scale-110 transition-transform" />
+                  <FiSearch className="text-lg md:text-xl text-[#0E877D] group-hover:scale-110 transition-transform" />
                   <span>Start Search</span>
-                  <FiArrowRight className="text-base md:text-lg group-hover:translate-x-1 transition-transform" />
+                  <FiArrowRight className="text-base md:text-lg text-[#0E877D] group-hover:translate-x-1 transition-transform" />
                 </Link>
               </motion.div>
 
@@ -231,9 +195,9 @@ const LandingPage = () => {
                   to="/category"
                   className="group flex items-center justify-center gap-2 md:gap-3 backdrop-blur-xl border font-semibold py-3 md:py-4 px-6 md:px-8 rounded-xl md:rounded-2xl transition-all duration-300 text-sm md:text-base w-full sm:w-auto"
                   style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.08)",
-                    borderColor: "rgba(255, 255, 255, 0.2)",
-                    color: COLORS.navy[6],
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    borderColor: "rgba(255, 255, 255, 0.3)",
+                    color: "#ffffff",
                   }}
                 >
                   <FiBook className="text-lg md:text-xl" />
@@ -249,16 +213,16 @@ const LandingPage = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="mt-6 md:mt-8 max-w-md mx-auto lg:mx-0"
+            className="max-w-md mx-auto lg:mx-0"
           >
             <div 
               className="p-3 md:p-4 rounded-xl md:rounded-2xl backdrop-blur-lg border"
               style={{ 
-                backgroundColor: `${COLORS.navy[3]}25`,
-                borderColor: `${COLORS.accent.primary}20`
+                backgroundColor: `${COLORS.navy[3]}30`,
+                borderColor: `${COLORS.navy[4]}30`
               }}
             >
-              <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm" style={{ color: COLORS.navy[6] }}>
+              <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm" style={{ color: COLORS.navy[5] }}>
                 <FiSearch className="flex-shrink-0 opacity-70" />
                 <span className="opacity-80">Ask your issue: "My landlord won't return the deposit..."</span>
               </div>
@@ -271,7 +235,7 @@ const LandingPage = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="flex flex-wrap gap-4 md:gap-6 lg:gap-8 mt-8 md:mt-10 justify-center lg:justify-start"
+            className="flex flex-wrap gap-4 md:gap-6 lg:gap-8 mb-5 justify-center lg:justify-start"
           >
             {[
               { number: "500+", label: "Legal Guides" },
@@ -281,11 +245,11 @@ const LandingPage = () => {
               <div key={index} className="text-center">
                 <div 
                   className="text-xl md:text-2xl font-bold mb-1"
-                  style={{ color: COLORS.accent.light }}
+                  style={{ color: COLORS.navy[4] }}
                 >{stat.number}</div>
                 <div 
                   className="text-xs md:text-sm font-medium opacity-80"
-                  style={{ color: COLORS.navy[6] }}
+                  style={{ color: COLORS.navy[5] }}
                 >{stat.label}</div>
               </div>
             ))}
@@ -308,7 +272,7 @@ const LandingPage = () => {
       </main>
 
       {/* Enhanced Why LexEye Section */}
-      <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 xl:px-20 relative" style={{ backgroundColor: COLORS.navy[1] }}>
+      <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 xl:px-20 relative" style={{ backgroundColor: `${COLORS.navy[1]}` }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
@@ -320,9 +284,9 @@ const LandingPage = () => {
             <div 
               className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 md:px-4 md:py-2 mb-3 md:mb-4 backdrop-blur-sm border"
               style={{ 
-                backgroundColor: `${COLORS.accent.light}15`,
-                borderColor: `${COLORS.accent.primary}30`,
-                color: COLORS.accent.light
+                backgroundColor: `${COLORS.navy[4]}20`,
+                borderColor: `${COLORS.navy[4]}30`,
+                color: COLORS.navy[5]
               }}
             >
               <FiTarget className="text-sm md:text-lg" />
@@ -330,13 +294,13 @@ const LandingPage = () => {
             </div>
             <h2 
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-3 md:mb-4"
-              style={{ color: COLORS.navy[6] }}
+              style={{ color: COLORS.navy[5] }}
             >
               The Law Shouldn't Be a Mystery
             </h2>
             <p 
               className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto font-light opacity-90 px-4"
-              style={{ color: COLORS.navy[6] }}
+              style={{ color: COLORS.navy[5] }}
             >
               Making Pakistan's laws clear, accessible, and useful for everyone.
             </p>
@@ -354,48 +318,50 @@ const LandingPage = () => {
                 icon: <FaLightbulb className="text-2xl md:text-3xl" />,
                 title: "Simplicity First",
                 description: "We translate complex legal statutes into clear, actionable steps without the jargon.",
+                color: COLORS.navy[4]
               },
               {
                 icon: <FaBook className="text-2xl md:text-3xl" />,
                 title: "Always Accessible",
                 description: "Access essential legal guidance anytime, with offline capability when you need it most.",
+                color: COLORS.navy[4]
               },
               {
                 icon: <FaHandHoldingHeart className="text-2xl md:text-3xl" />,
                 title: "Practical Focus",
                 description: "Real solutions for everyday situations - from tenant disputes to workplace rights.",
+                color: COLORS.navy[4]
               }
             ].map((feature, index) => (
               <motion.div
                 key={index}
                 variants={fadeUp}
                 whileHover={{ y: -5 }}
-                className="group rounded-xl md:rounded-2xl p-6 md:p-8 shadow-xl transition-all duration-300 backdrop-blur-sm border"
+                className="group rounded-xl md:rounded-2xl p-6 md:p-8 shadow-2xl transition-all duration-300 backdrop-blur-lg border"
                 style={{ 
-                  backgroundColor: `${COLORS.navy[2]}60`,
-                  borderColor: `${COLORS.accent.primary}15`,
+                  backgroundColor: `${COLORS.navy[2]}40`,
+                  borderColor: `${COLORS.navy[4]}30`,
+                  boxShadow: `0 20px 40px ${COLORS.navy[1]}50`
                 }}
               >
                 <div 
                   className="inline-flex p-3 md:p-4 rounded-xl md:rounded-2xl border mb-4 md:mb-6 group-hover:scale-105 transition-transform duration-300"
                   style={{ 
-                    backgroundColor: `${COLORS.accent.primary}15`,
-                    borderColor: `${COLORS.accent.primary}25`
+                    backgroundColor: `${feature.color}20`,
+                    borderColor: `${feature.color}30`
                   }}
                 >
-                  <div style={{ color: COLORS.accent.primary }}>
-                    {feature.icon}
-                  </div>
+                  {feature.icon}
                 </div>
                 <h3 
                   className="text-xl md:text-2xl font-bold mb-3 md:mb-4"
-                  style={{ color: COLORS.navy[6] }}
+                  style={{ color: COLORS.navy[5] }}
                 >
                   {feature.title}
                 </h3>
                 <p 
                   className="text-sm md:text-base leading-relaxed font-light opacity-90"
-                  style={{ color: COLORS.navy[6] }}
+                  style={{ color: COLORS.navy[5] }}
                 >
                   {feature.description}
                 </p>
@@ -408,7 +374,7 @@ const LandingPage = () => {
       {/* Enhanced Features Section */}
       <section 
         className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 xl:px-20 backdrop-blur-sm"
-        style={{ backgroundColor: `${COLORS.navy[2]}40` }}
+        style={{ backgroundColor: `${COLORS.navy[2]}30` }}
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -421,9 +387,9 @@ const LandingPage = () => {
             <div 
               className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 md:px-4 md:py-2 mb-3 md:mb-4 backdrop-blur-sm border"
               style={{ 
-                backgroundColor: `${COLORS.accent.light}15`,
-                borderColor: `${COLORS.accent.primary}30`,
-                color: COLORS.accent.light
+                backgroundColor: `${COLORS.navy[4]}20`,
+                borderColor: `${COLORS.navy[4]}30`,
+                color: COLORS.navy[5]
               }}
             >
               <FiZap className="text-sm md:text-lg" />
@@ -431,7 +397,7 @@ const LandingPage = () => {
             </div>
             <h2 
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-3 md:mb-4"
-              style={{ color: COLORS.navy[6] }}
+              style={{ color: COLORS.navy[5] }}
             >
               What Can You Do Right Now?
             </h2>
@@ -477,38 +443,37 @@ const LandingPage = () => {
               >
                 <Link
                   to={feature.link}
-                  className="group block rounded-xl md:rounded-2xl p-5 md:p-6 shadow-lg transition-all duration-300 h-full backdrop-blur-sm border hover:shadow-xl"
+                  className="group block rounded-xl md:rounded-2xl p-5 md:p-6 shadow-2xl transition-all duration-300 h-full backdrop-blur-lg border hover:shadow-2xl"
                   style={{ 
-                    backgroundColor: `${COLORS.navy[2]}50`,
-                    borderColor: `${COLORS.accent.primary}15`,
+                    backgroundColor: `${COLORS.navy[2]}40`,
+                    borderColor: `${COLORS.navy[4]}30`,
+                    boxShadow: `0 15px 30px ${COLORS.navy[1]}30`
                   }}
                 >
                   <div 
                     className="inline-flex p-2 md:p-3 rounded-xl md:rounded-2xl border mb-3 md:mb-4 group-hover:scale-105 transition-transform duration-300"
                     style={{ 
-                      backgroundColor: `${COLORS.accent.primary}15`,
-                      borderColor: `${COLORS.accent.primary}25`
+                      backgroundColor: `${COLORS.navy[4]}20`,
+                      borderColor: `${COLORS.navy[4]}30`
                     }}
                   >
-                    <div style={{ color: COLORS.accent.primary }}>
-                      {feature.icon}
-                    </div>
+                    {feature.icon}
                   </div>
                   <h3 
-                    className="text-lg md:text-xl font-bold mb-2 md:mb-3"
-                    style={{ color: COLORS.navy[6] }}
+                    className="text-lg md:text-xl font-bold mb-2 md:mb-3 group-hover:transition-colors"
+                    style={{ color: COLORS.navy[5] }}
                   >
                     {feature.title}
                   </h3>
                   <p 
                     className="text-xs md:text-sm leading-relaxed mb-3 md:mb-4 font-light opacity-90"
-                    style={{ color: COLORS.navy[6] }}
+                    style={{ color: COLORS.navy[5] }}
                   >
                     {feature.description}
                   </p>
                   <div 
                     className="flex items-center gap-2 transition-colors group-hover:font-semibold"
-                    style={{ color: COLORS.accent.primary }}
+                    style={{ color: COLORS.navy[4] }}
                   >
                     <span className="text-xs md:text-sm">Explore</span>
                     <FiArrowRight className="text-xs md:text-sm group-hover:translate-x-1 transition-transform" />
@@ -521,7 +486,7 @@ const LandingPage = () => {
       </section>
 
       {/* Enhanced Categories Section */}
-      <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 xl:px-20" style={{ backgroundColor: COLORS.navy[1] }}>
+      <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 xl:px-20">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
@@ -532,13 +497,13 @@ const LandingPage = () => {
           >
             <h2 
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-3 md:mb-4"
-              style={{ color: COLORS.navy[6] }}
+              style={{ color: COLORS.navy[5] }}
             >
               Guides for Real Life
             </h2>
             <p 
               className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto font-light opacity-90 px-4"
-              style={{ color: COLORS.navy[6] }}
+              style={{ color: COLORS.navy[5] }}
             >
               Direct access to clarity on everyday legal matters in Pakistan
             </p>
@@ -557,36 +522,42 @@ const LandingPage = () => {
                 title: "Workplace Rights",
                 description: "Harassment, unfair dismissal, and labor rights explained clearly.",
                 link: "/laws?query=workplace",
+                color: COLORS.navy[4]
               },
               {
                 icon: <FiPolice className="text-2xl md:text-3xl" />,
                 title: "Police Interactions",
                 description: "Your rights during stops, searches, and FIR registration.",
                 link: "/laws?query=police",
+                color: COLORS.navy[4]
               },
               {
                 icon: <FiHouse className="text-2xl md:text-3xl" />,
                 title: "Tenancy Issues",
                 description: "Rent agreements, security deposits, and eviction procedures.",
                 link: "/laws?query=landlord",
+                color: COLORS.navy[4]
               },
               {
                 icon: <FiShield className="text-2xl md:text-3xl" />,
                 title: "Harassment Protection",
                 description: "Legal safeguards and complaint procedures for harassment cases.",
                 link: "/laws?query=harassment",
+                color: COLORS.navy[4]
               },
               {
                 icon: <FiShoppingCart className="text-2xl md:text-3xl" />,
                 title: "Consumer Rights",
                 description: "Refunds, fraud protection, and your rights as a buyer.",
                 link: "/laws?query=consumer",
+                color: COLORS.navy[4]
               },
               {
                 icon: <FiMapPin className="text-2xl md:text-3xl" />,
                 title: "Property Matters",
                 description: "Ownership transfers, documentation, and dispute resolution.",
                 link: "/laws?query=property",
+                color: COLORS.navy[4]
               }
             ].map((category, index) => (
               <motion.div
@@ -596,32 +567,31 @@ const LandingPage = () => {
               >
                 <Link
                   to={category.link}
-                  className="group block rounded-xl md:rounded-2xl p-5 md:p-6 shadow-lg transition-all duration-300 h-full backdrop-blur-sm border hover:shadow-xl"
+                  className="group block rounded-xl md:rounded-2xl p-5 md:p-6 shadow-2xl transition-all duration-300 h-full backdrop-blur-lg border hover:shadow-2xl"
                   style={{ 
-                    backgroundColor: `${COLORS.navy[2]}50`,
-                    borderColor: `${COLORS.accent.primary}15`,
+                    backgroundColor: `${COLORS.navy[2]}40`,
+                    borderColor: `${category.color}30`,
+                    boxShadow: `0 15px 30px ${COLORS.navy[1]}30`
                   }}
                 >
                   <div 
                     className="inline-flex p-2 md:p-3 rounded-xl md:rounded-2xl border mb-3 md:mb-4 group-hover:scale-105 transition-transform duration-300"
                     style={{ 
-                      backgroundColor: `${COLORS.accent.primary}15`,
-                      borderColor: `${COLORS.accent.primary}25`
+                      backgroundColor: `${category.color}20`,
+                      borderColor: `${category.color}30`
                     }}
                   >
-                    <div style={{ color: COLORS.accent.primary }}>
-                      {category.icon}
-                    </div>
+                    {category.icon}
                   </div>
                   <h3 
-                    className="text-lg md:text-xl font-bold mb-2 md:mb-3"
-                    style={{ color: COLORS.navy[6] }}
+                    className="text-lg md:text-xl font-bold mb-2 md:mb-3 transition-colors"
+                    style={{ color: COLORS.navy[5] }}
                   >
                     {category.title}
                   </h3>
                   <p 
                     className="text-xs md:text-sm leading-relaxed font-light opacity-90"
-                    style={{ color: COLORS.navy[6] }}
+                    style={{ color: COLORS.navy[5] }}
                   >
                     {category.description}
                   </p>
@@ -643,15 +613,16 @@ const LandingPage = () => {
             >
               <Link
                 to="/category"
-                className="inline-flex items-center gap-2 md:gap-3 font-semibold py-3 md:py-4 px-6 md:px-8 rounded-xl md:rounded-2xl shadow-lg transition-all duration-300 border text-sm md:text-base"
+                className="inline-flex items-center gap-2 md:gap-3 font-semibold py-3 md:py-4 px-6 md:px-8 rounded-xl md:rounded-2xl shadow-2xl transition-all duration-300 border text-sm md:text-base"
                 style={{ 
-                  backgroundColor: COLORS.accent.primary,
-                  color: COLORS.navy[6],
-                  borderColor: `${COLORS.accent.primary}50`,
+                  backgroundColor: COLORS.navy[4],
+                  color: COLORS.navy[5],
+                  borderColor: `${COLORS.navy[4]}50`,
+                  boxShadow: `0 20px 40px ${COLORS.navy[4]}25`
                 }}
               >
-                <span>Explore All Guides</span>
-                <FiArrowRight className="text-base md:text-lg group-hover:translate-x-1 transition-transform" />
+                <span className="text-black">Explore All Guides</span>
+                <FiArrowRight className="text-base md:text-lg text-black group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
           </motion.div>
@@ -662,7 +633,8 @@ const LandingPage = () => {
       <section 
         className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 xl:px-20 backdrop-blur-sm"
         style={{ 
-          background: `linear-gradient(135deg, ${COLORS.navy[2]} 0%, ${COLORS.navy[3]} 100%)`
+          backgroundColor: `${COLORS.navy[3]}20`,
+          backgroundImage: `linear-gradient(135deg, ${COLORS.navy[3]}15 0%, ${COLORS.navy[2]}25 100%)`
         }}
       >
         <div className="max-w-4xl mx-auto text-center">
@@ -675,21 +647,21 @@ const LandingPage = () => {
             <div 
               className="inline-flex p-3 md:p-4 rounded-xl md:rounded-2xl border mb-4 md:mb-6 mx-auto"
               style={{ 
-                backgroundColor: `${COLORS.accent.primary}15`,
-                borderColor: `${COLORS.accent.primary}25`
+                backgroundColor: `${COLORS.navy[4]}20`,
+                borderColor: `${COLORS.navy[4]}30`
               }}
             >
-              <FiAward className="text-2xl md:text-3xl" style={{ color: COLORS.accent.primary }} />
+              <FiAward className="text-2xl md:text-3xl" style={{ color: COLORS.navy[4] }} />
             </div>
             <h2 
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-3 md:mb-4"
-              style={{ color: COLORS.navy[6] }}
+              style={{ color: COLORS.navy[5] }}
             >
-              Master Your <span style={{ color: COLORS.accent.primary }}>Rights</span>
+              Master Your <span style={{ color: COLORS.navy[4] }}>Rights</span>
             </h2>
             <p 
               className="text-base sm:text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto font-light opacity-90 px-4"
-              style={{ color: COLORS.navy[6] }}
+              style={{ color: COLORS.navy[5] }}
             >
               Take the first step toward legal confidence. Your personalized library awaits.
             </p>
@@ -700,15 +672,16 @@ const LandingPage = () => {
               >
                 <Link
                   to="/signup"
-                  className="inline-flex items-center justify-center gap-2 md:gap-3 font-semibold py-3 md:py-4 px-6 md:px-8 rounded-xl md:rounded-2xl shadow-lg transition-all duration-300 border text-sm md:text-base w-full sm:w-auto"
+                  className="inline-flex items-center justify-center gap-2 md:gap-3 font-semibold py-3 md:py-4 px-6 md:px-8 rounded-xl md:rounded-2xl shadow-2xl transition-all duration-300 border text-sm md:text-base w-full sm:w-auto"
                   style={{ 
-                    backgroundColor: COLORS.accent.primary,
-                    color: COLORS.navy[6],
-                    borderColor: `${COLORS.accent.primary}50`,
+                    backgroundColor: COLORS.navy[4],
+                    color: COLORS.navy[5],
+                    borderColor: `${COLORS.navy[4]}50`,
+                    boxShadow: `0 20px 40px ${COLORS.navy[4]}25`
                   }}
                 >
-                  <FiUser className="text-lg md:text-xl" />
-                  <span>Sign In to Access Saved Guides</span>
+                  <FiUser className="text-lg md:text-xl text-black" />
+                  <span className="text-black">Sign In to Access Saved Guides</span>
                 </Link>
               </motion.div>
               <motion.div
@@ -719,9 +692,9 @@ const LandingPage = () => {
                   to="/about"
                   className="inline-flex items-center justify-center gap-2 md:gap-3 backdrop-blur-xl border font-semibold py-3 md:py-4 px-6 md:px-8 rounded-xl md:rounded-2xl transition-all duration-300 text-sm md:text-base w-full sm:w-auto"
                   style={{ 
-                    backgroundColor: "rgba(255, 255, 255, 0.08)",
-                    borderColor: "rgba(255, 255, 255, 0.2)",
-                    color: COLORS.navy[6],
+                    backgroundColor: `${COLORS.navy[5]}10`,
+                    borderColor: `${COLORS.navy[5]}30`,
+                    color: COLORS.navy[5]
                   }}
                 >
                   <span>Learn More</span>
