@@ -63,7 +63,7 @@ export default function App() {
   return (
     <main className="relative">
       {/* Background effects */}
-       <div className="absolute inset-10 -z-10 bg-[url('/gradient.png')]"></div>
+       <div className="absolute -inset-14 -z-10 bg-[url('/gradient.png')]"></div>
 
 
       <Router>
