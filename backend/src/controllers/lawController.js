@@ -85,26 +85,27 @@ export const getLawById = asyncWrapper(async (req, res) => {
 });
 
 // ✅ Enhanced Search (Atlas + Fuzzy + Regex fallback)
-export const searchLaws = asyncWrapper(async (req, res) => {
-  const { query, page = 1, limit = 10 } = req.body;
+import Law from "../models/lawModel.js";
+import asyncWrapper from "../middleware/asyncWrapper.js";
 
-  if (!query || !query.trim()) {
+export const searchLaws = asyncWrapper(async (req, res) => {
+  const { query, limit = 20 } = req.body;
+
+  // --- Empty input check ---
+  if (!query || query.trim().length === 0) {
     return res.status(400).json({ error: "Keyword is required" });
   }
 
-  const skip = (page - 1) * limit;
   const searchQuery = query.trim();
 
   try {
-    console.log("🔍 Using Atlas $search for:", searchQuery);
-
-    // --- Atlas Search with fuzzy match ---
     const results = await Law.aggregate([
       {
         $search: {
-          index: "lawSearchIndex", // 🔹 change to your Atlas Search index name
+          index: "lawSearchIndex", // 🔍 your Atlas Search Index name
           compound: {
             should: [
+              // --- Fuzzy text search (handles misspellings like 'harasment') ---
               {
                 text: {
                   query: searchQuery,
@@ -122,17 +123,34 @@ export const searchLaws = asyncWrapper(async (req, res) => {
                     "jurisdiction"
                   ],
                   fuzzy: {
-                    maxEdits: 2, // allow up to 2 spelling errors
-                    prefixLength: 2
-                  },
-                },
+                    maxEdits: 2,       // allow up to 2 letter mistakes
+                    prefixLength: 2    // first 2 letters must match
+                  }
+                }
               },
-            ],
-          },
-        },
+              // --- Wildcard search (matches partial or contained words) ---
+              {
+                wildcard: {
+                  query: `*${searchQuery}*`,
+                  path: [
+                    "lawTitle",
+                    "legalConcept",
+                    "description",
+                    "sectionOverview",
+                    "category",
+                    "sabCategory"
+                  ],
+                  allowAnalyzedField: true
+                }
+              }
+            ]
+          }
+        }
       },
-      { $skip: skip },
+      // --- Optional: Limit results ---
       { $limit: parseInt(limit) },
+
+      // --- Project only useful fields + search score ---
       {
         $project: {
           lawTitle: 1,
@@ -141,93 +159,26 @@ export const searchLaws = asyncWrapper(async (req, res) => {
           description: 1,
           category: 1,
           sabCategory: 1,
-          sectionOverview: 1,
-          legalConsequence: 1,
-          preventionSolutions: 1,
-          stepByStepGuide: 1,
-          jurisdiction: 1,
-          score: { $meta: "searchScore" },
-        },
-      },
+          score: { $meta: "searchScore" }
+        }
+      }
     ]);
 
-    const totalCount = results.length;
+    if (!results || results.length === 0) {
+      return res.status(404).json({ message: "No related laws found" });
+    }
 
-    // ✅ Return results
-    return res.json({
-      success: true,
-      count: results.length,
-      totalCount,
-      currentPage: parseInt(page),
-      totalPages: Math.ceil(totalCount / limit),
-      results,
+    res.status(200).json({
+      total: results.length,
+      data: results
     });
-
   } catch (err) {
-    console.warn("⚠️ Atlas Search failed:", err.message);
-    console.log("➡️ Falling back to regex search...");
-
-    // --- Fallback Regex search ---
-    const searchRegex = new RegExp(
-      searchQuery.split(/\s+/).filter(w => w.length > 2).join('|'),
-      "i"
-    );
-
-    const results = await Law.find({
-      $or: [
-        { lawTitle: searchRegex },
-        { section: searchRegex },
-        { legalConcept: searchRegex },
-        { description: searchRegex },
-        { category: searchRegex },
-        { sabCategory: searchRegex },
-        { sectionOverview: searchRegex },
-        { legalConsequence: searchRegex },
-        { preventionSolutions: searchRegex },
-        { stepByStepGuide: searchRegex },
-        { jurisdiction: searchRegex }
-      ]
-    })
-    .skip(skip)
-    .limit(parseInt(limit))
-    .lean();
-
-    return res.json({
-      success: true,
-      count: results.length,
-      totalCount: results.length,
-      currentPage: parseInt(page),
-      totalPages: Math.ceil(results.length / limit),
-      results,
-    });
+    console.error("❌ Search Error:", err);
+    res.status(500).json({ error: "Server error while searching laws" });
   }
 });
 
 
-// Helper function to show which fields matched
-function getMatchedFields(law, query) {
-  const matches = [];
-  const searchTerms = query.toLowerCase().split(/\s+/);
-  
-  const fields = {
-    lawTitle: law.lawTitle,
-    section: law.section,
-    legalConcept: law.legalConcept,
-    description: law.description,
-    category: law.category,
-    sabCategory: law.sabCategory
-  };
-
-  Object.entries(fields).forEach(([field, value]) => {
-    if (value && searchTerms.some(term => 
-      value.toLowerCase().includes(term.toLowerCase())
-    )) {
-      matches.push(field);
-    }
-  });
-
-  return matches;
-}
 
 // ✅ Get all categories
 export const getAllLawCategories = asyncWrapper(async (req, res) => {
