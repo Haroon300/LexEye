@@ -1,5 +1,6 @@
 import Law from "../models/lawModel.js";
 import { asyncWrapper } from "../utils/asyncWrapper.js";
+import Fuse from "fuse.js";
 
 /* ===============================
    ✅ CREATE LAW
@@ -90,142 +91,129 @@ export const getLawById = asyncWrapper(async (req, res) => {
    🔍 HYBRID SMART SEARCH
    (Natural sentence + ranking + fuzzy fallback)
 ================================= */
+
 export const searchLaws = asyncWrapper(async (req, res) => {
   const { query, limit = 20 } = req.body;
 
-  if (!query || query.trim().length === 0)
+  if (!query || query.trim().length === 0) {
     return res.status(400).json({ error: "Keyword is required" });
-
-  const searchQuery = query.trim().toLowerCase();
-  const words = searchQuery.split(/\s+/).filter((w) => w.length > 2);
-
-  // --- Local keyword-based relevance search ---
-  const keywordConditions = words.map((word) => ({
-    $or: [
-      { lawTitle: { $regex: word, $options: "i" } },
-      { section: { $regex: word, $options: "i" } },
-      { legalConcept: { $regex: word, $options: "i" } },
-      { description: { $regex: word, $options: "i" } },
-      { legalConsequence: { $regex: word, $options: "i" } },
-      { preventionSolutions: { $regex: word, $options: "i" } },
-      { sectionOverview: { $regex: word, $options: "i" } },
-      { stepByStepGuide: { $regex: word, $options: "i" } },
-      { jurisdiction: { $regex: word, $options: "i" } },
-      { category: { $regex: word, $options: "i" } },
-      { sabCategory: { $regex: word, $options: "i" } },
-    ],
-  }));
-
-  const results = await Law.aggregate([
-    { $match: { $and: keywordConditions } },
-    {
-      $addFields: {
-        matchScore: {
-          $add: words.map((word) => ({
-            $cond: [
-              {
-                $regexMatch: {
-                  input: {
-                    $concat: [
-                      "$lawTitle", " ",
-                      "$section", " ",
-                      "$legalConcept", " ",
-                      "$description", " ",
-                      "$sectionOverview", " ",
-                      "$category", " ",
-                      "$sabCategory"
-                    ],
-                  },
-                  regex: word,
-                  options: "i",
-                },
-              },
-              1,
-              0,
-            ],
-          })),
-        },
-      },
-    },
-    { $sort: { matchScore: -1, createdAt: -1 } },
-    { $limit: parseInt(limit) },
-    {
-      $project: {
-        lawTitle: 1,
-        category: 1,
-        sabCategory: 1,
-        description: 1,
-        section: 1,
-        legalConcept: 1,
-        jurisdiction: 1,
-        matchScore: 1,
-      },
-    },
-  ]);
-
-  // ✅ If local search found results — return
-  if (results.length > 0) {
-    return res.json({
-      source: "local",
-      total: results.length,
-      data: results,
-    });
   }
 
-  // --- 🔁 Fallback: Atlas Search (fuzzy spelling correction) ---
+  const searchQuery = query.trim();
+  const words = searchQuery.split(" ").filter((w) => w.length > 2); // split sentence
+
   try {
-    const atlasResults = await Law.aggregate([
+    // --- Step 1: Atlas Search (for speed + accuracy) ---
+    let atlasResults = await Law.aggregate([
       {
         $search: {
-          index: "lawSearchIndex", // 🔍 Must match your Atlas index name
-          text: {
-            query: searchQuery,
-            path: [
-              "lawTitle",
-              "section",
-              "legalConcept",
-              "description",
-              "category",
-              "sabCategory",
-              "sectionOverview",
-              "jurisdiction",
-            ],
-            fuzzy: {
-              maxEdits: 2,
-              prefixLength: 2,
-            },
-          },
-        },
+          index: "lawSearchIndex",
+          compound: {
+            should: [
+              {
+                text: {
+                  query: words,
+                  path: [
+                    "lawTitle",
+                    "section",
+                    "legalConcept",
+                    "description",
+                    "category",
+                    "sabCategory",
+                    "sectionOverview",
+                    "legalConsequence",
+                    "preventionSolutions",
+                    "stepByStepGuide",
+                    "jurisdiction"
+                  ],
+                  fuzzy: { maxEdits: 2, prefixLength: 2 }
+                }
+              },
+              {
+                wildcard: {
+                  query: `*${searchQuery}*`,
+                  path: [
+                    "lawTitle",
+                    "legalConcept",
+                    "description",
+                    "sectionOverview",
+                    "category",
+                    "sabCategory"
+                  ],
+                  allowAnalyzedField: true
+                }
+              }
+            ]
+          }
+        }
       },
       { $limit: parseInt(limit) },
       {
         $project: {
           lawTitle: 1,
-          category: 1,
-          sabCategory: 1,
-          description: 1,
           section: 1,
           legalConcept: 1,
-          jurisdiction: 1,
-          score: { $meta: "searchScore" },
-        },
-      },
+          description: 1,
+          category: 1,
+          sabCategory: 1,
+          score: { $meta: "searchScore" }
+        }
+      }
     ]);
 
-    if (!atlasResults || atlasResults.length === 0) {
-      return res.status(404).json({ message: "No related laws found" });
+    // --- Step 2: Fallback (Fuse.js local fuzzy match if Atlas fails or partial match needed) ---
+    if (!atlasResults || atlasResults.length < 5) {
+      const allLaws = await Law.find().lean();
+      const fuse = new Fuse(allLaws, {
+        keys: [
+          "lawTitle",
+          "description",
+          "legalConcept",
+          "category",
+          "sabCategory",
+          "sectionOverview",
+          "preventionSolutions",
+          "jurisdiction"
+        ],
+        threshold: 0.35, // smaller = stricter
+        includeScore: true,
+        minMatchCharLength: 3,
+      });
+
+      const fuseResults = fuse.search(searchQuery);
+      const formatted = fuseResults.slice(0, limit).map((r) => r.item);
+
+      // merge Atlas + Fuse results (unique by _id)
+      const combined = [
+        ...atlasResults,
+        ...formatted.filter(
+          (f) => !atlasResults.some((a) => a._id?.toString() === f._id?.toString())
+        ),
+      ];
+
+      if (combined.length === 0) {
+        return res.status(404).json({ message: "No related laws found" });
+      }
+
+      return res.status(200).json({
+        source: "atlas+fuse",
+        total: combined.length,
+        data: combined.slice(0, limit),
+      });
     }
 
+    // --- Step 3: If Atlas had good results, just return them ---
     res.status(200).json({
-      source: "atlas-fuzzy",
+      source: "atlas",
       total: atlasResults.length,
       data: atlasResults,
     });
   } catch (err) {
-    console.error("❌ Atlas Search Error:", err);
-    res.status(500).json({ error: "Error running fuzzy search" });
+    console.error("❌ Search Error:", err);
+    res.status(500).json({ error: "Server error while searching laws" });
   }
 });
+
 
 /* ===============================
    ✅ GET ALL CATEGORIES + SUBCATEGORIES
