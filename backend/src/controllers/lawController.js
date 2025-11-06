@@ -84,7 +84,7 @@ export const getLawById = asyncWrapper(async (req, res) => {
   res.json(law);
 });
 
-// ✅ Enhanced Search
+// ✅ Enhanced Search (Atlas + Fuzzy + Regex fallback)
 export const searchLaws = asyncWrapper(async (req, res) => {
   const { query, page = 1, limit = 10 } = req.body;
 
@@ -93,14 +93,85 @@ export const searchLaws = asyncWrapper(async (req, res) => {
   }
 
   const skip = (page - 1) * limit;
-  const searchQuery = query.trim().toLowerCase();
+  const searchQuery = query.trim();
 
   try {
-    // First, try a simple regex search as primary approach
-    const searchRegex = new RegExp(searchQuery.split(/\s+/).filter(word => word.length > 2).join('|'), 'i');
-    
-    console.log("Searching for:", searchQuery);
-    console.log("Using regex:", searchRegex);
+    console.log("🔍 Using Atlas $search for:", searchQuery);
+
+    // --- Atlas Search with fuzzy match ---
+    const results = await Law.aggregate([
+      {
+        $search: {
+          index: "lawSearchIndex", // 🔹 change to your Atlas Search index name
+          compound: {
+            should: [
+              {
+                text: {
+                  query: searchQuery,
+                  path: [
+                    "lawTitle",
+                    "section",
+                    "legalConcept",
+                    "description",
+                    "category",
+                    "sabCategory",
+                    "sectionOverview",
+                    "legalConsequence",
+                    "preventionSolutions",
+                    "stepByStepGuide",
+                    "jurisdiction"
+                  ],
+                  fuzzy: {
+                    maxEdits: 2, // allow up to 2 spelling errors
+                    prefixLength: 2
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+      { $skip: skip },
+      { $limit: parseInt(limit) },
+      {
+        $project: {
+          lawTitle: 1,
+          section: 1,
+          legalConcept: 1,
+          description: 1,
+          category: 1,
+          sabCategory: 1,
+          sectionOverview: 1,
+          legalConsequence: 1,
+          preventionSolutions: 1,
+          stepByStepGuide: 1,
+          jurisdiction: 1,
+          score: { $meta: "searchScore" },
+        },
+      },
+    ]);
+
+    const totalCount = results.length;
+
+    // ✅ Return results
+    return res.json({
+      success: true,
+      count: results.length,
+      totalCount,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(totalCount / limit),
+      results,
+    });
+
+  } catch (err) {
+    console.warn("⚠️ Atlas Search failed:", err.message);
+    console.log("➡️ Falling back to regex search...");
+
+    // --- Fallback Regex search ---
+    const searchRegex = new RegExp(
+      searchQuery.split(/\s+/).filter(w => w.length > 2).join('|'),
+      "i"
+    );
 
     const results = await Law.find({
       $or: [
@@ -117,107 +188,21 @@ export const searchLaws = asyncWrapper(async (req, res) => {
         { jurisdiction: searchRegex }
       ]
     })
-    .sort({ 
-      // Prioritize matches in important fields
-      lawTitle: 1 
-    })
     .skip(skip)
     .limit(parseInt(limit))
     .lean();
 
-    const totalCount = await Law.countDocuments({
-      $or: [
-        { lawTitle: searchRegex },
-        { section: searchRegex },
-        { legalConcept: searchRegex },
-        { description: searchRegex },
-        { category: searchRegex },
-        { sabCategory: searchRegex },
-        { sectionOverview: searchRegex },
-        { legalConsequence: searchRegex },
-        { preventionSolutions: searchRegex },
-        { stepByStepGuide: searchRegex },
-        { jurisdiction: searchRegex }
-      ]
-    });
-
-    console.log(`Found ${results.length} results for query: "${searchQuery}"`);
-
-    // If no results with regex, try keyword-based search
-    let finalResults = results;
-    if (results.length === 0) {
-      console.log("Trying keyword-based search...");
-      finalResults = await keywordBasedSearch(searchQuery, skip, limit);
-    }
-
     return res.json({
       success: true,
-      count: finalResults.length,
-      totalCount: finalResults.length === 0 ? 0 : totalCount,
+      count: results.length,
+      totalCount: results.length,
       currentPage: parseInt(page),
-      totalPages: Math.ceil((finalResults.length === 0 ? 0 : totalCount) / limit),
-      results: finalResults.map(item => ({ 
-        ...item, 
-        score: 1,
-        searchMatch: getMatchedFields(item, searchQuery)
-      })),
-    });
-
-  } catch (error) {
-    console.log("Search error:", error.message);
-    
-    // Final fallback - return all laws and let frontend filter
-    const allLaws = await Law.find().lean();
-    const filteredResults = allLaws.filter(law => 
-      containsSearchTerms(law, searchQuery)
-    ).slice(skip, skip + parseInt(limit));
-
-    return res.json({
-      success: true,
-      count: filteredResults.length,
-      totalCount: filteredResults.length,
-      currentPage: parseInt(page),
-      totalPages: Math.ceil(filteredResults.length / limit),
-      results: filteredResults.map(item => ({ ...item, score: 1 })),
+      totalPages: Math.ceil(results.length / limit),
+      results,
     });
   }
 });
 
-// Helper function for keyword-based search
-async function keywordBasedSearch(query, skip, limit) {
-  const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 2);
-  
-  if (keywords.length === 0) return [];
-
-  const keywordRegex = new RegExp(keywords.join('|'), 'i');
-  
-  const results = await Law.find({
-    $or: [
-      { lawTitle: keywordRegex },
-      { section: keywordRegex },
-      { legalConcept: keywordRegex },
-      { description: keywordRegex },
-      { category: keywordRegex },
-      { sabCategory: keywordRegex }
-    ]
-  })
-  .limit(parseInt(limit))
-  .skip(skip)
-  .lean();
-
-  return results;
-}
-
-// Helper function to check if law contains search terms
-function containsSearchTerms(law, query) {
-  const searchTerms = query.toLowerCase().split(/\s+/).filter(term => term.length > 2);
-  
-  if (searchTerms.length === 0) return false;
-
-  const lawText = JSON.stringify(law).toLowerCase();
-  
-  return searchTerms.some(term => lawText.includes(term));
-}
 
 // Helper function to show which fields matched
 function getMatchedFields(law, query) {
