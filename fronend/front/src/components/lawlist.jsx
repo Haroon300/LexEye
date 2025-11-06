@@ -838,9 +838,12 @@ const LawList = () => {
                               </motion.div>
                               
                               {law.score && (
-                                <div className="text-xs flex items-center gap-1" style={{ color: COLORS.navy[5] }}>
+                                <div
+                                  className="text-xs flex items-center gap-1"
+                                  style={{ color: COLORS.navy[5] }}
+                                >
                                   <IoStarOutline style={{ color: COLORS.navy[4] }} />
-                                  {(law.score * 100).toFixed(0)}% match
+                                  {Math.min((law.score * 100).toFixed(0), 100)}% match
                                 </div>
                               )}
                             </div>
