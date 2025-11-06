@@ -91,7 +91,6 @@ export const getLawById = asyncWrapper(async (req, res) => {
    🔍 HYBRID SMART SEARCH
    (Natural sentence + ranking + fuzzy fallback)
 ================================= */
-
 export const searchLaws = asyncWrapper(async (req, res) => {
   const { query, limit = 20 } = req.body;
 
@@ -100,10 +99,10 @@ export const searchLaws = asyncWrapper(async (req, res) => {
   }
 
   const searchQuery = query.trim();
-  const words = searchQuery.split(" ").filter((w) => w.length > 2); // split sentence
+  const words = searchQuery.split(" ").filter((w) => w.length > 2);
 
   try {
-    // --- Step 1: Atlas Search (for speed + accuracy) ---
+    // --- Step 1: Atlas Search ---
     let atlasResults = await Law.aggregate([
       {
         $search: {
@@ -161,7 +160,15 @@ export const searchLaws = asyncWrapper(async (req, res) => {
       }
     ]);
 
-    // --- Step 2: Fallback (Fuse.js local fuzzy match if Atlas fails or partial match needed) ---
+    // Normalize Atlas score → 0–100
+    atlasResults = atlasResults.map((item) => {
+      const score = item.score ? Math.min(100, (item.score / 10) * 100) : 0;
+      return { ...item, matchPercentage: Math.round(score) };
+    });
+
+    // --- Step 2: Fuse.js fallback ---
+    let combined = [...atlasResults];
+
     if (!atlasResults || atlasResults.length < 5) {
       const allLaws = await Law.find().lean();
       const fuse = new Fuse(allLaws, {
@@ -175,44 +182,46 @@ export const searchLaws = asyncWrapper(async (req, res) => {
           "preventionSolutions",
           "jurisdiction"
         ],
-        threshold: 0.35, // smaller = stricter
         includeScore: true,
-        minMatchCharLength: 3,
+        threshold: 0.35,
+        minMatchCharLength: 3
       });
 
       const fuseResults = fuse.search(searchQuery);
-      const formatted = fuseResults.slice(0, limit).map((r) => r.item);
 
-      // merge Atlas + Fuse results (unique by _id)
-      const combined = [
-        ...atlasResults,
-        ...formatted.filter(
-          (f) => !atlasResults.some((a) => a._id?.toString() === f._id?.toString())
-        ),
-      ];
+      const formatted = fuseResults.slice(0, limit).map((r) => ({
+        ...r.item,
+        matchPercentage: Math.round((1 - r.score) * 100) // Fuse score: lower = better
+      }));
 
-      if (combined.length === 0) {
-        return res.status(404).json({ message: "No related laws found" });
-      }
+      // Merge + remove duplicates
+      const unique = new Map();
+      [...atlasResults, ...formatted].forEach((item) =>
+        unique.set(item._id?.toString(), item)
+      );
 
-      return res.status(200).json({
-        source: "atlas+fuse",
-        total: combined.length,
-        data: combined.slice(0, limit),
-      });
+      combined = Array.from(unique.values());
     }
 
-    // --- Step 3: If Atlas had good results, just return them ---
+    // --- Step 3: Sort by match percentage (high → low) ---
+    combined.sort((a, b) => b.matchPercentage - a.matchPercentage);
+
+    if (!combined.length) {
+      return res.status(404).json({ message: "No related laws found" });
+    }
+
+    // --- Step 4: Response ---
     res.status(200).json({
-      source: "atlas",
-      total: atlasResults.length,
-      data: atlasResults,
+      success: true,
+      total: combined.length,
+      data: combined.slice(0, limit),
     });
   } catch (err) {
     console.error("❌ Search Error:", err);
     res.status(500).json({ error: "Server error while searching laws" });
   }
 });
+
 
 
 /* ===============================
