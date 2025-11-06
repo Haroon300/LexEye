@@ -54,31 +54,33 @@ const LawList = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const fetchLaws = async (page = 1) => {
-    if (!query) return;
+  if (!query) return;
 
-    setState(prev => ({ ...prev, loading: true, error: "" }));
-    try {
-      const res = await axios.post(
-        "https://lex-eye-backend.vercel.app/api/laws/search",
-        { query, page, limit: 9 }
-      );
-      setState({
-        results: res.data.results || [],
-        loading: false,
-        error: "",
-        totalCount: res.data.totalCount || 0,
-        currentPage: res.data.currentPage || 1,
-        totalPages: res.data.totalPages || 1
-      });
-    } catch (err) {
-      setState(prev => ({
-        ...prev,
-        results: [],
-        loading: false,
-        error: err.response?.data?.error || "Failed to fetch laws. Please try again.",
-      }));
-    }
-  };
+  setState(prev => ({ ...prev, loading: true, error: "" }));
+  try {
+    const res = await axios.post(
+      "https://lex-eye-backend.vercel.app/api/laws/search",
+      { query, page, limit: 9 }
+    );
+
+    setState({
+      results: res.data.data || [],         // ✅ changed from res.data.results
+      loading: false,
+      error: "",
+      totalCount: res.data.total || 0,      // ✅ changed from res.data.totalCount
+      currentPage: page,
+      totalPages: Math.ceil((res.data.total || 0) / 9) || 1
+    });
+  } catch (err) {
+    setState(prev => ({
+      ...prev,
+      results: [],
+      loading: false,
+      error: err.response?.data?.error || "Failed to fetch laws. Please try again.",
+    }));
+  }
+};
+
 
   useEffect(() => {
     fetchLaws(1);
