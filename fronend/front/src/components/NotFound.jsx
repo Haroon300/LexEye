@@ -272,7 +272,7 @@ const NotFound = () => {
               {[
                 { to: "/glossary", label: "Legal Glossary", icon: FiBookmark },
                 { to: "/helpline", label: "Helpline", icon: FiHelpCircle },
-                { to: "/categories", label: "Categories", icon: FiCompass },
+                { to: "/category", label: "Categories", icon: FiCompass },
                 { to: "/bookmarks", label: "Bookmarks", icon: FiBookmark }
               ].map((link, index) => (
                 <Link
