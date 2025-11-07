@@ -271,7 +271,7 @@ const NotFound = () => {
             <div className="flex flex-wrap justify-center gap-3 text-sm">
               {[
                 { to: "/glossary", label: "Legal Glossary", icon: FiBookmark },
-                { to: "/helpline", label: "Helpline", icon: FiHelpCircle },
+                { to: "/helpline", label: "Emergency Helpline", icon: FiHelpCircle },
                 { to: "/category", label: "Categories", icon: FiCompass },
                 { to: "/bookmarks", label: "Bookmarks", icon: FiBookmark }
               ].map((link, index) => (
